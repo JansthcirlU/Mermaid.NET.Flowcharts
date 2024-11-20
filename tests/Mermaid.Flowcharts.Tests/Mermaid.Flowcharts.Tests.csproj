@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Mermaid.Flowcharts\Mermaid.Flowcharts.csproj" />
+  </ItemGroup>
+
 </Project>
