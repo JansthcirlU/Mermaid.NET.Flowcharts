@@ -4,7 +4,7 @@ namespace Mermaid.Flowcharts;
 
 public readonly record struct LinkText
 {
-    public string Text { get; }
+    public string Value { get; }
 
     private static readonly SearchValues<char> IllegalCharacters = SearchValues.Create("\"|");
 
@@ -13,7 +13,7 @@ public readonly record struct LinkText
         throw new InvalidOperationException("You must create a link text with a value.");
     }
     private LinkText(string text)
-        => Text = text;
+        => Value = text;
     
     public static LinkText FromString(string value)
     {
