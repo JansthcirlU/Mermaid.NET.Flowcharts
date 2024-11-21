@@ -15,5 +15,5 @@ public readonly record struct Node
         => new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(text));
 
     public override string ToString()
-        => $"{Id} [\"{Text}\"]";
+        => $"{Id}[\"{Text}\"]";
 }
