@@ -7,13 +7,13 @@ public class Flowchart
     private readonly List<Node> _nodes = [];
     private readonly List<Link> _links = [];
 
-    public string? Title { get; }
+    public FlowchartTitle? Title { get; }
 
     public Flowchart()
     {
 
     }
-    public Flowchart(string title)
+    public Flowchart(FlowchartTitle title)
     {
         Title = title;
     }
@@ -35,10 +35,7 @@ public class Flowchart
         StringBuilder flowchartStringBuilder = new();
         if (Title is not null)
         {
-            flowchartStringBuilder
-                .AppendLine("---")
-                .AppendLine($"title: {Title}")
-                .AppendLine("---");
+            flowchartStringBuilder.AppendLine(Title.ToString());
         }
         flowchartStringBuilder.AppendLine("flowchart TD");
 
