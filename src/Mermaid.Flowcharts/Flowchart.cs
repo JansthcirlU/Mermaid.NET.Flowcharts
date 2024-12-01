@@ -35,7 +35,7 @@ public class Flowchart : IMermaidPrintable
     public override string ToString()
         => ToMermaidString();
 
-    public string ToMermaidString(int indentations = 0)
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
     {
         StringBuilder flowchartStringBuilder = new();
         if (Title is not null)

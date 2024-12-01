@@ -30,6 +30,6 @@ public readonly struct FlowchartTitle : IMermaidPrintable
     public override string ToString()
         => ToMermaidString();
 
-    public string ToMermaidString(int indentations = 0)
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
         => Text;
 }

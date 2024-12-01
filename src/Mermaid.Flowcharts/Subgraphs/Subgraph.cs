@@ -20,7 +20,7 @@ public class Subgraph : INode
         return this;
     }
 
-    public string ToMermaidString(int indentations = 0)
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
     {
         throw new NotImplementedException();
     }

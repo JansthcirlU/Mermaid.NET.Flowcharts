@@ -1,6 +1,6 @@
 ﻿namespace Mermaid.Flowcharts.Nodes;
 
-public readonly record struct Node : INode, IMermaidPrintable
+public readonly record struct Node : INode
 {
     public NodeIdentifier Id { get; }
     public MermaidUnicodeText Text { get; }
@@ -17,6 +17,6 @@ public readonly record struct Node : INode, IMermaidPrintable
     public override string ToString()
         => ToMermaidString();
 
-    public string ToMermaidString(int indentations = 0)
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
         => $"{Id}[\"{Text}\"]";
 }
