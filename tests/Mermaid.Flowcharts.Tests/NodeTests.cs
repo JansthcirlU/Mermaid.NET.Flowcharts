@@ -1,3 +1,5 @@
+using Mermaid.Flowcharts.Nodes;
+
 namespace Mermaid.Flowcharts.Tests;
 
 public class NodeTests

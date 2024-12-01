@@ -1,3 +1,5 @@
+using Mermaid.Flowcharts.Links;
+
 namespace Mermaid.Flowcharts.Tests;
 
 public class LinkTextTests

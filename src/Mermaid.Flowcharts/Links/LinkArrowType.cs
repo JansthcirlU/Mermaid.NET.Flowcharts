@@ -1,4 +1,4 @@
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Links;
 
 public enum LinkArrowType
 {

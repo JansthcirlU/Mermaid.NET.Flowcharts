@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Nodes;
 
 public readonly record struct MermaidUnicodeText
 {

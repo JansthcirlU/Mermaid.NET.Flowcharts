@@ -1,4 +1,6 @@
-namespace Mermaid.Flowcharts;
+using Mermaid.Flowcharts.Nodes;
+
+namespace Mermaid.Flowcharts.Links;
 
 public readonly record struct Link
 {

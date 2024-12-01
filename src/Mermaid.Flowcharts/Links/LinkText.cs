@@ -1,6 +1,6 @@
 using System.Buffers;
 
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Links;
 
 public readonly record struct LinkText
 {
@@ -14,7 +14,7 @@ public readonly record struct LinkText
     }
     private LinkText(string text)
         => Value = text;
-    
+
     public static LinkText FromString(string value)
     {
         if (string.IsNullOrEmpty(value)) throw new ArgumentException("Link text must not be null or empty.", nameof(value));

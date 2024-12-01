@@ -1,4 +1,4 @@
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Links;
 
 public readonly record struct LinkStyle
 {
@@ -26,7 +26,7 @@ public readonly record struct LinkStyle
             _ => "---"
         };
         if (Thickness is LinkThickness.Invisible) return thickness;
-        
+
         string arrowLeft = (ArrowType, Direction) switch
         {
             (LinkArrowType.Arrow, LinkDirection.RightToLeft or LinkDirection.Both) => "<",

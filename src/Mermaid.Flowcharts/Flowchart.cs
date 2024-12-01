@@ -1,4 +1,6 @@
 using System.Text;
+using Mermaid.Flowcharts.Links;
+using Mermaid.Flowcharts.Nodes;
 
 namespace Mermaid.Flowcharts;
 

@@ -1,6 +1,6 @@
 using System.Buffers;
 
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Nodes;
 
 public readonly record struct NodeIdentifier
 {
@@ -29,7 +29,7 @@ public readonly record struct NodeIdentifier
 
         bool containsDisallowedValue = value.AsSpan().IndexOfAnyExcept(AllowedCharacters) > -1;
         if (containsDisallowedValue) throw new ArgumentException("Identifier must only contain alphanumerical characters or '_', '.' or '-' as separators.", nameof(value));
-        
+
         bool containsConsequentSeparators =
             value.Contains("__") ||
             value.Contains("_.") ||
