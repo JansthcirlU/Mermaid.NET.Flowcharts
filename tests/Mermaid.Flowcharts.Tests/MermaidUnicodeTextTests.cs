@@ -39,7 +39,13 @@ public class MermaidUnicodeTextTests
     }
 
     [Theory]
-    [InlineData('\"', "&quot;")]
+    [InlineData('"', "&quot;")]
+    [InlineData('#', "#35;")]
+    [InlineData('<', "&lt;")]
+    [InlineData('>', "&gt;")]
+    [InlineData('&', "&amp;")]
+    [InlineData('\\', "#92;")]
+    [InlineData('\'', "&apos;")]
     public void TextCreation_ShouldReplaceConflictingCharacters_WhenEscapable(char conflictingCharacter, string replacement)
     {
         // Arrange
