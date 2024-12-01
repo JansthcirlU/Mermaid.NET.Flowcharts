@@ -4,9 +4,9 @@ using Mermaid.Flowcharts.Nodes;
 
 namespace Mermaid.Flowcharts;
 
-public class Flowchart
+public class Flowchart : IMermaidPrintable
 {
-    private readonly List<Node> _nodes = [];
+    private readonly List<INode> _nodes = [];
     private readonly List<Link> _links = [];
 
     public FlowchartTitle? Title { get; }
@@ -20,7 +20,7 @@ public class Flowchart
         Title = title;
     }
 
-    public Flowchart AddNode(Node node)
+    public Flowchart AddNode(INode node)
     {
         if (!_nodes.Any(n => n.Id == node.Id)) _nodes.Add(node);
         return this;
@@ -33,6 +33,9 @@ public class Flowchart
     }
 
     public override string ToString()
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0)
     {
         StringBuilder flowchartStringBuilder = new();
         if (Title is not null)
@@ -41,12 +44,12 @@ public class Flowchart
         }
         flowchartStringBuilder.AppendLine("flowchart TD");
 
-        IEnumerable<Node> allNodes = _nodes
+        IEnumerable<INode> allNodes = _nodes
             .Concat(_links.Select(link => link.Source))
             .Concat(_links.Select(link => link.Destination))
             .OrderBy(node => node.Id.Value)
             .DistinctBy(node => node.Id);
-        foreach (Node node in allNodes)
+        foreach (INode node in allNodes)
         {
             flowchartStringBuilder.AppendLine($"    {node.ToString()}");
         }

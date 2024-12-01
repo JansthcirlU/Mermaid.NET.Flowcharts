@@ -1,6 +1,6 @@
 namespace Mermaid.Flowcharts;
 
-public readonly struct FlowchartTitle
+public readonly struct FlowchartTitle : IMermaidPrintable
 {
     public string Text { get; }
 
@@ -28,5 +28,8 @@ public readonly struct FlowchartTitle
     }
 
     public override string ToString()
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0)
         => Text;
 }

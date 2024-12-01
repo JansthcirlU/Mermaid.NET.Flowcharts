@@ -49,6 +49,6 @@ public class MermaidUnicodeTextTests
         MermaidUnicodeText mermaidText = MermaidUnicodeText.FromString(text);
 
         // Assert
-        Assert.Equal(mermaidText.Text, replacement);
+        Assert.Equal(mermaidText.Value, replacement);
     }
 }

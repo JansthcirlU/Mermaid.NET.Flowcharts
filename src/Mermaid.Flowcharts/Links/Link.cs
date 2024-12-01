@@ -2,16 +2,16 @@ using Mermaid.Flowcharts.Nodes;
 
 namespace Mermaid.Flowcharts.Links;
 
-public readonly record struct Link
+public readonly record struct Link : IMermaidPrintable
 {
-    public readonly Node Source { get; }
-    public readonly Node Destination { get; }
+    public readonly INode Source { get; }
+    public readonly INode Destination { get; }
     public readonly LinkStyle Style { get; }
     public readonly LinkText? Text { get; }
 
     public Link(
-        Node source,
-        Node destination,
+        INode source,
+        INode destination,
         LinkStyle style,
         LinkText? text = null)
     {
@@ -22,6 +22,9 @@ public readonly record struct Link
     }
 
     public override string ToString()
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0)
         => Text is null
             ? $"{Source.Id} {Style} {Destination.Id}"
             : $"{Source.Id} {Style}|{Text}| {Destination.Id}";

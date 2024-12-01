@@ -19,4 +19,9 @@ public class Subgraph : INode
         _nodes.Add(node);
         return this;
     }
+
+    public string ToMermaidString(int indentations = 0)
+    {
+        throw new NotImplementedException();
+    }
 }

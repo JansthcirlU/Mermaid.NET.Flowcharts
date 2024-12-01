@@ -1,6 +1,6 @@
 namespace Mermaid.Flowcharts.Links;
 
-public readonly record struct LinkStyle
+public readonly record struct LinkStyle : IMermaidPrintable
 {
     public readonly LinkArrowType ArrowType { get; } = LinkArrowType.Arrow;
     public readonly LinkDirection Direction { get; } = LinkDirection.LeftToRight;
@@ -17,6 +17,9 @@ public readonly record struct LinkStyle
     }
 
     public override string ToString()
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0)
     {
         string thickness = Thickness switch
         {

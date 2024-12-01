@@ -2,7 +2,7 @@ using System.Buffers;
 
 namespace Mermaid.Flowcharts.Nodes;
 
-public readonly record struct NodeIdentifier
+public readonly record struct NodeIdentifier : IMermaidPrintable
 {
     private const string AllowedLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private const string AllowedDigits = "0123456789";
@@ -15,35 +15,38 @@ public readonly record struct NodeIdentifier
     {
         Value = Guid.NewGuid().ToString();
     }
-    private NodeIdentifier(string value)
+    private NodeIdentifier(string text)
     {
-        Value = value;
+        Value = text;
     }
 
-    public static NodeIdentifier FromString(string value)
+    public static NodeIdentifier FromString(string text)
     {
-        if (value.StartsWith('_') || value.StartsWith('.') || value.StartsWith('-')) throw new ArgumentException("Identifier must not start with a separator.", nameof(value));
-        if (value.EndsWith('_') || value.EndsWith('.') || value.EndsWith('-')) throw new ArgumentException("Identifier must not end with a separator.", nameof(value));
-        if (string.IsNullOrEmpty(value)) throw new ArgumentException("Identifier must not be empty.", nameof(value));
-        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Identifier must not be whitespace.", nameof(value));
+        if (text.StartsWith('_') || text.StartsWith('.') || text.StartsWith('-')) throw new ArgumentException("Identifier must not start with a separator.", nameof(text));
+        if (text.EndsWith('_') || text.EndsWith('.') || text.EndsWith('-')) throw new ArgumentException("Identifier must not end with a separator.", nameof(text));
+        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Identifier must not be empty.", nameof(text));
+        if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException("Identifier must not be whitespace.", nameof(text));
 
-        bool containsDisallowedValue = value.AsSpan().IndexOfAnyExcept(AllowedCharacters) > -1;
-        if (containsDisallowedValue) throw new ArgumentException("Identifier must only contain alphanumerical characters or '_', '.' or '-' as separators.", nameof(value));
+        bool containsDisallowedValue = text.AsSpan().IndexOfAnyExcept(AllowedCharacters) > -1;
+        if (containsDisallowedValue) throw new ArgumentException("Identifier must only contain alphanumerical characters or '_', '.' or '-' as separators.", nameof(text));
 
         bool containsConsequentSeparators =
-            value.Contains("__") ||
-            value.Contains("_.") ||
-            value.Contains("_-") ||
-            value.Contains("._") ||
-            value.Contains("..") ||
-            value.Contains(".-") ||
-            value.Contains("-_") ||
-            value.Contains("-.") ||
-            value.Contains("--");
-        if (containsConsequentSeparators) throw new ArgumentException("Identifier must never contain two separators in a row.", nameof(value));
-        return new(value);
+            text.Contains("__") ||
+            text.Contains("_.") ||
+            text.Contains("_-") ||
+            text.Contains("._") ||
+            text.Contains("..") ||
+            text.Contains(".-") ||
+            text.Contains("-_") ||
+            text.Contains("-.") ||
+            text.Contains("--");
+        if (containsConsequentSeparators) throw new ArgumentException("Identifier must never contain two separators in a row.", nameof(text));
+        return new(text);
     }
 
     public override string ToString()
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0)
         => Value;
 }
