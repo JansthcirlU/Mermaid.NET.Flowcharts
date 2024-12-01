@@ -1,6 +1,6 @@
 ﻿namespace Mermaid.Flowcharts.Nodes;
 
-public readonly record struct Node
+public readonly record struct Node : INode
 {
     public NodeIdentifier Id { get; }
     public MermaidUnicodeText Text { get; }
