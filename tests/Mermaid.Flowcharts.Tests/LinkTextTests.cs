@@ -84,4 +84,19 @@ public class LinkTextTests
         Assert.NotNull(ex);
         Assert.StartsWith($"Link text must not contain illegal character \"{escapeCharacter}\".", ex.Message);
     }
+
+    [Theory]
+    [InlineData("text", 2, "  ", "    text")]
+    [InlineData("mermaid is fun", 1, " ", " mermaid is fun")]
+    public void ToMermaidString_WhenIndentations(string text, int indentations, string indentationText, string expected)
+    {
+        // Arrange
+        LinkText linkText = LinkText.FromString(text);
+
+        // Act
+        string actual = linkText.ToMermaidString(indentations, indentationText);
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 }

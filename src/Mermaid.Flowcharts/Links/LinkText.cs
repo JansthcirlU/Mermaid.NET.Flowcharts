@@ -28,5 +28,5 @@ public readonly record struct LinkText : IMermaidPrintable
         => ToMermaidString();
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
-        => Value;
+        => $"{indentationText.Repeat(indentations)}{Value}";
 }
