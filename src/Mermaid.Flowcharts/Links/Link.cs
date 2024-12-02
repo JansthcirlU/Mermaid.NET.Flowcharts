@@ -26,6 +26,6 @@ public readonly record struct Link : IMermaidPrintable
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
         => Text is null
-            ? $"{Source.Id} {Style} {Destination.Id}"
-            : $"{Source.Id} {Style}|{Text}| {Destination.Id}";
+            ? $"{indentationText.Repeat(indentations)}{Source.Id} {Style} {Destination.Id}"
+            : $"{indentationText.Repeat(indentations)}{Source.Id} {Style}|{Text}| {Destination.Id}";
 }
