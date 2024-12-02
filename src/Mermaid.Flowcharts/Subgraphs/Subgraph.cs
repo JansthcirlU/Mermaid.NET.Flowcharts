@@ -3,7 +3,7 @@ using Mermaid.Flowcharts.Nodes;
 
 namespace Mermaid.Flowcharts.Subgraphs;
 
-public class Subgraph : INode
+public readonly record struct Subgraph : INode
 {
     private readonly List<INode> _nodes = [];
 
