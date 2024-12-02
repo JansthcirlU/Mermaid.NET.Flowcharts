@@ -30,14 +30,14 @@ public class Subgraph : INode
         => _nodes.Any()
             ?
                 $"""
-                subgraph {Id} ["{Title}"]
-                  {string.Join('\n', _nodes.Select(n => n.ToMermaidString(indentations + 1)))}
-                end
+                {indentationText.Repeat(indentations)}subgraph {Id} ["{Title}"]
+                {string.Join('\n', _nodes.Select(n => n.ToMermaidString(indentations + 1)))}
+                {indentationText.Repeat(indentations)}end
                 """
             :
                 $"""
-                subgraph {Id} ["{Title}"]
-                end
+                {indentationText.Repeat(indentations)}subgraph {Id} ["{Title}"]
+                {indentationText.Repeat(indentations)}end
                 """;
 
     internal bool ContainsNode(INode node)

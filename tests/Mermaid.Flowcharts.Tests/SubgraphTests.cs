@@ -9,19 +9,42 @@ public class SubgraphTests
     [InlineData(
         "a",
         "b",
+        0,
+        "  ",
         """
         subgraph a ["b"]
         end
         """)]
     [InlineData(
+        "a",
+        "b",
+        2,
+        "  ",
+        """
+            subgraph a ["b"]
+            end
+        """)]
+    [InlineData(
         "A.B",
         "あ",
+        0,
+        "  ",
         """
         subgraph A.B ["あ"]
         end
         """
     )]
-    public void SubgraphToMermaidString_WhenEmpty(string identifier, string title, string expected)
+    [InlineData(
+        "A.B",
+        "あ",
+        3,
+        "  ",
+        """
+              subgraph A.B ["あ"]
+              end
+        """
+    )]
+    public void SubgraphToMermaidString_WhenEmpty(string identifier, string title, int indentations, string indentationText, string expected)
     {
         // Arrange
         NodeIdentifier subgraphIdentifier = NodeIdentifier.FromString(identifier);
@@ -29,7 +52,7 @@ public class SubgraphTests
         Subgraph subgraph = new(subgraphIdentifier, subgraphTitle);
 
         // Act
-        string subgraphString = subgraph.ToMermaidString();
+        string subgraphString = subgraph.ToMermaidString(indentations, indentationText);
 
         // Assert
         Assert.Equal(expected, subgraphString);
@@ -55,9 +78,37 @@ public class SubgraphTests
         subgraph.AddNode(node);
 
         // Act
-        string subgraphString = subgraph.ToMermaidString();
+        string actual = subgraph.ToMermaidString();
 
         // Assert
-        Assert.Equal(expected, subgraphString);
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(
+        "SubgraphId",
+        "SG",
+        "NodeId",
+        "Node",
+        2,
+        "  ",
+        """
+            subgraph SubgraphId ["SG"]
+              NodeId["Node"]
+            end
+        """
+    )]
+    public void ToMermaidString_WhenIndentations(string identifier, string title, string nodeId, string nodeText, int indentations, string indentationText, string expected)
+    {
+        // Arrange
+        Subgraph subgraph = new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title));
+        Node node = Node.Create(nodeId, nodeText);
+        subgraph.AddNode(node);
+
+        // Act
+        string actual = subgraph.ToMermaidString(indentations, indentationText);
+
+        // Assert
+        Assert.Equal(expected, actual);
     }
 }
