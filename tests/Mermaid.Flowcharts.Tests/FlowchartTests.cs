@@ -65,10 +65,15 @@ public class FlowchartTests
         // Arrange
         Flowchart flowchart = new();
 
-        string nodeId = Guid.NewGuid().ToString();
-        string nodeText = Guid.NewGuid().ToString();
-        Node node = Node.Create(nodeId, nodeText);
-        flowchart.AddNode(node);
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create(node1Id, node1Text);
+        flowchart.AddNode(node1);
+
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create(node2Id, node2Text);
+        flowchart.AddNode(node2);
 
         string subgraphId = Guid.NewGuid().ToString();
         string subgraphText = Guid.NewGuid().ToString();
@@ -78,16 +83,22 @@ public class FlowchartTests
         string subnodeText = Guid.NewGuid().ToString();
         Node subnode = Node.Create(subnodeId, subnodeText);
         subgraph.AddNode(subnode);
-
         flowchart.AddNode(subgraph);
+
+        Link link = new(node1, node2, new());
+        flowchart.AddLink(link);
+        
         string expected =
         $"""
         flowchart TD
-            {nodeId}["{nodeText}"]
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
 
             subgraph {subgraphId} ["{subgraphText}"]
                 {subnodeId}["{subnodeText}"]
             end
+
+            {node1Id} ---> {node2Id}
 
         """;
 
