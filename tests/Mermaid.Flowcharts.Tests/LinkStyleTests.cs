@@ -21,4 +21,18 @@ public class LinkStyleTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(LinkArrowType.Arrow, LinkDirection.LeftToRight, LinkThickness.Thick, 2, "  ", "    ===>")]
+    public void LinkStyle_ToMermaidString_WhenIndentation(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, int indentations, string indentationText, string expected)
+    {
+        // Arrange
+        LinkStyle linkStyle = new(arrowType, direction, thickness);
+
+        // Act
+        string actual = linkStyle.ToMermaidString(indentations, indentationText);
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 }

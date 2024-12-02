@@ -44,11 +44,11 @@ public readonly record struct LinkStyle : IMermaidPrintable
             (LinkArrowType.Cross, _) => "x",
             _ => string.Empty
         };
-        return Direction switch
+        return $"{indentationText.Repeat(indentations)}{Direction switch
         {
             LinkDirection.RightToLeft => $"{arrowLeft}{thickness}",
             LinkDirection.Both => $"{arrowLeft}{thickness}{arrowRight}",
             _ => $"{thickness}{arrowRight}",
-        };
+        }}";
     }
 }
