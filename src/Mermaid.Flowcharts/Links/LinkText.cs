@@ -1,8 +1,8 @@
 using System.Buffers;
 
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Links;
 
-public readonly record struct LinkText
+public readonly record struct LinkText : IMermaidPrintable
 {
     public string Value { get; }
 
@@ -14,7 +14,7 @@ public readonly record struct LinkText
     }
     private LinkText(string text)
         => Value = text;
-    
+
     public static LinkText FromString(string value)
     {
         if (string.IsNullOrEmpty(value)) throw new ArgumentException("Link text must not be null or empty.", nameof(value));
@@ -23,4 +23,10 @@ public readonly record struct LinkText
         if (illegalCharacterIndex > -1) throw new ArgumentException($"Link text must not contain illegal character \"{value[illegalCharacterIndex]}\".", nameof(value));
         return new(value);
     }
+
+    public override string ToString()
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
+        => $"{indentationText.Repeat(indentations)}{Value}";
 }

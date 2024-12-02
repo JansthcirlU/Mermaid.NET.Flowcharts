@@ -1,6 +1,6 @@
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Links;
 
-public readonly record struct LinkStyle
+public readonly record struct LinkStyle : IMermaidPrintable
 {
     public readonly LinkArrowType ArrowType { get; } = LinkArrowType.Arrow;
     public readonly LinkDirection Direction { get; } = LinkDirection.LeftToRight;
@@ -17,6 +17,9 @@ public readonly record struct LinkStyle
     }
 
     public override string ToString()
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
     {
         string thickness = Thickness switch
         {
@@ -26,7 +29,7 @@ public readonly record struct LinkStyle
             _ => "---"
         };
         if (Thickness is LinkThickness.Invisible) return thickness;
-        
+
         string arrowLeft = (ArrowType, Direction) switch
         {
             (LinkArrowType.Arrow, LinkDirection.RightToLeft or LinkDirection.Both) => "<",
@@ -41,11 +44,11 @@ public readonly record struct LinkStyle
             (LinkArrowType.Cross, _) => "x",
             _ => string.Empty
         };
-        return Direction switch
+        return $"{indentationText.Repeat(indentations)}{Direction switch
         {
             LinkDirection.RightToLeft => $"{arrowLeft}{thickness}",
             LinkDirection.Both => $"{arrowLeft}{thickness}{arrowRight}",
             _ => $"{thickness}{arrowRight}",
-        };
+        }}";
     }
 }

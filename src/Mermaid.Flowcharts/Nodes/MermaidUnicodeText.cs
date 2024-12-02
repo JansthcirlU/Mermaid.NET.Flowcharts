@@ -1,10 +1,10 @@
 using System.Text;
 
-namespace Mermaid.Flowcharts;
+namespace Mermaid.Flowcharts.Nodes;
 
-public readonly record struct MermaidUnicodeText
+public readonly record struct MermaidUnicodeText : IMermaidPrintable
 {
-    public string Text { get; }
+    public string Value { get; }
 
     private static readonly Dictionary<char, string> EscapedCharacters = new()
     {
@@ -19,11 +19,11 @@ public readonly record struct MermaidUnicodeText
 
     public MermaidUnicodeText()
     {
-        Text = string.Empty;
+        Value = string.Empty;
     }
     private MermaidUnicodeText(string text)
     {
-        Text = text;
+        Value = text;
     }
 
     public static MermaidUnicodeText FromString(string text)
@@ -48,5 +48,8 @@ public readonly record struct MermaidUnicodeText
     }
 
     public override string ToString()
-        => Text;
+        => ToMermaidString();
+
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
+        => Value;
 }

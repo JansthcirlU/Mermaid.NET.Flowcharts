@@ -1,3 +1,5 @@
+using Mermaid.Flowcharts.Nodes;
+
 namespace Mermaid.Flowcharts.Tests;
 
 public class MermaidUnicodeTextTests
@@ -37,7 +39,13 @@ public class MermaidUnicodeTextTests
     }
 
     [Theory]
-    [InlineData('\"', "&quot;")]
+    [InlineData('"', "&quot;")]
+    [InlineData('#', "#35;")]
+    [InlineData('<', "&lt;")]
+    [InlineData('>', "&gt;")]
+    [InlineData('&', "&amp;")]
+    [InlineData('\\', "#92;")]
+    [InlineData('\'', "&apos;")]
     public void TextCreation_ShouldReplaceConflictingCharacters_WhenEscapable(char conflictingCharacter, string replacement)
     {
         // Arrange
@@ -47,6 +55,6 @@ public class MermaidUnicodeTextTests
         MermaidUnicodeText mermaidText = MermaidUnicodeText.FromString(text);
 
         // Assert
-        Assert.Equal(mermaidText.Text, replacement);
+        Assert.Equal(mermaidText.Value, replacement);
     }
 }

@@ -1,3 +1,5 @@
+using Mermaid.Flowcharts.Links;
+
 namespace Mermaid.Flowcharts.Tests;
 
 public class LinkStyleTests
@@ -8,13 +10,27 @@ public class LinkStyleTests
     [InlineData(LinkArrowType.Arrow, LinkDirection.RightToLeft, LinkThickness.Dotted, "<-.-")]
     [InlineData(LinkArrowType.Circle, LinkDirection.Both, LinkThickness.Dotted, "o-.-o")]
     [InlineData(LinkArrowType.Arrow, LinkDirection.Both, LinkThickness.Invisible, "~~~")]
-    public void LinkStyle_ToString(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, string expected)
+    public void LinkStyle_ToMermaidString(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, string expected)
     {
         // Arrange
         LinkStyle linkStyle = new(arrowType, direction, thickness);
 
         // Act
-        string actual = linkStyle.ToString();
+        string actual = linkStyle.ToMermaidString();
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(LinkArrowType.Arrow, LinkDirection.LeftToRight, LinkThickness.Thick, 2, "  ", "    ===>")]
+    public void LinkStyle_ToMermaidString_WhenIndentation(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, int indentations, string indentationText, string expected)
+    {
+        // Arrange
+        LinkStyle linkStyle = new(arrowType, direction, thickness);
+
+        // Act
+        string actual = linkStyle.ToMermaidString(indentations, indentationText);
 
         // Assert
         Assert.Equal(expected, actual);
