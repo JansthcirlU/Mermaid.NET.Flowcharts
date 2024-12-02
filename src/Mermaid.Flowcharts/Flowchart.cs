@@ -1,6 +1,7 @@
 using System.Text;
 using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Subgraphs;
 
 namespace Mermaid.Flowcharts;
 
@@ -10,6 +11,8 @@ public class Flowchart : IMermaidPrintable
     private readonly List<Link> _links = [];
 
     public FlowchartTitle? Title { get; }
+    public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
+    public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
 
     public Flowchart()
     {
@@ -22,13 +25,17 @@ public class Flowchart : IMermaidPrintable
 
     public Flowchart AddNode(INode node)
     {
-        if (!_nodes.Any(n => n.Id == node.Id)) _nodes.Add(node);
+        if (ContainsNode(node) || ContainsNodeNested(node)) return this;
+
+        _nodes.Add(node);
         return this;
     }
 
     public Flowchart AddLink(Link link)
     {
         _links.Add(link);
+        AddNode(link.Source);
+        AddNode(link.Destination);
         return this;
     }
 
@@ -60,4 +67,10 @@ public class Flowchart : IMermaidPrintable
         }
         return flowchartStringBuilder.ToString();
     }
+
+    internal bool ContainsNode(INode node)
+        => Nodes.Any(n => n.Id == node.Id);
+
+    internal bool ContainsNodeNested(INode node)
+        => Subgraphs.Any(s => s.ContainsNode(node) || s.ContainsNodeNested(node));
 }

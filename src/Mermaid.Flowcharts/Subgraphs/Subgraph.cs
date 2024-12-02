@@ -7,7 +7,8 @@ public class Subgraph : INode
     private readonly List<INode> _nodes = [];
 
     public NodeIdentifier Id { get; }
-    public IEnumerable<INode> Nodes => _nodes.AsReadOnly();
+    public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
+    public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
 
     public Subgraph(NodeIdentifier id)
     {
@@ -24,4 +25,10 @@ public class Subgraph : INode
     {
         throw new NotImplementedException();
     }
+
+    internal bool ContainsNode(INode node)
+        => Nodes.Any(n => n.Id == node.Id);
+
+    internal bool ContainsNodeNested(INode node)
+        => Subgraphs.Any(s => s.ContainsNode(node) || s.ContainsNodeNested(node));
 }
