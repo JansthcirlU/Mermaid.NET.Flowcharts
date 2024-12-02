@@ -18,5 +18,5 @@ public readonly record struct Node : INode
         => ToMermaidString();
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
-        => $"{Id}[\"{Text}\"]";
+        => $"{indentationText.Repeat(indentations)}{Id}[\"{Text}\"]";
 }

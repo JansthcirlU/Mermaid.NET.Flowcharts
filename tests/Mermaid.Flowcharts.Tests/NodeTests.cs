@@ -18,4 +18,19 @@ public class NodeTests
         // Assert
         Assert.Equal(expected, nodeString);
     }
+
+    [Theory]
+    [InlineData("a", "b", 3, " ", "   a[\"b\"]")]
+    [InlineData("A.B", "あ", 3, "  ", "      A.B[\"あ\"]")]
+    public void ToMermaidString_WhenIndentations(string identifier, string text, int indentations, string indentationText, string expected)
+    {
+        // Arrange
+        Node node = Node.Create(identifier, text);
+
+        // Act
+        string actual = node.ToMermaidString(indentations, indentationText);
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 }
