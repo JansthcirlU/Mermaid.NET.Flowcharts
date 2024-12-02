@@ -102,4 +102,19 @@ public class NodeIdentifierTests
         Assert.NotNull(ex);
         Assert.StartsWith("Identifier must not start with a separator.", ex.Message);
     }
+
+    [Theory]
+    [InlineData("id", 2, "   ", "      id")]
+    [InlineData("test-string", 0, "      ", "test-string")]
+    public void ToMermaidString_WhenIndentations(string identifier, int indentations, string indentationText, string expected)
+    {
+        // Arrange
+        NodeIdentifier id = NodeIdentifier.FromString(identifier);
+
+        // Act
+        string actual = id.ToMermaidString(indentations, indentationText);
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 }

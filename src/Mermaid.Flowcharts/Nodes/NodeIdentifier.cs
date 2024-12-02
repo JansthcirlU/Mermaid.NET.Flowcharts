@@ -48,5 +48,5 @@ public readonly record struct NodeIdentifier : IMermaidPrintable
         => ToMermaidString();
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
-        => Value;
+        => $"{indentationText.Repeat(indentations)}{Value}";
 }
