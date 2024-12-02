@@ -45,25 +45,25 @@ public class Flowchart : IMermaidPrintable
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
     {
         StringBuilder flowchartStringBuilder = new();
-        if (Title is not null)
+        if (Title is FlowchartTitle title)
         {
-            flowchartStringBuilder.AppendLine(Title.ToString());
+            flowchartStringBuilder.AppendLine(title.ToMermaidString(indentations, indentationText));
         }
         flowchartStringBuilder.AppendLine("flowchart TD");
 
-        IEnumerable<INode> allNodes = _nodes
-            .Concat(_links.Select(link => link.Source))
-            .Concat(_links.Select(link => link.Destination))
-            .OrderBy(node => node.Id.Value)
-            .DistinctBy(node => node.Id);
-        foreach (INode node in allNodes)
+        foreach (Node node in Nodes)
         {
-            flowchartStringBuilder.AppendLine($"    {node.ToString()}");
+            flowchartStringBuilder.AppendLine(node.ToMermaidString(indentations + 1, indentationText));
         }
-        flowchartStringBuilder.AppendLine();
+        if (Subgraphs.Any()) flowchartStringBuilder.AppendLine();
+        foreach (Subgraph subgraph in Subgraphs)
+        {
+            flowchartStringBuilder.AppendLine(subgraph.ToMermaidString(indentations + 1, indentationText));
+        }
+        if (_links.Any()) flowchartStringBuilder.AppendLine();
         foreach (Link link in _links)
         {
-            flowchartStringBuilder.AppendLine($"    {link.ToString()}");
+            flowchartStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));
         }
         return flowchartStringBuilder.ToString();
     }

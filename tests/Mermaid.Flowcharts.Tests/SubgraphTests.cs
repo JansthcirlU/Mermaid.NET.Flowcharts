@@ -98,6 +98,19 @@ public class SubgraphTests
             end
         """
     )]
+    [InlineData(
+        "SubgraphId",
+        "SG",
+        "NodeId",
+        "Node",
+        1,
+        "    ",
+        """
+            subgraph SubgraphId ["SG"]
+                NodeId["Node"]
+            end
+        """
+    )]
     public void ToMermaidString_WhenIndentations(string identifier, string title, string nodeId, string nodeText, int indentations, string indentationText, string expected)
     {
         // Arrange
