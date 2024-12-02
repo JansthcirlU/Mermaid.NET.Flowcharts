@@ -31,5 +31,5 @@ public readonly struct FlowchartTitle : IMermaidPrintable
         => ToMermaidString();
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
-        => Text;
+        => $"{indentationText.Repeat(indentations)}{Text.Replace("\n", $"\n{indentationText.Repeat(indentations)}")}";
 }

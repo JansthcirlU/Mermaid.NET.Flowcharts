@@ -103,4 +103,28 @@ public class FlowchartTitleTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(
+        'a',
+        2,
+        "  ",
+        """
+            ---
+            title: a
+            ---
+        """
+    )]
+    public void ToMermaidString_WhenIndentations(char letter, int indentations, string indentationText, string expected)
+    {
+        // Arrange
+        string text = letter.ToString();
+        FlowchartTitle title = FlowchartTitle.FromString(text);
+
+        // Act
+        string actual = title.ToMermaidString(indentations, indentationText);
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 }
