@@ -1,3 +1,4 @@
+using System.Text;
 using Mermaid.Flowcharts.Nodes;
 
 namespace Mermaid.Flowcharts.Subgraphs;
@@ -27,18 +28,22 @@ public class Subgraph : INode
         => ToMermaidString();
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
-        => _nodes.Any()
-            ?
-                $"""
-                {indentationText.Repeat(indentations)}subgraph {Id} ["{Title}"]
-                {string.Join('\n', _nodes.Select(n => n.ToMermaidString(indentations + 1, indentationText)))}
-                {indentationText.Repeat(indentations)}end
-                """
-            :
-                $"""
-                {indentationText.Repeat(indentations)}subgraph {Id} ["{Title}"]
-                {indentationText.Repeat(indentations)}end
-                """;
+    {
+        StringBuilder subgraphStringBuilder = new();
+        string indent = indentationText.Repeat(indentations);
+        subgraphStringBuilder.AppendLine($"{indent}subgraph {Id} [\"{Title}\"]");
+        foreach (Node node in Nodes)
+        {
+            subgraphStringBuilder.AppendLine(node.ToMermaidString(indentations + 1, indentationText));
+        }
+        if (Subgraphs.Any()) subgraphStringBuilder.AppendLine();
+        foreach (Subgraph subgraph in Subgraphs)
+        {
+            subgraphStringBuilder.AppendLine(subgraph.ToMermaidString(indentations + 1, indentationText));
+        }
+        subgraphStringBuilder.Append($"{indent}end");
+        return subgraphStringBuilder.ToString();
+    }
 
     internal bool ContainsNode(INode node)
         => Nodes.Any(n => n.Id == node.Id);
