@@ -31,7 +31,7 @@ public class Subgraph : INode
             ?
                 $"""
                 {indentationText.Repeat(indentations)}subgraph {Id} ["{Title}"]
-                {string.Join('\n', _nodes.Select(n => n.ToMermaidString(indentations + 1)))}
+                {string.Join('\n', _nodes.Select(n => n.ToMermaidString(indentations + 1, indentationText)))}
                 {indentationText.Repeat(indentations)}end
                 """
             :
