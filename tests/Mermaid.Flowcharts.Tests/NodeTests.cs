@@ -17,8 +17,8 @@ public class NodeTests
     [InlineData("a", "b", NodeShape.Hexagon, "a{{\"b\"}}")]
     [InlineData("a", "b", NodeShape.Parallelogram, "a[/\"b\"/]")]
     [InlineData("a", "b", NodeShape.ParallelogramAlt, "a[\\\"b\"\\]")]
-    [InlineData("a", "b", NodeShape.Trapezoid, "a[/\\\"b\"/\\]")]
-    [InlineData("a", "b", NodeShape.TrapezoidAlt, "a[\\/\"b\"\\/]")]
+    [InlineData("a", "b", NodeShape.Trapezoid, "a[/\"b\"\\]")]
+    [InlineData("a", "b", NodeShape.TrapezoidAlt, "a[\\\"b\"/]")]
     public void NodeToMermaidString_ShouldRenderCorrectShape(string identifier, string text, NodeShape shape, string expected)
     {
         // Arrange
