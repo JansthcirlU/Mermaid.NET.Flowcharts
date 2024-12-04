@@ -5,12 +5,24 @@ namespace Mermaid.Flowcharts.Tests;
 public class NodeTests
 {
     [Theory]
-    [InlineData("a", "b", "a[\"b\"]")]
-    [InlineData("A.B", "あ", "A.B[\"あ\"]")]
-    public void NodeToMermaidString_ShouldBeRectangular_ByDefault(string identifier, string text, string expected)
+    [InlineData("a", "b", NodeShape.Rectangle, "a[\"b\"]")]
+    [InlineData("a", "b", NodeShape.RoundedEdges, "a(\"b\")")]
+    [InlineData("a", "b", NodeShape.Stadium, "a([\"b\"])")]
+    [InlineData("a", "b", NodeShape.Subroutine, "a[[\"b\"]]")]
+    [InlineData("a", "b", NodeShape.Cylindrical, "a[(\"b\")]")]
+    [InlineData("a", "b", NodeShape.Circle, "a((\"b\"))")]
+    [InlineData("a", "b", NodeShape.DoubleCircle, "a(((\"b\")))")]
+    [InlineData("a", "b", NodeShape.Asymmetric, "a>\"b\"]")]
+    [InlineData("a", "b", NodeShape.Rhombus, "a{\"b\"}")]
+    [InlineData("a", "b", NodeShape.Hexagon, "a{{\"b\"}}")]
+    [InlineData("a", "b", NodeShape.Parallelogram, "a[/\"b\"/]")]
+    [InlineData("a", "b", NodeShape.ParallelogramAlt, "a[\\\"b\"\\]")]
+    [InlineData("a", "b", NodeShape.Trapezoid, "a[/\\\"b\"/\\]")]
+    [InlineData("a", "b", NodeShape.TrapezoidAlt, "a[\\/\"b\"\\/]")]
+    public void NodeToMermaidString_ShouldRenderCorrectShape(string identifier, string text, NodeShape shape, string expected)
     {
         // Arrange
-        Node node = Node.Create(identifier, text);
+        Node node = Node.Create(identifier, text, shape);
 
         // Act
         string nodeString = node.ToMermaidString();
