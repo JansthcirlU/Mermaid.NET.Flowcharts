@@ -20,16 +20,17 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart
+FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Basic usage");
 Flowchart flowchart = new();
 
-// Add nodes
+// Create nodes
 Node start = Node.Create("start", "Start");
 Node process = Node.Create("process", "Process Data");
 Node stop = Node.Create("stop", "Stop");
 
 // Create links
-Link startToProcess = new(start, process, new());
-Link processToEnd = new(process, stop, new());
+Link startToProcess = new(start, process, default);
+Link processToEnd = new(process, stop, default);
 
 // Add nodes and links to the flowchart
 flowchart
@@ -39,13 +40,16 @@ flowchart
     .AddLink(startToProcess)
     .AddLink(processToEnd);
 
-// Generate the Mermaid string
+// Generate the Mermaid output
 string mermaid = flowchart.ToMermaidString();
 ```
 
 Will generate the following Mermaid output:
 
 ```mermaid
+---
+title: Basic usage
+---
 flowchart TD
   start["Start"]
   process["Process Data"]
@@ -66,8 +70,11 @@ Use the `Node.Create` factory method with a custom `NodeShape` to generate nodes
 using Mermaid.Flowcharts;
 using Mermaid.Flowcharts.Nodes;
 
+// Create a new flowchart
+FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Various node shapes");
 Flowchart flowchart = new();
 
+// Create nodes with various shapes
 Node rectangle = Node.Create("rectangle", "Rectangle", NodeShape.Rectangle);
 Node rounded = Node.Create("rounded", "RoundedEdges", NodeShape.RoundedEdges);
 Node stadium = Node.Create("stadium", "Stadium", NodeShape.Stadium);
@@ -83,6 +90,7 @@ Node parallelogramAlt = Node.Create("parallelogramAlt", "ParallelogramAlt", Node
 Node trapezoid = Node.Create("trapezoid", "Trapezoid", NodeShape.Trapezoid);
 Node trapezoidAlt = Node.Create("trapezoidAlt", "TrapezoidAlt", NodeShape.TrapezoidAlt);
 
+// Add the nodes to the flowchart
 flowchart
     .AddNode(rectangle)
     .AddNode(rounded)
@@ -99,12 +107,16 @@ flowchart
     .AddNode(trapezoid)
     .AddNode(trapezoidAlt);
 
+// Generate the Mermaid output
 string mermaid = flowchart.ToMermaidString();
 ```
 
 Will generate the following Mermaid output:
 
 ```mermaid
+---
+title: Various node shapes
+---
 flowchart TD
   rectangle["Rectangle"]
   rounded("RoundedEdges")
@@ -122,6 +134,136 @@ flowchart TD
   trapezoidAlt[\"TrapezoidAlt"/]
 
 ```
+
 ### Link styles
 
+When creating a link between nodes, you can specify a `LinkStyle`.
+The link style lets you define the *thickness*, the *direction* and the *arrow type* of a link.
+
+```cs
+using Mermaid.Flowcharts;
+using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Links;
+
+// Create a new flowchart
+FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Link styles");
+Flowchart flowchart = new();
+
+// Create two nodes
+Node a = Node.Create("a", "A");
+Node b = Node.Create("b", "B");
+
+// Create links with specific styles and text
+LinkStyle arrowLeftToRightNormal = new(LinkArrowType.Arrow, LinkDirection.LeftToRight, LinkThickness.Normal);
+Link arrowLeftToRightNormalLink = new(a, b, arrowLeftToRightNormal);
+LinkStyle circleRightToLeftDotted = new(LinkArrowType.Circle, LinkDirection.RightToLeft, LinkThickness.Dotted);
+Link circleRightToLeftDottedLink = new(a, b, circleRightToLeftDotted);
+LinkStyle crossBothThick = new(LinkArrowType.Cross, LinkDirection.Both, LinkThickness.Thick);
+Link crossBothThickLink = new(a, b, crossBothThick);
+LinkStyle noneNormal = new(LinkArrowType.None, LinkDirection.Both, LinkThickness.Normal);
+LinkText text = LinkText.FromString("link text");
+Link noneNormalTextLink = new(a, b, noneNormal, text);
+
+// Add nodes and links to the flowchart
+flowchart
+    .AddNode(a)
+    .AddNode(b)
+    .AddLink(arrowLeftToRightNormalLink)
+    .AddLink(circleRightToLeftDottedLink)
+    .AddLink(crossBothThickLink)
+    .AddLink(noneNormalTextLink);
+
+// Generate the Mermaid output
+string mermaid = flowchart.ToMermaidString();
+```
+
+Will generate the following Mermaid output:
+
+```mermaid
+---
+title: Link styles
+---
+flowchart TD
+  a["A"]
+  b["B"]
+
+  a ---> b
+  a o-.- b
+  a x===x b
+  a ---|link text| b
+
+```
+
 ### Subgraphs
+
+It is also possible to create subgraphs, which are a type of node that can themselves contain nodes.
+Subgraphs can be nested within subgraphs, and links can exist between them.
+However, all links are managed on the flowchart level, not on the subgraph level.
+
+```cs
+using Mermaid.Flowcharts;
+using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Links;
+
+// Create a new flowchart with a node
+FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Using subgraphs");
+Flowchart flowchart = new(flowchartTitle);
+Node node = Node.Create("n", "Node");
+flowchart.AddNode(node);
+
+// Create a subgraph with one node
+NodeIdentifier subgraphId = NodeIdentifier.FromString("sg");
+MermaidUnicodeText subgraphLabel = MermaidUnicodeText.FromString("Subgraph");
+Subgraph subgraph = new(subgraphId, subgraphLabel);
+Node subnode = Node.Create("sn", "Subnode");
+subgraph.AddNode(subnode);
+
+// Create a subsubgraph with a node inside subgraph
+NodeIdentifier subsubgraphId = NodeIdentifier.FromString("ssg");
+MermaidUnicodeText subsubgraphLabel = MermaidUnicodeText.FromString("Subsubgraph");
+Subgraph subsubgraph = new(subsubgraphId, subsubgraphLabel);
+Node subsubnode = Node.Create("ssn", "Subsubnode");
+subsubgraph.AddNode(subsubnode);
+
+// Add the subsubgraph to the subgraph
+subgraph.AddNode(subsubgraph);
+
+// Add the subgraph to the flowchart
+flowchart.AddNode(subgraph);
+
+// Create a link between the flowchart node and the subsubgraph
+Link nodeToSubSubGraph = new(node, subsubgraph, default);
+flowchart.AddLink(nodeToSubSubGraph);
+
+// Create a link between the flowchart node and the subnode
+Link nodeToSubnode = new(node, subnode, default);
+flowchart.AddLink(nodeToSubnode);
+
+// Generate the Mermaid output
+string mermaid = flowchart.ToMermaidString();
+```
+
+Will generate the following Mermaid output:
+
+```mermaid
+---
+title: Using subgraphs
+---
+flowchart TD
+  n["Node"]
+
+  subgraph sg ["Subgraph"]
+    sn["Subnode"]
+
+    subgraph ssg ["Subsubgraph"]
+      ssn["Subsubnode"]
+    end
+  end
+  subgraph ssg ["Subsubgraph"]
+    ssn["Subsubnode"]
+  end
+
+  n ---> ssg
+  n ---> sn
+
+```
