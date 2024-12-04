@@ -32,10 +32,10 @@ public readonly record struct MermaidUnicodeText : IMermaidPrintable
         if (string.IsNullOrEmpty(text)) throw new ArgumentException("Mermaid text should not be empty.", nameof(text));
         if (string.IsNullOrWhiteSpace(text)) return new();
 
-        var builder = new StringBuilder();
-        foreach (var character in text)
+        StringBuilder builder = new();
+        foreach (char character in text)
         {
-            if (EscapedCharacters.TryGetValue(character, out var escapedValue))
+            if (EscapedCharacters.TryGetValue(character, out string? escapedValue))
             {
                 builder.Append(escapedValue);
             }
