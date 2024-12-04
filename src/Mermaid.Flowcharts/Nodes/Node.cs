@@ -34,8 +34,8 @@ public readonly record struct Node : INode
             NodeShape.Hexagon => "{{",
             NodeShape.Parallelogram => "[/",
             NodeShape.ParallelogramAlt => "[\\",
-            NodeShape.Trapezoid => "[/\\",
-            NodeShape.TrapezoidAlt => "[\\/",
+            NodeShape.Trapezoid => "[/",
+            NodeShape.TrapezoidAlt => "[\\",
             _ => "[",
         };
 
@@ -52,8 +52,8 @@ public readonly record struct Node : INode
             NodeShape.Hexagon => "}}",
             NodeShape.Parallelogram => "/]",
             NodeShape.ParallelogramAlt => "\\]",
-            NodeShape.Trapezoid => "/\\]",
-            NodeShape.TrapezoidAlt => "\\/]",
+            NodeShape.Trapezoid => "\\]",
+            NodeShape.TrapezoidAlt => "/]",
             _ => "]",
         };
 
