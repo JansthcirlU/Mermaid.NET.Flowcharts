@@ -4,7 +4,6 @@ A lightweight .NET library for generating Mermaid flowchart markup. This library
 
 ## Features
 
-- Fluent API for building flowcharts
 - Support for all standard Mermaid node shapes
 - Customizable link styles and directions
 - Subgraph support
