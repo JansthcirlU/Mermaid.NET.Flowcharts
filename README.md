@@ -21,7 +21,7 @@ using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart
 FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Basic usage");
-Flowchart flowchart = new();
+Flowchart flowchart = new(flowchartTitle);
 
 // Create nodes
 Node start = Node.Create("start", "Start");
@@ -72,7 +72,7 @@ using Mermaid.Flowcharts.Nodes;
 
 // Create a new flowchart
 FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Various node shapes");
-Flowchart flowchart = new();
+Flowchart flowchart = new(flowchartTitle);
 
 // Create nodes with various shapes
 Node rectangle = Node.Create("rectangle", "Rectangle", NodeShape.Rectangle);
@@ -147,7 +147,7 @@ using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart
 FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Link styles");
-Flowchart flowchart = new();
+Flowchart flowchart = new(flowchartTitle);
 
 // Create two nodes
 Node a = Node.Create("a", "A");
