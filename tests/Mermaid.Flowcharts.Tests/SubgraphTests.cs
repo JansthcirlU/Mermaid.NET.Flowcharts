@@ -5,6 +5,48 @@ namespace Mermaid.Flowcharts.Tests;
 
 public class SubgraphTests
 {
+    [Fact]
+    public void Subgraph_ShouldContainOneNode_WhenTryingToAddTheSameNodeMultipleTimes()
+    {
+        // Arrange
+        NodeIdentifier subgraphId = NodeIdentifier.FromString("SubgraphId");
+        MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
+        Subgraph subgraph = new(subgraphId, subgraphTitle);
+        string randomId = Guid.NewGuid().ToString();
+        string randomText = Guid.NewGuid().ToString();
+        Node node = Node.Create(randomId, randomText);
+
+        // Act
+        subgraph.AddNode(node);
+        subgraph.AddNode(node);
+
+        // Assert
+        Assert.NotEmpty(subgraph.Nodes);
+        Assert.Single(subgraph.Nodes);
+    }
+
+    [Fact]
+    public void Subgraph_ShouldContainTwoNodes_WhenTryingToAddTwoNodesWithDuplicateIdsButDifferentValues()
+    {
+        // Arrange
+        NodeIdentifier subgraphId = NodeIdentifier.FromString("SubgraphId");
+        MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
+        Subgraph subgraph = new(subgraphId, subgraphTitle);
+        string randomId = Guid.NewGuid().ToString();
+        string randomText1 = Guid.NewGuid().ToString();
+        string randomText2 = Guid.NewGuid().ToString();
+        Node node1 = Node.Create(randomId, randomText1);
+        Node node2 = Node.Create(randomId, randomText2);
+
+        // Act
+        subgraph.AddNode(node1);
+        subgraph.AddNode(node2);
+
+        // Assert
+        Assert.NotEmpty(subgraph.Nodes);
+        Assert.Equal(2, subgraph.Nodes.Count());
+    }
+
     [Theory]
     [InlineData(
         "a",
