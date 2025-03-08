@@ -25,6 +25,26 @@ public class FlowchartTests
     }
 
     [Fact]
+    public void Flowchart_ShouldContainTwoNodes_WhenTryingToAddTwoNodesWithDuplicateIdsButDifferentValues()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        string randomId = Guid.NewGuid().ToString();
+        string randomText1 = Guid.NewGuid().ToString();
+        string randomText2 = Guid.NewGuid().ToString();
+        Node node1 = Node.Create(randomId, randomText1);
+        Node node2 = Node.Create(randomId, randomText2);
+
+        // Act
+        flowchart.AddNode(node1);
+        flowchart.AddNode(node2);
+
+        // Assert
+        Assert.NotEmpty(flowchart.Nodes);
+        Assert.Equal(2, flowchart.Nodes.Count());
+    }
+
+    [Fact]
     public void Flowchart_ShouldAddLinkNode_WhenNodesAreNotPartOfSubgraphs()
     {
         // Arrange
