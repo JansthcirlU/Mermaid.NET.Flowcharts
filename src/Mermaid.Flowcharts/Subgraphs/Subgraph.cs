@@ -3,7 +3,7 @@ using Mermaid.Flowcharts.Nodes;
 
 namespace Mermaid.Flowcharts.Subgraphs;
 
-public readonly record struct Subgraph : INode
+public readonly record struct Subgraph : INode<Subgraph>
 {
     private readonly List<INode> _nodes = [];
 
@@ -20,6 +20,8 @@ public readonly record struct Subgraph : INode
 
     public Subgraph AddNode(INode node)
     {
+        if (node is Node nd && Nodes.Any(nd.Equals)) return this;
+        
         _nodes.Add(node);
         return this;
     }
@@ -44,10 +46,4 @@ public readonly record struct Subgraph : INode
         subgraphStringBuilder.Append($"{indent}end");
         return subgraphStringBuilder.ToString();
     }
-
-    internal bool ContainsNode(INode node)
-        => Nodes.Any(n => n.Id == node.Id);
-
-    internal bool ContainsNodeNested(INode node)
-        => Subgraphs.Any(s => s.ContainsNode(node) || s.ContainsNodeNested(node));
 }

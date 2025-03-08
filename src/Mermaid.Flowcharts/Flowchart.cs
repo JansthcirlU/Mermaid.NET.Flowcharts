@@ -25,8 +25,8 @@ public class Flowchart : IMermaidPrintable
 
     public Flowchart AddNode(INode node)
     {
-        if (ContainsNode(node) || ContainsNodeNested(node)) return this;
-
+        if (node is Node nd && Nodes.Any(nd.Equals)) return this;
+        
         _nodes.Add(node);
         return this;
     }
@@ -67,10 +67,4 @@ public class Flowchart : IMermaidPrintable
         }
         return flowchartStringBuilder.ToString();
     }
-
-    internal bool ContainsNode(INode node)
-        => Nodes.Any(n => n.Id == node.Id);
-
-    internal bool ContainsNodeNested(INode node)
-        => Subgraphs.Any(s => s.ContainsNode(node) || s.ContainsNodeNested(node));
 }
