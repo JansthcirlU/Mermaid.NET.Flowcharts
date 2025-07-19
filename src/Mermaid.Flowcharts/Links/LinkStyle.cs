@@ -3,7 +3,7 @@ namespace Mermaid.Flowcharts.Links;
 public readonly record struct LinkStyle : IMermaidPrintable
 {
     public readonly LinkArrowType ArrowType { get; } = LinkArrowType.Arrow;
-    public readonly LinkDirection Direction { get; } = LinkDirection.LeftToRight;
+    public readonly LinkDirection Direction { get; } = LinkDirection.FromTo;
     public readonly LinkThickness Thickness { get; } = LinkThickness.Normal;
 
     public LinkStyle(
@@ -32,21 +32,21 @@ public readonly record struct LinkStyle : IMermaidPrintable
 
         string arrowLeft = (ArrowType, Direction) switch
         {
-            (LinkArrowType.Arrow, LinkDirection.RightToLeft or LinkDirection.Both) => "<",
+            (LinkArrowType.Arrow, LinkDirection.ToFrom or LinkDirection.Both) => "<",
             (LinkArrowType.Circle, _) => "o",
             (LinkArrowType.Cross, _) => "x",
             _ => string.Empty
         };
         string arrowRight = (ArrowType, Direction) switch
         {
-            (LinkArrowType.Arrow, LinkDirection.LeftToRight or LinkDirection.Both) => ">",
+            (LinkArrowType.Arrow, LinkDirection.FromTo or LinkDirection.Both) => ">",
             (LinkArrowType.Circle, _) => "o",
             (LinkArrowType.Cross, _) => "x",
             _ => string.Empty
         };
         return $"{indentationText.Repeat(indentations)}{Direction switch
         {
-            LinkDirection.RightToLeft => $"{arrowLeft}{thickness}",
+            LinkDirection.ToFrom => $"{arrowLeft}{thickness}",
             LinkDirection.Both => $"{arrowLeft}{thickness}{arrowRight}",
             _ => $"{thickness}{arrowRight}",
         }}";

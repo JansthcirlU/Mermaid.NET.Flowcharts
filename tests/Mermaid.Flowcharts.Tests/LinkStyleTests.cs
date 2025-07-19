@@ -5,9 +5,9 @@ namespace Mermaid.Flowcharts.Tests;
 public class LinkStyleTests
 {
     [Theory]
-    [InlineData(LinkArrowType.Arrow, LinkDirection.LeftToRight, LinkThickness.Thick, "===>")]
-    [InlineData(LinkArrowType.Arrow, LinkDirection.LeftToRight, LinkThickness.Dotted, "-.->")]
-    [InlineData(LinkArrowType.Arrow, LinkDirection.RightToLeft, LinkThickness.Dotted, "<-.-")]
+    [InlineData(LinkArrowType.Arrow, LinkDirection.FromTo, LinkThickness.Thick, "===>")]
+    [InlineData(LinkArrowType.Arrow, LinkDirection.FromTo, LinkThickness.Dotted, "-.->")]
+    [InlineData(LinkArrowType.Arrow, LinkDirection.ToFrom, LinkThickness.Dotted, "<-.-")]
     [InlineData(LinkArrowType.Circle, LinkDirection.Both, LinkThickness.Dotted, "o-.-o")]
     [InlineData(LinkArrowType.Arrow, LinkDirection.Both, LinkThickness.Invisible, "~~~")]
     public void LinkStyle_ToMermaidString(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, string expected)
@@ -23,7 +23,7 @@ public class LinkStyleTests
     }
 
     [Theory]
-    [InlineData(LinkArrowType.Arrow, LinkDirection.LeftToRight, LinkThickness.Thick, 2, "  ", "    ===>")]
+    [InlineData(LinkArrowType.Arrow, LinkDirection.FromTo, LinkThickness.Thick, 2, "  ", "    ===>")]
     public void LinkStyle_ToMermaidString_WhenIndentation(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, int indentations, string indentationText, string expected)
     {
         // Arrange
