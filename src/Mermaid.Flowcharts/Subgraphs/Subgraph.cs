@@ -9,13 +9,15 @@ public readonly record struct Subgraph : INode<Subgraph>
 
     public NodeIdentifier Id { get; }
     public MermaidUnicodeText Title { get; }
+    public SubgraphDirection? Direction { get; }
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
 
-    public Subgraph(NodeIdentifier id, MermaidUnicodeText title)
+    public Subgraph(NodeIdentifier id, MermaidUnicodeText title, SubgraphDirection? direction = null)
     {
         Id = id;
         Title = title;
+        Direction = direction;
     }
 
     public Subgraph AddNode(INode node)
@@ -34,6 +36,7 @@ public readonly record struct Subgraph : INode<Subgraph>
         StringBuilder subgraphStringBuilder = new();
         string indent = indentationText.Repeat(indentations);
         subgraphStringBuilder.AppendLine($"{indent}subgraph {Id} [\"{Title}\"]");
+        if (Direction is not null) subgraphStringBuilder.AppendLine($"{indent}{indentationText}direction {Direction.Value}");
         foreach (Node node in Nodes)
         {
             subgraphStringBuilder.AppendLine(node.ToMermaidString(indentations + 1, indentationText));
