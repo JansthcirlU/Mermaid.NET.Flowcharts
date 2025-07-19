@@ -11,14 +11,15 @@ public class Flowchart : IMermaidPrintable
     private readonly List<Link> _links = [];
 
     public FlowchartTitle? Title { get; }
+    public FlowchartDirection? Direction { get; }
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
 
-    public Flowchart()
+    public Flowchart(FlowchartDirection? direction = null)
     {
-
+        Direction = direction;
     }
-    public Flowchart(FlowchartTitle title)
+    public Flowchart(FlowchartTitle title, FlowchartDirection? direction = null) : this(direction)
     {
         Title = title;
     }
@@ -49,7 +50,7 @@ public class Flowchart : IMermaidPrintable
         {
             flowchartStringBuilder.AppendLine(title.ToMermaidString(indentations, indentationText));
         }
-        flowchartStringBuilder.AppendLine("flowchart TD");
+        flowchartStringBuilder.AppendLine($"flowchart {Direction ?? FlowchartDirection.TD}");
 
         foreach (Node node in Nodes)
         {

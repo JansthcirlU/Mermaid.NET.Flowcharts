@@ -11,7 +11,7 @@ public class SubgraphTests
         // Arrange
         NodeIdentifier subgraphId = NodeIdentifier.FromString("SubgraphId");
         MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
-        Subgraph subgraph = new(subgraphId, subgraphTitle);
+        Subgraph subgraph = new(subgraphId, subgraphTitle, SubgraphDirection.TB);
         string randomId = Guid.NewGuid().ToString();
         string randomText = Guid.NewGuid().ToString();
         Node node = Node.Create(randomId, randomText);
@@ -31,7 +31,7 @@ public class SubgraphTests
         // Arrange
         NodeIdentifier subgraphId = NodeIdentifier.FromString("SubgraphId");
         MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
-        Subgraph subgraph = new(subgraphId, subgraphTitle);
+        Subgraph subgraph = new(subgraphId, subgraphTitle, SubgraphDirection.TB);
         string randomId = Guid.NewGuid().ToString();
         string randomText1 = Guid.NewGuid().ToString();
         string randomText2 = Guid.NewGuid().ToString();
@@ -51,47 +51,55 @@ public class SubgraphTests
     [InlineData(
         "a",
         "b",
+        SubgraphDirection.TB,
         0,
         "  ",
         """
         subgraph a ["b"]
+          direction TB
         end
         """)]
     [InlineData(
         "a",
         "b",
+        SubgraphDirection.BT,
         2,
         "  ",
         """
             subgraph a ["b"]
+              direction BT
             end
         """)]
     [InlineData(
         "A.B",
         "あ",
+        SubgraphDirection.LR,
         0,
         "  ",
         """
         subgraph A.B ["あ"]
+          direction LR
         end
         """
     )]
     [InlineData(
         "A.B",
         "あ",
+        SubgraphDirection.RL,
         3,
         "  ",
         """
               subgraph A.B ["あ"]
+                direction RL
               end
         """
     )]
-    public void SubgraphToMermaidString_WhenEmpty(string identifier, string title, int indentations, string indentationText, string expected)
+    public void SubgraphToMermaidString_WhenEmpty(string identifier, string title, SubgraphDirection direction, int indentations, string indentationText, string expected)
     {
         // Arrange
         NodeIdentifier subgraphIdentifier = NodeIdentifier.FromString(identifier);
         MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString(title);
-        Subgraph subgraph = new(subgraphIdentifier, subgraphTitle);
+        Subgraph subgraph = new(subgraphIdentifier, subgraphTitle, direction);
 
         // Act
         string subgraphString = subgraph.ToMermaidString(indentations, indentationText);
@@ -108,6 +116,7 @@ public class SubgraphTests
         "Node",
         """
         subgraph SubgraphId ["SG"]
+          direction TB
           NodeId["Node"]
         end
         """
@@ -115,7 +124,7 @@ public class SubgraphTests
     public void SubgraphToMermaidString_WhenHasOneNode(string identifier, string title, string nodeId, string nodeText, string expected)
     {
         // Arrange
-        Subgraph subgraph = new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title));
+        Subgraph subgraph = new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title), SubgraphDirection.TB);
         Node node = Node.Create(nodeId, nodeText);
         subgraph.AddNode(node);
 
@@ -132,10 +141,12 @@ public class SubgraphTests
         "SG",
         "NodeId",
         "Node",
+        SubgraphDirection.TB,
         2,
         "  ",
         """
             subgraph SubgraphId ["SG"]
+              direction TB
               NodeId["Node"]
             end
         """
@@ -145,18 +156,20 @@ public class SubgraphTests
         "SG",
         "NodeId",
         "Node",
+        SubgraphDirection.LR,
         1,
         "    ",
         """
             subgraph SubgraphId ["SG"]
+                direction LR
                 NodeId["Node"]
             end
         """
     )]
-    public void ToMermaidString_WhenIndentations(string identifier, string title, string nodeId, string nodeText, int indentations, string indentationText, string expected)
+    public void ToMermaidString_WhenIndentations(string identifier, string title, string nodeId, string nodeText, SubgraphDirection direction, int indentations, string indentationText, string expected)
     {
         // Arrange
-        Subgraph subgraph = new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title));
+        Subgraph subgraph = new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title), direction);
         Node node = Node.Create(nodeId, nodeText);
         subgraph.AddNode(node);
 
