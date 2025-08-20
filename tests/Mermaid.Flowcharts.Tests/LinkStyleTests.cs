@@ -13,7 +13,7 @@ public class LinkStyleTests
     public void LinkStyle_ToMermaidString(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, string expected)
     {
         // Arrange
-        LinkStyle linkStyle = new(arrowType, direction, thickness);
+        LinkStyle linkStyle = LinkStyle.Create(arrowType, direction, thickness);
 
         // Act
         string actual = linkStyle.ToMermaidString();
@@ -27,7 +27,7 @@ public class LinkStyleTests
     public void LinkStyle_ToMermaidString_WhenIndentation(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, int indentations, string indentationText, string expected)
     {
         // Arrange
-        LinkStyle linkStyle = new(arrowType, direction, thickness);
+        LinkStyle linkStyle = LinkStyle.Create(arrowType, direction, thickness);
 
         // Act
         string actual = linkStyle.ToMermaidString(indentations, indentationText);

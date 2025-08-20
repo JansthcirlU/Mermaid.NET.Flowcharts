@@ -11,9 +11,7 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        string randomId = Guid.NewGuid().ToString();
-        string randomText = Guid.NewGuid().ToString();
-        Node node = Node.Create(randomId, randomText);
+        Node node = Node.CreateNew(Guid.NewGuid().ToString());
 
         // Act
         flowchart.AddNode(node);
@@ -30,10 +28,8 @@ public class FlowchartTests
         // Arrange
         Flowchart flowchart = new();
         string randomId = Guid.NewGuid().ToString();
-        string randomText1 = Guid.NewGuid().ToString();
-        string randomText2 = Guid.NewGuid().ToString();
-        Node node1 = Node.Create(randomId, randomText1);
-        Node node2 = Node.Create(randomId, randomText2);
+        Node node1 = Node.Create(randomId, Guid.NewGuid().ToString());
+        Node node2 = Node.Create(randomId, Guid.NewGuid().ToString());
 
         // Act
         flowchart.AddNode(node1);
@@ -49,9 +45,9 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-        Node destination = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-        Link link = new(source, destination, new());
+        Node source = Node.CreateNew(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
+        Link link = Link.Create(source, destination);
 
         // Act
         flowchart.AddLink(link);
@@ -66,9 +62,9 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-        Node destination = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-        Link link = new(source, destination, new());
+        Node source = Node.CreateNew(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
+        Link link = Link.Create(source, destination);
 
         // Act
         flowchart.AddNode(source);
@@ -97,7 +93,7 @@ public class FlowchartTests
 
         string subgraphId = Guid.NewGuid().ToString();
         string subgraphText = Guid.NewGuid().ToString();
-        Subgraph subgraph = new(NodeIdentifier.FromString(subgraphId), MermaidUnicodeText.FromString(subgraphText));
+        Subgraph subgraph = Subgraph.Create(subgraphId, subgraphText);
 
         string subnodeId = Guid.NewGuid().ToString();
         string subnodeText = Guid.NewGuid().ToString();
@@ -105,7 +101,7 @@ public class FlowchartTests
         subgraph.AddNode(subnode);
         flowchart.AddNode(subgraph);
 
-        Link link = new(node1, node2, new());
+        Link link = Link.Create(node1, node2);
         flowchart.AddLink(link);
         
         string expected =
@@ -150,7 +146,7 @@ public class FlowchartTests
 
         string subgraph1Id = Guid.NewGuid().ToString();
         string subgraph1Text = Guid.NewGuid().ToString();
-        Subgraph subgraph1 = new(NodeIdentifier.FromString(subgraph1Id), MermaidUnicodeText.FromString(subgraph1Text));
+        Subgraph subgraph1 = Subgraph.Create(subgraph1Id, subgraph1Text);
 
         string subnodeId = Guid.NewGuid().ToString();
         string subnodeText = Guid.NewGuid().ToString();
@@ -159,7 +155,7 @@ public class FlowchartTests
 
         string subgraph2Id = Guid.NewGuid().ToString();
         string subgraph2Text = Guid.NewGuid().ToString();
-        Subgraph subgraph2 = new(NodeIdentifier.FromString(subgraph2Id), MermaidUnicodeText.FromString(subgraph2Text));
+        Subgraph subgraph2 = Subgraph.Create(subgraph2Id, subgraph2Text);
 
         string subnode2Id = Guid.NewGuid().ToString();
         string subnode2Text = Guid.NewGuid().ToString();
@@ -170,7 +166,7 @@ public class FlowchartTests
 
         flowchart.AddNode(subgraph1);
 
-        Link link = new(node1, node2, new());
+        Link link = Link.Create(node1, node2);
         flowchart.AddLink(link);
         string expected =
         $"""

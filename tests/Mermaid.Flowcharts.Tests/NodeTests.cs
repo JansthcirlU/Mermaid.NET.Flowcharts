@@ -45,4 +45,18 @@ public class NodeTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void CreateNew_ShouldHaveGuidIdentifier()
+    {
+        // Arrange
+        Node node = Node.CreateNew("text");
+
+        // Act
+        bool parsed = Guid.TryParseExact(node.Id.Value, "D", out Guid guid);
+
+        // Assert
+        Assert.True(parsed);
+        Assert.True(guid != Guid.Empty);
+    }
 }

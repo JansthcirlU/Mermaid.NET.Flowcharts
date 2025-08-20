@@ -4,10 +4,10 @@ public readonly struct FlowchartTitle : IMermaidPrintable
 {
     public string Text { get; }
 
-    public FlowchartTitle()
-    {
-        throw new InvalidOperationException("You must create a flowchart title with a value.");
-    }
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(FlowchartTitle)}.")]
+#pragma warning disable CS8618 // This constructor is never used
+    public FlowchartTitle() { }
+#pragma warning restore CS8618
     private FlowchartTitle(string text)
     {
         Text = text;

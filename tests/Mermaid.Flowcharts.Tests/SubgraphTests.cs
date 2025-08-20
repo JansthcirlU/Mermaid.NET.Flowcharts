@@ -9,12 +9,8 @@ public class SubgraphTests
     public void Subgraph_ShouldContainOneNode_WhenTryingToAddTheSameNodeMultipleTimes()
     {
         // Arrange
-        NodeIdentifier subgraphId = NodeIdentifier.FromString("SubgraphId");
-        MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
-        Subgraph subgraph = new(subgraphId, subgraphTitle, SubgraphDirection.TB);
-        string randomId = Guid.NewGuid().ToString();
-        string randomText = Guid.NewGuid().ToString();
-        Node node = Node.Create(randomId, randomText);
+        Subgraph subgraph = Subgraph.CreateNew(Guid.NewGuid().ToString(), SubgraphDirection.TB);
+        Node node = Node.CreateNew(Guid.NewGuid().ToString());
 
         // Act
         subgraph.AddNode(node);
@@ -29,14 +25,10 @@ public class SubgraphTests
     public void Subgraph_ShouldContainTwoNodes_WhenTryingToAddTwoNodesWithDuplicateIdsButDifferentValues()
     {
         // Arrange
-        NodeIdentifier subgraphId = NodeIdentifier.FromString("SubgraphId");
-        MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
-        Subgraph subgraph = new(subgraphId, subgraphTitle, SubgraphDirection.TB);
+        Subgraph subgraph = Subgraph.CreateNew(Guid.NewGuid().ToString(), SubgraphDirection.TB);
         string randomId = Guid.NewGuid().ToString();
-        string randomText1 = Guid.NewGuid().ToString();
-        string randomText2 = Guid.NewGuid().ToString();
-        Node node1 = Node.Create(randomId, randomText1);
-        Node node2 = Node.Create(randomId, randomText2);
+        Node node1 = Node.Create(randomId, Guid.NewGuid().ToString());
+        Node node2 = Node.Create(randomId, Guid.NewGuid().ToString());
 
         // Act
         subgraph.AddNode(node1);
@@ -97,9 +89,7 @@ public class SubgraphTests
     public void SubgraphToMermaidString_WhenEmpty(string identifier, string title, SubgraphDirection direction, int indentations, string indentationText, string expected)
     {
         // Arrange
-        NodeIdentifier subgraphIdentifier = NodeIdentifier.FromString(identifier);
-        MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString(title);
-        Subgraph subgraph = new(subgraphIdentifier, subgraphTitle, direction);
+        Subgraph subgraph = Subgraph.Create(identifier, title, direction);
 
         // Act
         string subgraphString = subgraph.ToMermaidString(indentations, indentationText);
@@ -124,7 +114,7 @@ public class SubgraphTests
     public void SubgraphToMermaidString_WhenHasOneNode(string identifier, string title, string nodeId, string nodeText, string expected)
     {
         // Arrange
-        Subgraph subgraph = new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title), SubgraphDirection.TB);
+        Subgraph subgraph = Subgraph.Create(identifier, title, SubgraphDirection.TB);
         Node node = Node.Create(nodeId, nodeText);
         subgraph.AddNode(node);
 
@@ -169,7 +159,7 @@ public class SubgraphTests
     public void ToMermaidString_WhenIndentations(string identifier, string title, string nodeId, string nodeText, SubgraphDirection direction, int indentations, string indentationText, string expected)
     {
         // Arrange
-        Subgraph subgraph = new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title), direction);
+        Subgraph subgraph = Subgraph.Create(identifier, title, direction);
         Node node = Node.Create(nodeId, nodeText);
         subgraph.AddNode(node);
 

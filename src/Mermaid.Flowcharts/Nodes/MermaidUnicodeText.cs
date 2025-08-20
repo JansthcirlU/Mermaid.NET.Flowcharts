@@ -17,20 +17,23 @@ public readonly record struct MermaidUnicodeText : IMermaidPrintable
         { '\'', "&apos;" }
     };
 
-    public MermaidUnicodeText()
-    {
-        Value = string.Empty;
-    }
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(MermaidUnicodeText)}.")]
+#pragma warning disable CS8618 // This constructor is never used
+    public MermaidUnicodeText() { }
+#pragma warning restore CS8618
     private MermaidUnicodeText(string text)
     {
         Value = text;
     }
 
+    public static MermaidUnicodeText Empty()
+        => new(string.Empty);
+
     public static MermaidUnicodeText FromString(string text)
     {
         if (text.Contains('\n') || text.Contains('\r')) throw new ArgumentException("Mermaid text should not contain new lines.");
         if (string.IsNullOrEmpty(text)) throw new ArgumentException("Mermaid text should not be empty.", nameof(text));
-        if (string.IsNullOrWhiteSpace(text)) return new();
+        if (string.IsNullOrWhiteSpace(text)) return Empty();
 
         StringBuilder builder = new();
         foreach (char character in text)

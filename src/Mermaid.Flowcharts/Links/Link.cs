@@ -9,7 +9,11 @@ public readonly record struct Link : IMermaidPrintable
     public readonly LinkStyle Style { get; }
     public readonly LinkText? Text { get; }
 
-    public Link(
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Link)}.")]
+#pragma warning disable CS8618 // This constructor is never used
+    public Link() { }
+#pragma warning restore CS8618
+    private Link(
         INode source,
         INode destination,
         LinkStyle style,
@@ -20,6 +24,9 @@ public readonly record struct Link : IMermaidPrintable
         Style = style;
         Text = text;
     }
+
+    public static Link Create(INode source, INode destination, LinkStyle? style = null, string? linkText = null)
+        => new(source, destination, style ?? LinkStyle.Create(), linkText is not null ? LinkText.FromString(linkText) : null);
 
     public override string ToString()
         => ToMermaidString();

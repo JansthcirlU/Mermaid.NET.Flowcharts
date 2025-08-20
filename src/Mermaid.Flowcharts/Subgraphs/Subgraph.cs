@@ -13,17 +13,25 @@ public readonly record struct Subgraph : INode<Subgraph>
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
 
-    public Subgraph(NodeIdentifier id, MermaidUnicodeText title, SubgraphDirection? direction = null)
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Subgraph)}.")]
+    public Subgraph() { }
+    private Subgraph(NodeIdentifier id, MermaidUnicodeText title, SubgraphDirection? direction = null)
     {
         Id = id;
         Title = title;
         Direction = direction;
     }
 
+    public static Subgraph CreateNew(string title, SubgraphDirection? direction = null)
+        => new(NodeIdentifier.Create(), MermaidUnicodeText.FromString(title), direction);
+
+    public static Subgraph Create(string identifier, string title, SubgraphDirection? direction = null)
+        => new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title), direction);
+
     public Subgraph AddNode(INode node)
     {
         if (node is Node nd && Nodes.Any(nd.Equals)) return this;
-        
+
         _nodes.Add(node);
         return this;
     }

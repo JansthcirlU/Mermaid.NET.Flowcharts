@@ -3,19 +3,6 @@ namespace Mermaid.Flowcharts.Tests;
 public class FlowchartTitleTests
 {
     [Fact]
-    public void Title_ShouldThrow_WhenNewedWithDefaultConstructor()
-    {
-        // Act
-        InvalidOperationException? ex = Assert.Throws<InvalidOperationException>(
-            () => new FlowchartTitle()
-        );
-
-        // Assert
-        Assert.NotNull(ex);
-        Assert.StartsWith("You must create a flowchart title with a value.", ex.Message);
-    }
-
-    [Fact]
     public void Title_ShouldThrow_WhenNull()
     {
         // Arrange
