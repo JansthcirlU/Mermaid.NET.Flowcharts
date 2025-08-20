@@ -26,7 +26,7 @@ public readonly record struct Link : IMermaidPrintable
     }
 
     public static Link Create(INode source, INode destination, LinkStyle? style = null, string? linkText = null)
-        => new(source, destination, style ?? new(), linkText is not null ? LinkText.FromString(linkText) : null);
+        => new(source, destination, style ?? LinkStyle.Create(), linkText is not null ? LinkText.FromString(linkText) : null);
 
     public override string ToString()
         => ToMermaidString();

@@ -6,7 +6,9 @@ public readonly record struct LinkStyle : IMermaidPrintable
     public readonly LinkDirection Direction { get; } = LinkDirection.FromTo;
     public readonly LinkThickness Thickness { get; } = LinkThickness.Normal;
 
-    public LinkStyle(
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(LinkStyle)}.")]
+    public LinkStyle() { }
+    private LinkStyle(
         LinkArrowType arrowType,
         LinkDirection direction,
         LinkThickness thickness)
@@ -15,6 +17,9 @@ public readonly record struct LinkStyle : IMermaidPrintable
         Direction = direction;
         Thickness = thickness;
     }
+
+    public static LinkStyle Create(LinkArrowType arrowType = LinkArrowType.Arrow, LinkDirection direction = LinkDirection.FromTo, LinkThickness thickness = LinkThickness.Normal)
+        => new(arrowType, direction, thickness);
 
     public override string ToString()
         => ToMermaidString();
