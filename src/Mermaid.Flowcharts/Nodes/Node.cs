@@ -6,12 +6,17 @@ public readonly record struct Node : INode<Node>
     public MermaidUnicodeText Text { get; }
     public NodeShape Shape { get; }
 
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Node)}.")]
+    public Node() { }
     private Node(NodeIdentifier id, MermaidUnicodeText text, NodeShape shape)
     {
         Id = id;
         Text = text;
         Shape = shape;
     }
+
+    public static Node CreateNew(string text, NodeShape shape = NodeShape.Rectangle)
+        => new(NodeIdentifier.Create(), MermaidUnicodeText.FromString(text), shape);
 
     public static Node Create(string identifier, string text, NodeShape shape = NodeShape.Rectangle)
         => new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(text), shape);

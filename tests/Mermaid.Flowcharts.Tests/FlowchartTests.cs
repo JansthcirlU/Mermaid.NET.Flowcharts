@@ -11,9 +11,7 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        string randomId = Guid.NewGuid().ToString();
-        string randomText = Guid.NewGuid().ToString();
-        Node node = Node.Create(randomId, randomText);
+        Node node = Node.CreateNew(Guid.NewGuid().ToString());
 
         // Act
         flowchart.AddNode(node);
@@ -30,10 +28,8 @@ public class FlowchartTests
         // Arrange
         Flowchart flowchart = new();
         string randomId = Guid.NewGuid().ToString();
-        string randomText1 = Guid.NewGuid().ToString();
-        string randomText2 = Guid.NewGuid().ToString();
-        Node node1 = Node.Create(randomId, randomText1);
-        Node node2 = Node.Create(randomId, randomText2);
+        Node node1 = Node.Create(randomId, Guid.NewGuid().ToString());
+        Node node2 = Node.Create(randomId, Guid.NewGuid().ToString());
 
         // Act
         flowchart.AddNode(node1);
@@ -49,8 +45,8 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-        Node destination = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+        Node source = Node.CreateNew(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
         Link link = new(source, destination, new());
 
         // Act
@@ -66,8 +62,8 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-        Node destination = Node.Create(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+        Node source = Node.CreateNew(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
         Link link = new(source, destination, new());
 
         // Act

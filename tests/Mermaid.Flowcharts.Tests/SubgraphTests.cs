@@ -12,9 +12,7 @@ public class SubgraphTests
         NodeIdentifier subgraphId = NodeIdentifier.FromString("SubgraphId");
         MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
         Subgraph subgraph = new(subgraphId, subgraphTitle, SubgraphDirection.TB);
-        string randomId = Guid.NewGuid().ToString();
-        string randomText = Guid.NewGuid().ToString();
-        Node node = Node.Create(randomId, randomText);
+        Node node = Node.CreateNew(Guid.NewGuid().ToString());
 
         // Act
         subgraph.AddNode(node);
@@ -33,10 +31,8 @@ public class SubgraphTests
         MermaidUnicodeText subgraphTitle = MermaidUnicodeText.FromString("Subgraph Title");
         Subgraph subgraph = new(subgraphId, subgraphTitle, SubgraphDirection.TB);
         string randomId = Guid.NewGuid().ToString();
-        string randomText1 = Guid.NewGuid().ToString();
-        string randomText2 = Guid.NewGuid().ToString();
-        Node node1 = Node.Create(randomId, randomText1);
-        Node node2 = Node.Create(randomId, randomText2);
+        Node node1 = Node.Create(randomId, Guid.NewGuid().ToString());
+        Node node2 = Node.Create(randomId, Guid.NewGuid().ToString());
 
         // Act
         subgraph.AddNode(node1);
