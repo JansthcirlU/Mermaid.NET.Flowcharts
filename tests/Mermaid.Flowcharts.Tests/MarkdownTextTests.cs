@@ -25,11 +25,43 @@ public class MarkdownTextTests
     [InlineData(
         """
         a
+
         b
         """,
         """
         `a
+
         b`
+        """
+    )]
+    [InlineData(
+        """
+        
+        a
+
+        b
+        """,
+        """
+        `
+        a
+        
+        b`
+        """
+    )]
+    [InlineData(
+        """
+        
+        a
+
+        b
+        
+        """,
+        """
+        `
+        a
+        
+        b
+        `
         """
     )]
     public void TextCreation_ShouldPreserveSingleNewline(string input, string expected)
