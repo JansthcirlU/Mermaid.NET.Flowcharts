@@ -11,14 +11,20 @@ public readonly record struct NodeIdentifier : IMermaidPrintable
 
     public string Value { get; }
 
-    public NodeIdentifier()
-    {
-        Value = Guid.NewGuid().ToString();
-    }
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(NodeIdentifier)}.")]
+#pragma warning disable CS8618 // This constructor is never used
+    public NodeIdentifier() { }
+#pragma warning restore CS8618
     private NodeIdentifier(string text)
     {
         Value = text;
     }
+
+    /// <summary>
+    /// Creates a Node Identifier whose value is a GUID.
+    /// </summary>
+    public static NodeIdentifier Create()
+        => FromString(Guid.NewGuid().ToString("D"));
 
     public static NodeIdentifier FromString(string text)
     {
