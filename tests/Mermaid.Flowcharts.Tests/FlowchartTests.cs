@@ -47,7 +47,7 @@ public class FlowchartTests
         Flowchart flowchart = new();
         Node source = Node.CreateNew(Guid.NewGuid().ToString());
         Node destination = Node.CreateNew(Guid.NewGuid().ToString());
-        Link link = new(source, destination, new());
+        Link link = Link.Create(source, destination);
 
         // Act
         flowchart.AddLink(link);
@@ -64,7 +64,7 @@ public class FlowchartTests
         Flowchart flowchart = new();
         Node source = Node.CreateNew(Guid.NewGuid().ToString());
         Node destination = Node.CreateNew(Guid.NewGuid().ToString());
-        Link link = new(source, destination, new());
+        Link link = Link.Create(source, destination);
 
         // Act
         flowchart.AddNode(source);
@@ -101,7 +101,7 @@ public class FlowchartTests
         subgraph.AddNode(subnode);
         flowchart.AddNode(subgraph);
 
-        Link link = new(node1, node2, new());
+        Link link = Link.Create(node1, node2);
         flowchart.AddLink(link);
         
         string expected =
@@ -166,7 +166,7 @@ public class FlowchartTests
 
         flowchart.AddNode(subgraph1);
 
-        Link link = new(node1, node2, new());
+        Link link = Link.Create(node1, node2);
         flowchart.AddLink(link);
         string expected =
         $"""
