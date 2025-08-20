@@ -1,5 +1,6 @@
 using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Nodes.NodeText;
 
 namespace Mermaid.Flowcharts.Tests;
 
@@ -10,8 +11,8 @@ public class LinkTests
     public void ToMermaidString_WhenIndentations(string sourceId, string sourceText, string destinationId, string destinationText, int indentations, string indentationText, string expected)
     {
         // Arrange
-        Node source = Node.Create(sourceId, sourceText);
-        Node destination = Node.Create(destinationId, destinationText);
+        Node source = Node.Create<MermaidUnicodeText>(sourceId, sourceText);
+        Node destination = Node.Create<MermaidUnicodeText>(destinationId, destinationText);
         Link link = Link.Create(source, destination);
 
         // Act

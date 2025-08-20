@@ -1,5 +1,6 @@
 using System.Text;
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Nodes.NodeText;
 
 namespace Mermaid.Flowcharts.Subgraphs;
 
@@ -8,25 +9,37 @@ public readonly record struct Subgraph : INode<Subgraph>
     private readonly List<INode> _nodes = [];
 
     public NodeIdentifier Id { get; }
-    public MermaidUnicodeText Title { get; }
+    public INodeText Title { get; }
     public SubgraphDirection? Direction { get; }
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
 
     [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Subgraph)}.")]
+#pragma warning disable CS8618
     public Subgraph() { }
-    private Subgraph(NodeIdentifier id, MermaidUnicodeText title, SubgraphDirection? direction = null)
+#pragma warning restore CS8618
+    private Subgraph(NodeIdentifier id, INodeText title, SubgraphDirection? direction = null)
     {
         Id = id;
         Title = title;
         Direction = direction;
     }
 
-    public static Subgraph CreateNew(string title, SubgraphDirection? direction = null)
-        => new(NodeIdentifier.Create(), MermaidUnicodeText.FromString(title), direction);
+    public static Subgraph CreateNew<TNodeText>(string title, SubgraphDirection? direction = null)
+        where TNodeText : INodeText<TNodeText>
+        => new(NodeIdentifier.Create(), TNodeText.FromString(title), direction);
 
-    public static Subgraph Create(string identifier, string title, SubgraphDirection? direction = null)
-        => new(NodeIdentifier.FromString(identifier), MermaidUnicodeText.FromString(title), direction);
+    public static Subgraph Create<TNodeText>(string identifier, string title, SubgraphDirection? direction = null)
+        where TNodeText : INodeText<TNodeText>
+        => new(NodeIdentifier.FromString(identifier), TNodeText.FromString(title), direction);
+    
+    public static Subgraph CreateNew<TNodeText>(TNodeText title, SubgraphDirection? direction = null)
+        where TNodeText : INodeText
+        => new(NodeIdentifier.Create(), title, direction);
+
+    public static Subgraph Create<TNodeText>(string identifier, TNodeText title, SubgraphDirection? direction = null)
+        where TNodeText : INodeText
+        => new(NodeIdentifier.FromString(identifier), title, direction);
 
     public Subgraph AddNode(INode node)
     {

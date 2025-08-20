@@ -1,5 +1,6 @@
 using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Nodes.NodeText;
 using Mermaid.Flowcharts.Subgraphs;
 
 namespace Mermaid.Flowcharts.Tests;
@@ -11,7 +12,7 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        Node node = Node.CreateNew(Guid.NewGuid().ToString());
+        Node node = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
 
         // Act
         flowchart.AddNode(node);
@@ -28,8 +29,8 @@ public class FlowchartTests
         // Arrange
         Flowchart flowchart = new();
         string randomId = Guid.NewGuid().ToString();
-        Node node1 = Node.Create(randomId, Guid.NewGuid().ToString());
-        Node node2 = Node.Create(randomId, Guid.NewGuid().ToString());
+        Node node1 = Node.Create<MermaidUnicodeText>(randomId, Guid.NewGuid().ToString());
+        Node node2 = Node.Create<MermaidUnicodeText>(randomId, Guid.NewGuid().ToString());
 
         // Act
         flowchart.AddNode(node1);
@@ -45,8 +46,8 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.CreateNew(Guid.NewGuid().ToString());
-        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
+        Node source = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
         Link link = Link.Create(source, destination);
 
         // Act
@@ -62,8 +63,8 @@ public class FlowchartTests
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.CreateNew(Guid.NewGuid().ToString());
-        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
+        Node source = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
         Link link = Link.Create(source, destination);
 
         // Act
@@ -83,21 +84,21 @@ public class FlowchartTests
 
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
-        Node node1 = Node.Create(node1Id, node1Text);
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
         flowchart.AddNode(node1);
 
         string node2Id = Guid.NewGuid().ToString();
         string node2Text = Guid.NewGuid().ToString();
-        Node node2 = Node.Create(node2Id, node2Text);
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text);
         flowchart.AddNode(node2);
 
         string subgraphId = Guid.NewGuid().ToString();
         string subgraphText = Guid.NewGuid().ToString();
-        Subgraph subgraph = Subgraph.Create(subgraphId, subgraphText);
+        Subgraph subgraph = Subgraph.Create<MermaidUnicodeText>(subgraphId, subgraphText);
 
         string subnodeId = Guid.NewGuid().ToString();
         string subnodeText = Guid.NewGuid().ToString();
-        Node subnode = Node.Create(subnodeId, subnodeText);
+        Node subnode = Node.Create<MermaidUnicodeText>(subnodeId, subnodeText);
         subgraph.AddNode(subnode);
         flowchart.AddNode(subgraph);
 
@@ -136,30 +137,30 @@ public class FlowchartTests
 
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
-        Node node1 = Node.Create(node1Id, node1Text);
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
         flowchart.AddNode(node1);
 
         string node2Id = Guid.NewGuid().ToString();
         string node2Text = Guid.NewGuid().ToString();
-        Node node2 = Node.Create(node2Id, node2Text);
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text);
         flowchart.AddNode(node2);
 
         string subgraph1Id = Guid.NewGuid().ToString();
         string subgraph1Text = Guid.NewGuid().ToString();
-        Subgraph subgraph1 = Subgraph.Create(subgraph1Id, subgraph1Text);
+        Subgraph subgraph1 = Subgraph.Create<MermaidUnicodeText>(subgraph1Id, subgraph1Text);
 
         string subnodeId = Guid.NewGuid().ToString();
         string subnodeText = Guid.NewGuid().ToString();
-        Node subnode = Node.Create(subnodeId, subnodeText);
+        Node subnode = Node.Create<MermaidUnicodeText>(subnodeId, subnodeText);
         subgraph1.AddNode(subnode);
 
         string subgraph2Id = Guid.NewGuid().ToString();
         string subgraph2Text = Guid.NewGuid().ToString();
-        Subgraph subgraph2 = Subgraph.Create(subgraph2Id, subgraph2Text);
+        Subgraph subgraph2 = Subgraph.Create<MermaidUnicodeText>(subgraph2Id, subgraph2Text);
 
         string subnode2Id = Guid.NewGuid().ToString();
         string subnode2Text = Guid.NewGuid().ToString();
-        Node subnode2 = Node.Create(subnode2Id, subnode2Text);
+        Node subnode2 = Node.Create<MermaidUnicodeText>(subnode2Id, subnode2Text);
         subgraph2.AddNode(subnode2);
 
         subgraph1.AddNode(subgraph2);
