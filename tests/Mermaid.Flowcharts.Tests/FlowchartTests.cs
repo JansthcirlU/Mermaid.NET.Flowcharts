@@ -93,7 +93,7 @@ public class FlowchartTests
 
         string subgraphId = Guid.NewGuid().ToString();
         string subgraphText = Guid.NewGuid().ToString();
-        Subgraph subgraph = new(NodeIdentifier.FromString(subgraphId), MermaidUnicodeText.FromString(subgraphText));
+        Subgraph subgraph = Subgraph.Create(subgraphId, subgraphText);
 
         string subnodeId = Guid.NewGuid().ToString();
         string subnodeText = Guid.NewGuid().ToString();
@@ -146,7 +146,7 @@ public class FlowchartTests
 
         string subgraph1Id = Guid.NewGuid().ToString();
         string subgraph1Text = Guid.NewGuid().ToString();
-        Subgraph subgraph1 = new(NodeIdentifier.FromString(subgraph1Id), MermaidUnicodeText.FromString(subgraph1Text));
+        Subgraph subgraph1 = Subgraph.Create(subgraph1Id, subgraph1Text);
 
         string subnodeId = Guid.NewGuid().ToString();
         string subnodeText = Guid.NewGuid().ToString();
@@ -155,7 +155,7 @@ public class FlowchartTests
 
         string subgraph2Id = Guid.NewGuid().ToString();
         string subgraph2Text = Guid.NewGuid().ToString();
-        Subgraph subgraph2 = new(NodeIdentifier.FromString(subgraph2Id), MermaidUnicodeText.FromString(subgraph2Text));
+        Subgraph subgraph2 = Subgraph.Create(subgraph2Id, subgraph2Text);
 
         string subnode2Id = Guid.NewGuid().ToString();
         string subnode2Text = Guid.NewGuid().ToString();
