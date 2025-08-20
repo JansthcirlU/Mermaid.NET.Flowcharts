@@ -1,12 +1,14 @@
 using System.Text;
+using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Nodes.NodeText;
 
 namespace Mermaid.Flowcharts.Subgraphs;
 
-public readonly record struct Subgraph : INode<Subgraph>
+public record Subgraph : INode<Subgraph>
 {
     private readonly List<INode> _nodes = [];
+    private readonly List<Link> _links = [];
 
     public NodeIdentifier Id { get; }
     public INodeText Title { get; }
@@ -14,10 +16,6 @@ public readonly record struct Subgraph : INode<Subgraph>
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
 
-    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Subgraph)}.")]
-#pragma warning disable CS8618
-    public Subgraph() { }
-#pragma warning restore CS8618
     private Subgraph(NodeIdentifier id, INodeText title, SubgraphDirection? direction = null)
     {
         Id = id;
@@ -49,6 +47,14 @@ public readonly record struct Subgraph : INode<Subgraph>
         return this;
     }
 
+    public Subgraph AddLink(Link link)
+    {
+        _links.Add(link);
+        AddNode(link.Source);
+        AddNode(link.Destination);
+        return this;
+    }
+
     public override string ToString()
         => ToMermaidString();
 
@@ -66,6 +72,11 @@ public readonly record struct Subgraph : INode<Subgraph>
         foreach (Subgraph subgraph in Subgraphs)
         {
             subgraphStringBuilder.AppendLine(subgraph.ToMermaidString(indentations + 1, indentationText));
+        }
+        if (_links.Any()) subgraphStringBuilder.AppendLine();
+        foreach (Link link in _links)
+        {
+            subgraphStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));
         }
         subgraphStringBuilder.Append($"{indent}end");
         return subgraphStringBuilder.ToString();

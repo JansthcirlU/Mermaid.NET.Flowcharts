@@ -2,16 +2,12 @@
 
 namespace Mermaid.Flowcharts.Nodes;
 
-public readonly record struct Node : INode<Node>
+public record Node : INode<Node>
 {
     public NodeIdentifier Id { get; }
     public INodeText Text { get; }
     public NodeShape Shape { get; }
 
-    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Node)}.")]
-#pragma warning disable CS8618
-    public Node() { }
-#pragma warning restore CS8618
     private Node(NodeIdentifier id, INodeText text, NodeShape shape)
     {
         Id = id;
@@ -26,7 +22,7 @@ public readonly record struct Node : INode<Node>
     public static Node Create<TNodeText>(string identifier, string text, NodeShape shape = NodeShape.Rectangle)
         where TNodeText : INodeText<TNodeText>
         => new(NodeIdentifier.FromString(identifier), TNodeText.FromString(text), shape);
-    
+
     public static Node CreateNew<TNodeText>(TNodeText text, NodeShape shape = NodeShape.Rectangle)
         where TNodeText : INodeText
         => new(NodeIdentifier.Create(), text, shape);
