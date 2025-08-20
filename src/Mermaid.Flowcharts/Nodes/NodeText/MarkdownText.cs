@@ -10,6 +10,7 @@ public readonly record struct MarkdownText : INodeText<MarkdownText>
     {
         { '"', "&quot;" },
         { '\\', "#92;" },
+        { '`', "#96;" }
     };
 
     [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(MarkdownText)}.")]

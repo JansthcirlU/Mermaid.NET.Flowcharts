@@ -21,17 +21,37 @@ public class MarkdownTextTests
     }
 
     [Theory]
-    [InlineData('"', "`&quot;`")]
-    [InlineData('\\', "`#92;`")]
-    public void TextCreation_ShouldReplaceConflictingCharacters_WhenEscapable(char conflictingCharacter, string replacement)
+    [InlineData("a\nb", "`a\nb`")]
+    [InlineData(
+        """
+        a
+        b
+        """,
+        """
+        `a
+        b`
+        """
+    )]
+    public void TextCreation_ShouldPreserveSingleNewline(string input, string expected)
     {
-        // Arrange
-        string text = conflictingCharacter.ToString();
-
-        // Act
-        MarkdownText mermaidText = MarkdownText.FromString(text);
+        // Arrange & act
+        MarkdownText mermaidText = MarkdownText.FromString(input);
 
         // Assert
-        Assert.Equal(mermaidText.Value, replacement);
+        Assert.Equal(expected, mermaidText.Value);
+    }
+
+    [Theory]
+    [InlineData("\"", "`&quot;`")]
+    [InlineData("\\", "`#92;`")]
+    [InlineData("`", "`#96;`")]
+    [InlineData("\"\\`", "`&quot;#92;#96;`")]
+    public void TextCreation_ShouldReplaceConflictingCharacters_WhenEscapable(string conflictingString, string replacement)
+    {
+        // Arrange & act
+        MarkdownText mermaidText = MarkdownText.FromString(conflictingString);
+
+        // Assert
+        Assert.Equal(replacement, mermaidText.Value);
     }
 }
