@@ -8,10 +8,10 @@ public readonly record struct LinkText : IMermaidPrintable
 
     private static readonly SearchValues<char> IllegalCharacters = SearchValues.Create("\"|");
 
-    public LinkText()
-    {
-        throw new InvalidOperationException("You must create a link text with a value.");
-    }
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(LinkText)}.")]
+#pragma warning disable CS8618 // This constructor is never used
+    public LinkText() { }
+#pragma warning restore CS8618
     private LinkText(string text)
         => Value = text;
 
