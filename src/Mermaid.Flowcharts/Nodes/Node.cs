@@ -2,7 +2,7 @@
 
 namespace Mermaid.Flowcharts.Nodes;
 
-public class Node : INode<Node>
+public record Node : INode<Node>
 {
     public NodeIdentifier Id { get; }
     public INodeText Text { get; }
@@ -74,13 +74,4 @@ public class Node : INode<Node>
 
         return $"{indentationText.Repeat(indentations)}{Id}{shapeStart}\"{Text}\"{shapeEnd}";
     }
-    
-    public bool Equals(Node? other)
-        => other is Node s && Id.Equals(s.Id);
-
-    public override bool Equals(object? obj)
-        => Equals(obj as Node);
-
-    public override int GetHashCode()
-        => Id.GetHashCode();
 }

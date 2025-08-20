@@ -5,7 +5,7 @@ using Mermaid.Flowcharts.Nodes.NodeText;
 
 namespace Mermaid.Flowcharts.Subgraphs;
 
-public class Subgraph : INode<Subgraph>
+public record Subgraph : INode<Subgraph>
 {
     private readonly List<INode> _nodes = [];
     private readonly List<Link> _links = [];
@@ -81,13 +81,4 @@ public class Subgraph : INode<Subgraph>
         subgraphStringBuilder.Append($"{indent}end");
         return subgraphStringBuilder.ToString();
     }
-
-    public bool Equals(Subgraph? other)
-        => other is Subgraph s && Id.Equals(s.Id);
-
-    public override bool Equals(object? obj)
-        => Equals(obj as Subgraph);
-
-    public override int GetHashCode()
-        => Id.GetHashCode();
 }
