@@ -1,4 +1,5 @@
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Nodes.NodeText;
 
 namespace Mermaid.Flowcharts.Tests;
 
@@ -22,7 +23,7 @@ public class NodeTests
     public void NodeToMermaidString_ShouldRenderCorrectShape(string identifier, string text, NodeShape shape, string expected)
     {
         // Arrange
-        Node node = Node.Create(identifier, text, shape);
+        Node node = Node.Create<MermaidUnicodeText>(identifier, text, shape);
 
         // Act
         string nodeString = node.ToMermaidString();
@@ -37,7 +38,7 @@ public class NodeTests
     public void ToMermaidString_WhenIndentations(string identifier, string text, int indentations, string indentationText, string expected)
     {
         // Arrange
-        Node node = Node.Create(identifier, text);
+        Node node = Node.Create<MermaidUnicodeText>(identifier, text);
 
         // Act
         string actual = node.ToMermaidString(indentations, indentationText);
@@ -50,7 +51,7 @@ public class NodeTests
     public void CreateNew_ShouldHaveGuidIdentifier()
     {
         // Arrange
-        Node node = Node.CreateNew("text");
+        Node node = Node.CreateNew<MermaidUnicodeText>("text");
 
         // Act
         bool parsed = Guid.TryParseExact(node.Id.Value, "D", out Guid guid);
