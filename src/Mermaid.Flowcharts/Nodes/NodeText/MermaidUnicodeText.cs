@@ -1,8 +1,8 @@
 using System.Text;
 
-namespace Mermaid.Flowcharts.Nodes;
+namespace Mermaid.Flowcharts.Nodes.NodeText;
 
-public readonly record struct MermaidUnicodeText : IMermaidPrintable
+public readonly record struct MermaidUnicodeText : INodeText<MermaidUnicodeText>
 {
     public string Value { get; }
 
@@ -26,14 +26,11 @@ public readonly record struct MermaidUnicodeText : IMermaidPrintable
         Value = text;
     }
 
-    public static MermaidUnicodeText Empty()
-        => new(string.Empty);
-
     public static MermaidUnicodeText FromString(string text)
     {
         if (text.Contains('\n') || text.Contains('\r')) throw new ArgumentException("Mermaid text should not contain new lines.");
         if (string.IsNullOrEmpty(text)) throw new ArgumentException("Mermaid text should not be empty.", nameof(text));
-        if (string.IsNullOrWhiteSpace(text)) return Empty();
+        if (string.IsNullOrWhiteSpace(text)) return new(text);
 
         StringBuilder builder = new();
         foreach (char character in text)
