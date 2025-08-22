@@ -8,6 +8,7 @@ public readonly record struct UnitInterval
 
     public UnitInterval(double value)
     {
+        if (double.IsNaN(value) || double.IsInfinity(value)) throw new ArgumentOutOfRangeException(nameof(value), "Unit interval must be a real number between 0 and 1.");
         ArgumentOutOfRangeException.ThrowIfLessThan(value, 0.0, "Unit interval should be at least 0.");
         ArgumentOutOfRangeException.ThrowIfGreaterThan(value, 1.0, "Unit interval should be at most 1.");
 
