@@ -9,7 +9,7 @@ public readonly record struct Percentage
     public Percentage(double value)
     {
         if (double.IsNaN(value) || double.IsInfinity(value)) throw new ArgumentOutOfRangeException(nameof(value), "Percentage must be a real and finite number.");
-        ArgumentOutOfRangeException.ThrowIfLessThan(value, 0.0, "Percentage should be at least 0.");
+        ArgumentOutOfRangeException.ThrowIfLessThan(value, 0.0, "Percentage must not be negative.");
 
         Value = value;
     }
