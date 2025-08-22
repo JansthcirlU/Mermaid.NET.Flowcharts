@@ -12,7 +12,7 @@ public abstract record DashSize
 
         public LengthDashSize(Length lengthSize)
         {
-            ArgumentOutOfRangeException.ThrowIfNegative(lengthSize.Value, nameof(lengthSize));
+            if (lengthSize.Value < 0) throw new ArgumentOutOfRangeException(nameof(lengthSize), "Dash length size must not be negative.");
 
             LengthSize = lengthSize;
         }
@@ -24,7 +24,7 @@ public abstract record DashSize
 
         public PercentageDashSize(Percentage percentageSize)
         {
-            ArgumentOutOfRangeException.ThrowIfNegative(percentageSize.Value, nameof(percentageSize));
+            if (percentageSize.Value < 0) throw new ArgumentOutOfRangeException(nameof(percentageSize), "Dash percentage size must not be negative.");
 
             PercentageSize = percentageSize;
         }
