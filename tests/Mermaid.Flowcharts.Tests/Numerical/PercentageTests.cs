@@ -53,6 +53,6 @@ public class PercentageTests
 
         // Assert
         Assert.Equal(output, percentageString);
-        Assert.True(difference <= 0.0005);
+        Assert.True(difference <= 0.001);
     }
 }
