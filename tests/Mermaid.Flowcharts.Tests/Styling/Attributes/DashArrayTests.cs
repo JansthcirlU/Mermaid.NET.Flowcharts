@@ -27,8 +27,7 @@ public class DashArrayTests
     {
         // Arrange
         DashSize.LengthDashSize[] pixelDashes = [.. dashPixels
-                .Select(px => new Length(px, Unit.Px))
-                .Select(DashSize.Length)
+                .Select(px => DashSize.Length(px, Unit.Px))
             ];
         DashArray dashArray = new(pixelDashes);
 
@@ -127,8 +126,7 @@ public class DashArrayTests
     public void DashArray_WhenNonPixelLength_ShouldShowUnit(double lenghtValue, Unit unit, string expected)
     {
         // Arrange
-        Length length = new(lenghtValue, unit);
-        DashSize.LengthDashSize dashLength = DashSize.Length(length);
+        DashSize.LengthDashSize dashLength = DashSize.Length(lenghtValue, unit);
         DashArray dashArray = new([dashLength]);
 
         // Act
