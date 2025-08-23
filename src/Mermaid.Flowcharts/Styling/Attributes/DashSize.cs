@@ -1,4 +1,5 @@
 using Mermaid.Flowcharts.Numerical;
+using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
@@ -10,11 +11,11 @@ public abstract record DashSize : IMermaidStyle
     {
         public Length LengthSize { get; }
 
-        public LengthDashSize(Length lengthSize)
+        public LengthDashSize(double size, Unit unit)
         {
-            if (lengthSize.Value < 0) throw new ArgumentOutOfRangeException(nameof(lengthSize), "Dash length size must not be negative.");
+            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash length size must not be negative.");
 
-            LengthSize = lengthSize;
+            LengthSize = new(size, unit);
         }
     }
 
@@ -30,13 +31,27 @@ public abstract record DashSize : IMermaidStyle
         }
     }
 
-    public static LengthDashSize Length(Length lengthSize) => new(lengthSize);
+    public sealed record NumericalDashSize : DashSize
+    {
+        public double Size { get; }
+
+        public NumericalDashSize(double size)
+        {
+            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash size must not be negative.");
+
+            Size = size;
+        }
+    }
+
+    public static LengthDashSize Length(double size, Unit unit) => new(size, unit);
     public static PercentageDashSize Percentage(Percentage percentageSize) => new(percentageSize);
+    public static NumericalDashSize Number(double size) => new(size);
 
     public string ToMermaidString()
         => this switch
         {
             LengthDashSize lds => lds.LengthSize.ToCss(),
-            PercentageDashSize pds => pds.PercentageSize.ToNumericalString()
+            PercentageDashSize pds => pds.PercentageSize.ToNumericalString(),
+            NumericalDashSize nds => nds.Size.ToNumberString()
         };
 }

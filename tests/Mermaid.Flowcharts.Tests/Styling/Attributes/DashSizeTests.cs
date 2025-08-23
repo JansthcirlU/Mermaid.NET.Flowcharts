@@ -26,12 +26,27 @@ public class DashSizeTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => DashSize.Length(new(value, Unit.Px))
+            () => DashSize.Length(value, Unit.Px)
         );
 
         // Assert
         Assert.NotNull(ex);
         Assert.StartsWith("Dash length size must not be negative.", ex.Message);
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(double.MinValue)]
+    public void DashSize_WhenNegativeNumber_ShouldThrow(double value)
+    {
+        // Act
+        ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
+            () => DashSize.Number(value)
+        );
+
+        // Assert
+        Assert.NotNull(ex);
+        Assert.StartsWith("Dash size must not be negative.", ex.Message);
     }
 }
 
