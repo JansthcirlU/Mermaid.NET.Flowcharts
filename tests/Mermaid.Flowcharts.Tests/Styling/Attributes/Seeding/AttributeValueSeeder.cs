@@ -14,7 +14,7 @@ public static class AttributeValueSeeder
         {
             for (int i = 0; i < testValues.Length; i++)
             {
-                string expected = $"{attributeDeclaration}{expectedValues[i]}{UnitRendering.UnitSuffixes[unit]}";
+                string expected = $"{attributeDeclaration}{expectedValues[i]}{EnumRendering.UnitSuffixes[unit]}";
                 data.Add(testValues[i], unit, expected);
             }
         }
