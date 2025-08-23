@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Mermaid.Flowcharts.Numerical;
 
-public readonly record struct UnitInterval
+public readonly record struct UnitInterval : INumerical
 {
     public double Value { get; }
 
@@ -18,6 +18,7 @@ public readonly record struct UnitInterval
     public static implicit operator UnitInterval(double value)
         => new(value);
 
-    public override string ToString()
+
+    public string ToNumericalString()
         => Value.ToString("0.###", CultureInfo.InvariantCulture);
 }
