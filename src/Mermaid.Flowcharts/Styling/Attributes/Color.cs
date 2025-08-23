@@ -1,8 +1,9 @@
 using System.Globalization;
+using Mermaid.Flowcharts.Styling.Attributes.Base;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
-public readonly record struct Color(byte Red, byte Green, byte Blue)
+public readonly record struct Color(byte Red, byte Green, byte Blue) : ICssAttribute
 {
     public static Color FromHex(string hex)
     {
@@ -34,6 +35,6 @@ public readonly record struct Color(byte Red, byte Green, byte Blue)
         return new Color(rb, gb, bb);
     }
 
-    public override string ToString()
+    public string ToCss()
         => $"#{Red:x2}{Green:x2}{Blue:x2}";
 }
