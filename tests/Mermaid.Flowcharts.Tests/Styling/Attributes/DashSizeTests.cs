@@ -1,12 +1,7 @@
-using Mermaid.Flowcharts.Numerical;
 using Mermaid.Flowcharts.Styling.Attributes;
+using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Tests.Styling.Attributes;
-
-public class DashArrayTests
-{
-
-}
 
 public class DashSizeTests
 {
@@ -31,7 +26,7 @@ public class DashSizeTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => DashSize.Length(new(value, Flowcharts.Styling.Attributes.Enums.Unit.Px))
+            () => DashSize.Length(new(value, Unit.Px))
         );
 
         // Assert

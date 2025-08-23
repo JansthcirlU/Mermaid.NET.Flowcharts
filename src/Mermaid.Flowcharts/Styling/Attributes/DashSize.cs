@@ -2,7 +2,7 @@ using Mermaid.Flowcharts.Numerical;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
-public abstract record DashSize
+public abstract record DashSize : IMermaidStyle
 {
     private protected DashSize() { }
 
@@ -33,10 +33,10 @@ public abstract record DashSize
     public static LengthDashSize Length(Length lengthSize) => new(lengthSize);
     public static PercentageDashSize Percentage(Percentage percentageSize) => new(percentageSize);
 
-    public override string ToString()
+    public string ToMermaidString()
         => this switch
         {
-            LengthDashSize lds => lds.LengthSize.ToString(),
-            PercentageDashSize pds => $"{pds.PercentageSize}%"
+            LengthDashSize lds => lds.LengthSize.ToCss(),
+            PercentageDashSize pds => pds.PercentageSize.ToNumericalString()
         };
 }
