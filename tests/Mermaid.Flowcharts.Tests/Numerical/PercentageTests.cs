@@ -37,18 +37,19 @@ public class PercentageTests
     }
 
     [Theory]
-    [InlineData(0.0004, "0")]
-    [InlineData(0.0005, "0.001")]
-    [InlineData(99.9994, "99.999")]
-    [InlineData(99.9995, "100")]
+    [InlineData(0.0004, "0%")]
+    [InlineData(0.0005, "0.001%")]
+    [InlineData(99.9994, "99.999%")]
+    [InlineData(99.9995, "100%")]
     public void Percentage_ShouldRoundToThreeDecimals(double value, string output)
     {
         // Arrange
         Percentage percentage = new(value);
 
         // Act
-        string percentageString = percentage.ToString();
-        double parsed = double.Parse(percentageString, CultureInfo.InvariantCulture);
+        string percentageString = percentage.ToNumericalString();
+        string percentageValue = percentageString[..^1]; // Get value without % sign
+        double parsed = double.Parse(percentageValue, CultureInfo.InvariantCulture);
         double difference = double.Abs(parsed - value);
 
         // Assert
