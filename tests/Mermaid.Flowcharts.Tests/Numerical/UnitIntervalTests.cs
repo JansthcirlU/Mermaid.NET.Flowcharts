@@ -62,7 +62,7 @@ public class UnitIntervalTests
         UnitInterval interval = new(value);
 
         // Act
-        string intervalString = interval.ToString();
+        string intervalString = interval.ToNumericalString();
         double parsed = double.Parse(intervalString, CultureInfo.InvariantCulture);
         double difference = double.Abs(parsed - value);
 

@@ -1,4 +1,5 @@
 using Mermaid.Flowcharts.Numerical;
+using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
@@ -10,11 +11,11 @@ public abstract record DashOffset : IMermaidStyle
     {
         public Length LengthOffset { get; }
 
-        public LengthDashOffset(Length lengthOffset)
+        public LengthDashOffset(double size, Unit unit)
         {
-            ArgumentOutOfRangeException.ThrowIfNegative(lengthOffset.Value, nameof(lengthOffset));
+            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash length offset must not be negative.");
 
-            LengthOffset = lengthOffset;
+            LengthOffset = new(size, unit);
         }
     }
 
@@ -30,16 +31,30 @@ public abstract record DashOffset : IMermaidStyle
         }
     }
 
-    public static LengthDashOffset Length(Length lengthOffset) => new(lengthOffset);
+    public sealed record NumericalDashOffset : DashOffset
+    {
+        public double Size { get; }
+
+        public NumericalDashOffset(double size)
+        {
+            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash offset must not be negative.");
+
+            Size = size;
+        }
+    }
+
+    public static LengthDashOffset Length(double size, Unit unit) => new(size, unit);
     public static PercentageDashOffset Percentage(Percentage percentageOffset) => new(percentageOffset);
+    public static NumericalDashOffset Number(double size) => new(size);
 
     public string ToMermaidString()
-        => $"stroke-dashoffset:{ToSubtypeMermaidString()}";
+        => $"stroke-dashoffset: {ToSubtypeMermaidString()}";
 
     private string ToSubtypeMermaidString()
         => this switch
         {
-            LengthDashOffset ldo => ldo.LengthOffset.ToString(),
-            PercentageDashOffset pdo => pdo.PercentageOffset.ToString()
+            LengthDashOffset ldo => ldo.LengthOffset.ToCss(),
+            PercentageDashOffset pdo => pdo.PercentageOffset.ToNumericalString(),
+            NumericalDashOffset ndo => ndo.Size.ToNumberString()
         };
 }

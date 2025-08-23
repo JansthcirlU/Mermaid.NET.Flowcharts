@@ -19,32 +19,12 @@ public class DashArrayTests
     }
 
     [Theory]
-    [InlineData(new double[] { 1 }, "stroke-dasharray: 1")]
-    [InlineData(new double[] { 2, 5 }, "stroke-dasharray: 2 5")]
-    [InlineData(new double[] { 1, 2, 3 }, "stroke-dasharray: 1 2 3")]
-    [InlineData(new double[] { 2, 5, 2, 5 }, "stroke-dasharray: 2 5 2 5")]
-    public void DashArray_WhenPositivePixelLength_ShouldOmitUnit(double[] dashPixels, string expected)
-    {
-        // Arrange
-        DashSize.LengthDashSize[] pixelDashes = [.. dashPixels
-                .Select(px => DashSize.Length(px, Unit.Px))
-            ];
-        DashArray dashArray = new(pixelDashes);
-
-        // Act
-        string mermaid = dashArray.ToMermaidString();
-
-        // Assert
-        Assert.Equal(expected, mermaid);
-    }
-
-    [Theory]
-    [InlineData(5, Unit.Px, "stroke-dasharray: 5")]
-    [InlineData(5.1, Unit.Px, "stroke-dasharray: 5.1")]
-    [InlineData(5.12, Unit.Px, "stroke-dasharray: 5.12")]
-    [InlineData(5.123, Unit.Px, "stroke-dasharray: 5.123")]
-    [InlineData(5.1234, Unit.Px, "stroke-dasharray: 5.123")]
-    [InlineData(5.1236, Unit.Px, "stroke-dasharray: 5.124")]
+    [InlineData(5, Unit.Px, "stroke-dasharray: 5px")]
+    [InlineData(5.1, Unit.Px, "stroke-dasharray: 5.1px")]
+    [InlineData(5.12, Unit.Px, "stroke-dasharray: 5.12px")]
+    [InlineData(5.123, Unit.Px, "stroke-dasharray: 5.123px")]
+    [InlineData(5.1234, Unit.Px, "stroke-dasharray: 5.123px")]
+    [InlineData(5.1236, Unit.Px, "stroke-dasharray: 5.124px")]
     [InlineData(5, Unit.Em, "stroke-dasharray: 5em")]
     [InlineData(5.1, Unit.Em, "stroke-dasharray: 5.1em")]
     [InlineData(5.12, Unit.Em, "stroke-dasharray: 5.12em")]
@@ -128,6 +108,44 @@ public class DashArrayTests
         // Arrange
         DashSize.LengthDashSize dashLength = DashSize.Length(lenghtValue, unit);
         DashArray dashArray = new([dashLength]);
+
+        // Act
+        string mermaid = dashArray.ToMermaidString();
+
+        // Assert
+        Assert.Equal(expected, mermaid);
+    }
+
+    [Theory]
+    [InlineData(5, "stroke-dasharray: 5%")]
+    [InlineData(5.1, "stroke-dasharray: 5.1%")]
+    [InlineData(5.123, "stroke-dasharray: 5.123%")]
+    [InlineData(5.1234, "stroke-dasharray: 5.123%")]
+    [InlineData(5.1236, "stroke-dasharray: 5.124%")]
+    public void DashArray_WhenPercentage_ToMermaidString(double size, string expected)
+    {
+        // Arrange
+        DashSize.PercentageDashSize dashSize = DashSize.Percentage(size);
+        DashArray dashArray = new([dashSize]);
+
+        // Act
+        string mermaid = dashArray.ToMermaidString();
+
+        // Assert
+        Assert.Equal(expected, mermaid);
+    }
+
+    [Theory]
+    [InlineData(5, "stroke-dasharray: 5")]
+    [InlineData(5.1, "stroke-dasharray: 5.1")]
+    [InlineData(5.123, "stroke-dasharray: 5.123")]
+    [InlineData(5.1234, "stroke-dasharray: 5.123")]
+    [InlineData(5.1236, "stroke-dasharray: 5.124")]
+    public void DashArray_WhenNumericalLength_ToMermaidString(double size, string expected)
+    {
+        // Arrange
+        DashSize.NumericalDashSize dashSize = DashSize.Number(size);
+        DashArray dashArray = new([dashSize]);
 
         // Act
         string mermaid = dashArray.ToMermaidString();

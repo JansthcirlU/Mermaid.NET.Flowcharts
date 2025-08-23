@@ -50,11 +50,6 @@ public class DashSizeTests
     }
 }
 
-public class DashOffsetTests
-{
-
-}
-
 public class FillTests
 {
 
@@ -71,11 +66,6 @@ public class FontSizeTests
 }
 
 public class FontWeightTests
-{
-
-}
-
-public class StrokeTests
 {
 
 }
