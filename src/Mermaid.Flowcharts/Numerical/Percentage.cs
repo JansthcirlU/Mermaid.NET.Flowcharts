@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace Mermaid.Flowcharts.Numerical;
 
 public readonly record struct Percentage : INumerical
@@ -17,7 +15,6 @@ public readonly record struct Percentage : INumerical
     public static implicit operator Percentage(double value)
         => new(value);
 
-
     public string ToNumericalString()
-        => $"{Value.ToString("0.###", CultureInfo.InvariantCulture)}%";
+        => $"{Value.ToNumberString()}%";
 }

@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace Mermaid.Flowcharts.Numerical;
 
 public readonly record struct UnitInterval : INumerical
@@ -20,5 +18,5 @@ public readonly record struct UnitInterval : INumerical
 
 
     public string ToNumericalString()
-        => Value.ToString("0.###", CultureInfo.InvariantCulture);
+        => Value.ToNumberString();
 }
