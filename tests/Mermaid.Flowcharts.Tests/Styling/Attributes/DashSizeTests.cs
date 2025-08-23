@@ -50,11 +50,6 @@ public class DashSizeTests
     }
 }
 
-public class FillTests
-{
-
-}
-
 public class FontFamilyTests
 {
 
