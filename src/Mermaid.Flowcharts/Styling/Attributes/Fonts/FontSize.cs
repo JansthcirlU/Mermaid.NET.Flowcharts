@@ -10,12 +10,22 @@ public abstract record FontSize : IMermaidStyle
     public sealed record AbsoluteFontSize(AbsoluteSize Size) : FontSize;
     public sealed record RelativeFontSize(RelativeSize Size) : FontSize;
     public sealed record PercentageFontSize(Percentage SizePercentage) : FontSize;
-    public sealed record LengthFontSize(Length SizeLength) : FontSize;
+    public sealed record LengthFontSize : FontSize
+    {
+        public Length SizeLength { get; }
+
+        public LengthFontSize(double size, Unit unit)
+        {
+            if (double.IsNaN(size) || double.IsInfinity(size)) throw new ArgumentOutOfRangeException(nameof(size), "Font size must be a real and finite number.");
+
+            SizeLength = new(size, unit);
+        }
+    }
 
     public static AbsoluteFontSize Absolute(AbsoluteSize size) => new(size);
     public static RelativeFontSize Relative(RelativeSize size) => new(size);
-    public static PercentageFontSize Percentage(double sizePercentage) => new(sizePercentage);
-    public static LengthFontSize Length(Length sizeLength) => new(sizeLength);
+    public static PercentageFontSize Percentage(Percentage sizePercentage) => new(sizePercentage);
+    public static LengthFontSize Length(double size, Unit unit) => new(size, unit);
 
     public string ToMermaidString()
         => $"font-size:{ToSubtypeMermaidString()}";
@@ -25,7 +35,7 @@ public abstract record FontSize : IMermaidStyle
         {
             AbsoluteFontSize afs => afs.Size.ToAbsoluteSizeString(),
             RelativeFontSize rfs => rfs.Size.ToRelativeSizeString(),
-            PercentageFontSize pfs => pfs.SizePercentage.ToString(),
-            LengthFontSize lfs => lfs.SizeLength.ToString()
+            PercentageFontSize pfs => pfs.SizePercentage.ToNumericalString(),
+            LengthFontSize lfs => lfs.SizeLength.ToCss()
         };
 }
