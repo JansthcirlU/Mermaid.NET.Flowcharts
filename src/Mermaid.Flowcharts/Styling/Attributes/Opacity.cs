@@ -1,18 +1,21 @@
-using System.Globalization;
+using Mermaid.Flowcharts.Numerical;
+using Mermaid.Flowcharts.Styling.Attributes.Base;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
-public readonly record struct Opacity
+public readonly record struct Opacity : ICssAttribute
 {
     public double Value { get; }
 
     public Opacity(double value)
     {
-        if (value < 0 || 1 < value) throw new ArgumentException("Opacity must be a value between 0 and 1.", nameof(value));
+        if (double.IsNaN(value)) throw new ArgumentOutOfRangeException(nameof(value), "Opacity must be a real number between 0 and 1.");
+        if (value < 0) throw new ArgumentOutOfRangeException(nameof(value), "Opacity must not be negative.");
+        if (value > 1) throw new ArgumentOutOfRangeException(nameof(value), "Opacity must not be greater than 1.");
 
         Value = value;
     }
 
-    public override string ToString()
-        => Value.ToString("0.###", CultureInfo.InvariantCulture);
+    public string ToCss()
+        => Value.ToNumberString();
 }
