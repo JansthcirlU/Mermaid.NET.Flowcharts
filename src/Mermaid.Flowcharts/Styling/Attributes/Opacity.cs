@@ -16,6 +16,8 @@ public readonly record struct Opacity : ICssAttribute
         Value = value;
     }
 
+    public static implicit operator Opacity(double value) => new(value);
+
     public string ToCss()
         => Value.ToNumberString();
 }
