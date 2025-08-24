@@ -5,6 +5,9 @@ namespace Mermaid.Flowcharts.Styling.Attributes;
 
 public readonly record struct Color(byte Red, byte Green, byte Blue) : ICssAttribute
 {
+    public static Color FromRGB(byte red, byte green, byte blue)
+        => new(red, green, blue);
+
     public static Color FromHex(string hex)
     {
         ArgumentNullException.ThrowIfNull(hex);
