@@ -45,7 +45,7 @@ public static class EnumExtensions
         => strokeLineJoinType switch
         {
             StrokeLineJoinType.Miter => "miter",
-            StrokeLineJoinType.Arcs => "arc",
+            StrokeLineJoinType.Arcs => "arcs",
             StrokeLineJoinType.Bevel => "bevel",
             StrokeLineJoinType.MiterClip => "miter-clip",
             StrokeLineJoinType.Round => "round",
