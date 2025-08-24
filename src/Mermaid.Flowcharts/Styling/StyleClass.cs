@@ -35,7 +35,7 @@ public record StyleClass(
     {
         if (!GetInstantiatedStyleComponents().Any()) throw new InvalidOperationException("At least one style class element should be set.");
 
-        return $"{indentationText.Repeat(indentations)}{string.Join(',', GetInstantiatedStyleComponents().Select(ims => ims.ToMermaidString()))}";
+        return $"{indentationText.Repeat(indentations)}{string.Join(',', GetInstantiatedStyleComponents().Select(x => x.ToMermaidString()))}";
     }
 
     private IEnumerable<IStyleClassComponent> GetInstantiatedStyleComponents()
