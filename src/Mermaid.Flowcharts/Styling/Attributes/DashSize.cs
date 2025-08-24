@@ -3,7 +3,7 @@ using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
-public abstract record DashSize : IMermaidStyle
+public abstract record DashSize : IStyleClassComponent
 {
     private protected DashSize() { }
 

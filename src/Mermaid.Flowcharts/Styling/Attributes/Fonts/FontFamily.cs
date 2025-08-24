@@ -1,6 +1,6 @@
 namespace Mermaid.Flowcharts.Styling.Attributes.Fonts;
 
-public record FontFamily : IMermaidStyle
+public record FontFamily : IStyleClassComponent
 {
     public IEnumerable<FontFamilyComponent> FontFamilyComponents { get; }
 

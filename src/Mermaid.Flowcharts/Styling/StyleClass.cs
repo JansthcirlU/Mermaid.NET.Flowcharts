@@ -15,7 +15,7 @@ public record StyleClass(
     StyleOpacity? Opacity = null,
     FontFamily? FontFamily = null,
     FontSize? FontSize = null,
-    FontWeight? FontWeight = null) : IMermaidStyle
+    FontWeight? FontWeight = null) : IMermaidPrintable
 {
     public StyleClass Merge(StyleClass other) => new(
         Fill: other.Fill ?? Fill,
@@ -31,14 +31,14 @@ public record StyleClass(
         FontSize: other.FontSize ?? FontSize,
         FontWeight: other.FontWeight ?? FontWeight);
 
-    public string ToMermaidString()
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
     {
         if (!GetInstantiatedStyleComponents().Any()) throw new InvalidOperationException("At least one style class element should be set.");
 
-        return string.Join(',', GetInstantiatedStyleComponents().Select(ims => ims.ToMermaidString()));
+        return $"{indentationText.Repeat(indentations)}{string.Join(',', GetInstantiatedStyleComponents().Select(ims => ims.ToMermaidString()))}";
     }
 
-    private IEnumerable<IMermaidStyle> GetInstantiatedStyleComponents()
+    private IEnumerable<IStyleClassComponent> GetInstantiatedStyleComponents()
     {
         if (Fill is not null) yield return Fill;
         if (Stroke is not null) yield return Stroke;

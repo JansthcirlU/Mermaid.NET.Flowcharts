@@ -1,6 +1,6 @@
 namespace Mermaid.Flowcharts.Styling;
 
-public interface IMermaidStyle
+public interface IStyleClassComponent
 {
     string ToMermaidString();
 }

@@ -1,6 +1,6 @@
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
-public record DashArray(IEnumerable<DashSize> DashSizes) : IMermaidStyle
+public record DashArray(IEnumerable<DashSize> DashSizes) : IStyleClassComponent
 {
     public string ToMermaidString()
         => DashSizes.Any()

@@ -3,7 +3,7 @@ using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Styling.Attributes.Fonts;
 
-public abstract record FontSize : IMermaidStyle
+public abstract record FontSize : IStyleClassComponent
 {
     private protected FontSize() { }
 

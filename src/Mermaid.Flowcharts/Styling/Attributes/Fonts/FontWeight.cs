@@ -2,7 +2,7 @@ using Mermaid.Flowcharts.Numerical;
 
 namespace Mermaid.Flowcharts.Styling.Attributes.Fonts;
 
-public abstract record FontWeight : IMermaidStyle
+public abstract record FontWeight : IStyleClassComponent
 {
     private protected FontWeight() { }
 
