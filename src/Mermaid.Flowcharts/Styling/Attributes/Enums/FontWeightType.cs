@@ -1,6 +1,6 @@
 namespace Mermaid.Flowcharts.Styling.Attributes.Enums;
 
-public enum FontWeight
+public enum FontWeightType
 {
     Normal,
     Bold,

@@ -23,12 +23,12 @@ public static class EnumRendering
         [Unit.In] = "in"
     }.AsReadOnly();
 
-    public static readonly ReadOnlyDictionary<FontWeight, string> FontWeights = new Dictionary<FontWeight, string>()
+    public static readonly ReadOnlyDictionary<FontWeightType, string> FontWeightTypes = new Dictionary<FontWeightType, string>()
     {
-        [FontWeight.Normal] = "normal",
-        [FontWeight.Bold] = "bold",
-        [FontWeight.Bolder] = "bolder",
-        [FontWeight.Lighter] = "lighter"
+        [FontWeightType.Normal] = "normal",
+        [FontWeightType.Bold] = "bold",
+        [FontWeightType.Bolder] = "bolder",
+        [FontWeightType.Lighter] = "lighter"
     }.AsReadOnly();
 
     public static readonly ReadOnlyDictionary<AbsoluteSize, string> AbsoluteSizes = new Dictionary<AbsoluteSize, string>()

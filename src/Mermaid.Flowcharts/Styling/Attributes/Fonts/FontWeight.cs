@@ -1,12 +1,13 @@
 using Mermaid.Flowcharts.Numerical;
+using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Styling.Attributes.Fonts;
 
-public abstract record FontWeight : IStyleClassComponent
+public abstract record FontWeight : IStyleClassComponent<FontWeight>
 {
     private protected FontWeight() { }
 
-    public sealed record RelativeFontWeight(Enums.FontWeight Weight) : FontWeight;
+    public sealed record RelativeFontWeight(FontWeightType Weight) : FontWeight;
     public sealed record NumericalFontWeight : FontWeight
     {
         public double Weight { get; }
@@ -21,7 +22,7 @@ public abstract record FontWeight : IStyleClassComponent
         }
     }
 
-    public static RelativeFontWeight Relative(Enums.FontWeight weight) => new(weight);
+    public static RelativeFontWeight Relative(FontWeightType weight) => new(weight);
     public static NumericalFontWeight Numerical(double weight) => new(weight);
 
     public string ToMermaidString()
@@ -30,7 +31,7 @@ public abstract record FontWeight : IStyleClassComponent
     private string ToSubtypeMermaidString()
         => this switch
         {
-            RelativeFontWeight rfw => rfw.Weight.ToFontWeightString(),
+            RelativeFontWeight rfw => rfw.Weight.ToFontWeightTypeString(),
             NumericalFontWeight nfw => nfw.Weight.ToNumberString()
         };
 }

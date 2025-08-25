@@ -1,22 +1,23 @@
+using Mermaid.Flowcharts.Styling.Attributes.Enums;
 using Mermaid.Flowcharts.Styling.Attributes.Fonts;
 
 namespace Mermaid.Flowcharts.Tests.Styling.Attributes;
 
 public class FontWeightTests
 {
-    public static TheoryData<Flowcharts.Styling.Attributes.Enums.FontWeight, string> GetRelativeFontWeightData()
+    public static TheoryData<FontWeightType, string> GetRelativeFontWeightData()
     {
-        TheoryData<Flowcharts.Styling.Attributes.Enums.FontWeight, string> data = [];
-        foreach (Flowcharts.Styling.Attributes.Enums.FontWeight weight in Enum.GetValues<Flowcharts.Styling.Attributes.Enums.FontWeight>())
+        TheoryData<FontWeightType, string> data = [];
+        foreach (FontWeightType weight in Enum.GetValues<FontWeightType>())
         {
-            data.Add(weight, $"font-weight:{EnumRendering.FontWeights[weight]}");
+            data.Add(weight, $"font-weight:{EnumRendering.FontWeightTypes[weight]}");
         }
         return data;
     }
 
     [Theory]
     [MemberData(nameof(GetRelativeFontWeightData))]
-    public void FontWeight_WhenRelative_ToMermaidString(Flowcharts.Styling.Attributes.Enums.FontWeight weight, string expected)
+    public void FontWeight_WhenRelative_ToMermaidString(FontWeightType weight, string expected)
     {
         // Arrange
         FontWeight.RelativeFontWeight relative = FontWeight.Relative(weight);

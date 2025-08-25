@@ -24,13 +24,13 @@ public static class EnumExtensions
             RelativeSize.Smaller => "smaller",
         };
 
-    public static string ToFontWeightString(this FontWeight fontWeight)
+    public static string ToFontWeightTypeString(this FontWeightType fontWeight)
         => fontWeight switch
         {
-            FontWeight.Normal => "normal",
-            FontWeight.Bold => "bold",
-            FontWeight.Bolder => "bolder",
-            FontWeight.Lighter => "lighter",
+            FontWeightType.Normal => "normal",
+            FontWeightType.Bold => "bold",
+            FontWeightType.Bolder => "bolder",
+            FontWeightType.Lighter => "lighter",
         };
 
     public static string ToStrokeLineCapTypeString(this StrokeLineCapType strokeLineCapType)
