@@ -223,4 +223,124 @@ public class FlowchartTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void Flowchart_WhenTwoNodesOneStyle_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
+        NodeStyle nodeStyle = new("customStyle", nodeStyleClass);
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text, nodeStyle: nodeStyle);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text, nodeStyle: nodeStyle);
+        flowchart
+            .AddNode(node1)
+            .AddNode(node2);
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+
+            classDef customStyle fill:#ff9966
+            class {node1Id},{node2Id} customStyle
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenTwoNodesTwoStyles_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        StyleClass node1StyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
+        NodeStyle node1Style = new("customStyle1", node1StyleClass);
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text, nodeStyle: node1Style);
+        StyleClass node2StyleClass = new(Fill: new Fill(Color.FromHex("#9966ff")));
+        NodeStyle node2Style = new("customStyle2", node2StyleClass);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text, nodeStyle: node2Style);
+        flowchart
+            .AddNode(node1)
+            .AddNode(node2);
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+
+            classDef customStyle1 fill:#ff9966
+            class {node1Id} customStyle1
+            classDef customStyle2 fill:#9966ff
+            class {node2Id} customStyle2
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenFourNodesTwoStyles_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        StyleClass styleClass1 = new(Fill: new Fill(Color.FromHex("#ff9966")));
+        NodeStyle nodeStyle1 = new("customStyle1", styleClass1);
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text, nodeStyle: nodeStyle1);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text, nodeStyle: nodeStyle1);
+        StyleClass styleClass2 = new(Fill: new Fill(Color.FromHex("#9966ff")));
+        NodeStyle nodeStyle2 = new("customStyle2", styleClass2);
+        string node3Id = Guid.NewGuid().ToString();
+        string node3Text = Guid.NewGuid().ToString();
+        Node node3 = Node.Create<MermaidUnicodeText>(node3Id, node3Text, nodeStyle: nodeStyle2);
+        string node4Id = Guid.NewGuid().ToString();
+        string node4Text = Guid.NewGuid().ToString();
+        Node node4 = Node.Create<MermaidUnicodeText>(node4Id, node4Text, nodeStyle: nodeStyle2);
+        flowchart
+            .AddNode(node1)
+            .AddNode(node2)
+            .AddNode(node3)
+            .AddNode(node4);
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+            {node3Id}["{node3Text}"]
+            {node4Id}["{node4Text}"]
+
+            classDef customStyle1 fill:#ff9966
+            class {node1Id},{node2Id} customStyle1
+            classDef customStyle2 fill:#9966ff
+            class {node3Id},{node4Id} customStyle2
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
 }
