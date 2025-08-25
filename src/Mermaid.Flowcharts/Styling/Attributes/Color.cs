@@ -11,8 +11,6 @@ public readonly record struct Color(byte Red, byte Green, byte Blue) : ICssAttri
 
     public static Color FromHex(NonEmptySingleLineString hex)
     {
-        ArgumentNullException.ThrowIfNull(hex);
-
         string s = ((string)hex).Trim();
         if (s.Length == 0)
         {
