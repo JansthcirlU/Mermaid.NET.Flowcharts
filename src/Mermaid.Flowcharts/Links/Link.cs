@@ -1,4 +1,5 @@
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Styling;
 
 namespace Mermaid.Flowcharts.Links;
 
@@ -8,6 +9,7 @@ public readonly record struct Link : IMermaidPrintable
     public readonly INode Destination { get; }
     public readonly LinkType Type { get; }
     public readonly LinkText? Text { get; }
+    public readonly StyleClass? LinkStyle { get; }
 
     [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Link)}.")]
 #pragma warning disable CS8618 // This constructor is never used
@@ -17,16 +19,18 @@ public readonly record struct Link : IMermaidPrintable
         INode source,
         INode destination,
         LinkType type,
-        LinkText? text = null)
+        LinkText? text = null,
+        StyleClass? linkStyle = null)
     {
         Source = source;
         Destination = destination;
         Type = type;
         Text = text;
+        LinkStyle = linkStyle;
     }
 
-    public static Link Create(INode source, INode destination, LinkType? type = null, string? linkText = null)
-        => new(source, destination, type ?? LinkType.Create(), linkText is not null ? LinkText.FromString(linkText) : null);
+    public static Link Create(INode source, INode destination, LinkType? type = null, string? linkText = null, StyleClass? linkStyle = null)
+        => new(source, destination, type ?? LinkType.Create(), linkText is not null ? LinkText.FromString(linkText) : null, linkStyle);
 
     public override string ToString()
         => ToMermaidString();

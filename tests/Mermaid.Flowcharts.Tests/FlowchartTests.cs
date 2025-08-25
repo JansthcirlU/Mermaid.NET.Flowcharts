@@ -511,6 +511,7 @@ public class FlowchartTests
 
             classDef customNodeStyle fill:#ff9966
             class {node1Id},{node2Id} customNodeStyle
+
             linkStyle 0 stroke:#ff6b6b,stroke-width:2px
 
         """;
