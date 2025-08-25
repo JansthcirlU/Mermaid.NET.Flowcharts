@@ -1,4 +1,5 @@
 using System.Text;
+using Mermaid.Flowcharts.NonEmptyStringTypes;
 
 namespace Mermaid.Flowcharts.Nodes.NodeText;
 
@@ -17,17 +18,17 @@ public readonly record struct MarkdownText : INodeText<MarkdownText>
 #pragma warning disable CS8618
     public MarkdownText() { }
 #pragma warning restore CS8618
-    private MarkdownText(string text)
+    private MarkdownText(NonEmptyString text)
         => Value = text;
 
     public static MarkdownText FromString(string text)
     {
-        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Mermaid text should not be empty.");
         if (string.IsNullOrWhiteSpace(text)) return new(text);
 
+        NonEmptyString nonEmpty = text;
         StringBuilder builder = new();
         builder.Append('`');
-        foreach (char character in text)
+        foreach (char character in (string)nonEmpty)
         {
             if (EscapedCharacters.TryGetValue(character, out string? escapedValue))
             {

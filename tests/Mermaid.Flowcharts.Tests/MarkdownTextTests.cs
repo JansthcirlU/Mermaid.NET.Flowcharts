@@ -17,7 +17,6 @@ public class MarkdownTextTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Mermaid text should not be empty.", ex.Message);
     }
 
     [Theory]

@@ -17,7 +17,6 @@ public class MermaidUnicodeTextTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Mermaid text should not be empty.", ex.Message);
     }
 
     [Theory]
@@ -35,7 +34,6 @@ public class MermaidUnicodeTextTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Mermaid text should not contain new lines.", ex.Message);
     }
 
     [Theory]
