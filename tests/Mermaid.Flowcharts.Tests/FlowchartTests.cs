@@ -3,6 +3,7 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Nodes.NodeText;
 using Mermaid.Flowcharts.Styling;
 using Mermaid.Flowcharts.Styling.Attributes;
+using Mermaid.Flowcharts.Styling.Attributes.Enums;
 using Mermaid.Flowcharts.Subgraphs;
 
 namespace Mermaid.Flowcharts.Tests;
@@ -334,6 +335,301 @@ public class FlowchartTests
             class {node1Id},{node2Id} customStyle1
             classDef customStyle2 fill:#9966ff
             class {node3Id},{node4Id} customStyle2
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenOneLinkOneStyle_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text);
+        
+        StyleClass linkStyleClass = new(Stroke: new Stroke(Color.FromHex("#ff6b6b")), StrokeWidth: StrokeWidth.Length(2, Unit.Px));
+        Link link = Link.Create(node1, node2, linkStyle: linkStyleClass);
+        
+        flowchart.AddNode(node1);
+        flowchart.AddNode(node2);
+        flowchart.AddLink(link);
+        
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+
+            {node1Id} ---> {node2Id}
+
+            linkStyle 0 stroke:#ff6b6b,stroke-width:2px
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenTwoLinksOneStyle_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text);
+        string node3Id = Guid.NewGuid().ToString();
+        string node3Text = Guid.NewGuid().ToString();
+        Node node3 = Node.Create<MermaidUnicodeText>(node3Id, node3Text);
+        
+        StyleClass linkStyleClass = new(Stroke: new Stroke(Color.FromHex("#ff6b6b")), StrokeWidth: StrokeWidth.Length(2, Unit.Px));
+        Link link1 = Link.Create(node1, node2, linkStyle: linkStyleClass);
+        Link link2 = Link.Create(node2, node3, linkStyle: linkStyleClass);
+        
+        flowchart.AddNode(node1);
+        flowchart.AddNode(node2);
+        flowchart.AddNode(node3);
+        flowchart.AddLink(link1);
+        flowchart.AddLink(link2);
+        
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+            {node3Id}["{node3Text}"]
+
+            {node1Id} ---> {node2Id}
+            {node2Id} ---> {node3Id}
+
+            linkStyle 0,1 stroke:#ff6b6b,stroke-width:2px
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenTwoLinksTwoStyles_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text);
+        string node3Id = Guid.NewGuid().ToString();
+        string node3Text = Guid.NewGuid().ToString();
+        Node node3 = Node.Create<MermaidUnicodeText>(node3Id, node3Text);
+        
+        StyleClass linkStyleClass1 = new(Stroke: new Stroke(Color.FromHex("#ff6b6b")), StrokeWidth: StrokeWidth.Length(2, Unit.Px));
+        StyleClass linkStyleClass2 = new(Stroke: new Stroke(Color.FromHex("#4ecdc4")), StrokeWidth: StrokeWidth.Length(3, Unit.Px));
+        Link link1 = Link.Create(node1, node2, linkStyle: linkStyleClass1);
+        Link link2 = Link.Create(node2, node3, linkStyle: linkStyleClass2);
+        
+        flowchart.AddNode(node1);
+        flowchart.AddNode(node2);
+        flowchart.AddNode(node3);
+        flowchart.AddLink(link1);
+        flowchart.AddLink(link2);
+        
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+            {node3Id}["{node3Text}"]
+
+            {node1Id} ---> {node2Id}
+            {node2Id} ---> {node3Id}
+
+            linkStyle 0 stroke:#ff6b6b,stroke-width:2px
+            linkStyle 1 stroke:#4ecdc4,stroke-width:3px
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenNodesAndLinksWithStyles_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        
+        // Node styling
+        StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
+        NodeStyle nodeStyle = new("customNodeStyle", nodeStyleClass);
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text, nodeStyle: nodeStyle);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text, nodeStyle: nodeStyle);
+        
+        // Link styling
+        StyleClass linkStyleClass = new(Stroke: new Stroke(Color.FromHex("#ff6b6b")), StrokeWidth: StrokeWidth.Length(2, Unit.Px));
+        Link link = Link.Create(node1, node2, linkStyle: linkStyleClass);
+        
+        flowchart.AddNode(node1);
+        flowchart.AddNode(node2);
+        flowchart.AddLink(link);
+        
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+
+            {node1Id} ---> {node2Id}
+
+            classDef customNodeStyle fill:#ff9966
+            class {node1Id},{node2Id} customNodeStyle
+            linkStyle 0 stroke:#ff6b6b,stroke-width:2px
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenFourLinksTwoStyles_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        
+        // Create nodes
+        string node1Id = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, Guid.NewGuid().ToString());
+        string node2Id = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, Guid.NewGuid().ToString());
+        string node3Id = Guid.NewGuid().ToString();
+        Node node3 = Node.Create<MermaidUnicodeText>(node3Id, Guid.NewGuid().ToString());
+        string node4Id = Guid.NewGuid().ToString();
+        Node node4 = Node.Create<MermaidUnicodeText>(node4Id, Guid.NewGuid().ToString());
+        string node5Id = Guid.NewGuid().ToString();
+        Node node5 = Node.Create<MermaidUnicodeText>(node5Id, Guid.NewGuid().ToString());
+        
+        // Create link styles
+        StyleClass linkStyleClass1 = new(Stroke: new Stroke(Color.FromHex("#ff6b6b")), StrokeWidth: StrokeWidth.Length(2, Unit.Px));
+        StyleClass linkStyleClass2 = new(Stroke: new Stroke(Color.FromHex("#4ecdc4")), StrokeWidth: StrokeWidth.Length(3, Unit.Px));
+        
+        Link link1 = Link.Create(node1, node2, linkStyle: linkStyleClass1);
+        Link link2 = Link.Create(node2, node3, linkStyle: linkStyleClass1);
+        Link link3 = Link.Create(node3, node4, linkStyle: linkStyleClass2);
+        Link link4 = Link.Create(node4, node5, linkStyle: linkStyleClass2);
+        
+        flowchart.AddNode(node1);
+        flowchart.AddNode(node2);
+        flowchart.AddNode(node3);
+        flowchart.AddNode(node4);
+        flowchart.AddNode(node5);
+        flowchart.AddLink(link1);
+        flowchart.AddLink(link2);
+        flowchart.AddLink(link3);
+        flowchart.AddLink(link4);
+        
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1.Text}"]
+            {node2Id}["{node2.Text}"]
+            {node3Id}["{node3.Text}"]
+            {node4Id}["{node4.Text}"]
+            {node5Id}["{node5.Text}"]
+
+            {node1Id} ---> {node2Id}
+            {node2Id} ---> {node3Id}
+            {node3Id} ---> {node4Id}
+            {node4Id} ---> {node5Id}
+
+            linkStyle 0,1 stroke:#ff6b6b,stroke-width:2px
+            linkStyle 2,3 stroke:#4ecdc4,stroke-width:3px
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenMixedLinksWithAndWithoutStyles_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        string node1Id = Guid.NewGuid().ToString();
+        string node1Text = Guid.NewGuid().ToString();
+        Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
+        string node2Id = Guid.NewGuid().ToString();
+        string node2Text = Guid.NewGuid().ToString();
+        Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text);
+        string node3Id = Guid.NewGuid().ToString();
+        string node3Text = Guid.NewGuid().ToString();
+        Node node3 = Node.Create<MermaidUnicodeText>(node3Id, node3Text);
+        string node4Id = Guid.NewGuid().ToString();
+        string node4Text = Guid.NewGuid().ToString();
+        Node node4 = Node.Create<MermaidUnicodeText>(node4Id, node4Text);
+        
+        // Mix of styled and unstyled links
+        StyleClass linkStyleClass = new(Stroke: new Stroke(Color.FromHex("#ff6b6b")), StrokeWidth: StrokeWidth.Length(2, Unit.Px));
+        Link link1 = Link.Create(node1, node2, linkStyle: linkStyleClass); // index 0, styled
+        Link link2 = Link.Create(node2, node3); // index 1, unstyled
+        Link link3 = Link.Create(node3, node4, linkStyle: linkStyleClass); // index 2, styled
+        
+        flowchart.AddNode(node1);
+        flowchart.AddNode(node2);
+        flowchart.AddNode(node3);
+        flowchart.AddNode(node4);
+        flowchart.AddLink(link1);
+        flowchart.AddLink(link2);
+        flowchart.AddLink(link3);
+        
+        string expected =
+        $"""
+        flowchart TD
+            {node1Id}["{node1Text}"]
+            {node2Id}["{node2Text}"]
+            {node3Id}["{node3Text}"]
+            {node4Id}["{node4Text}"]
+
+            {node1Id} ---> {node2Id}
+            {node2Id} ---> {node3Id}
+            {node3Id} ---> {node4Id}
+
+            linkStyle 0,2 stroke:#ff6b6b,stroke-width:2px
 
         """;
 
