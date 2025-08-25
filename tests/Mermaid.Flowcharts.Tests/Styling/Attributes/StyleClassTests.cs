@@ -71,4 +71,37 @@ public class StyleClassTests
         // Assert
         Assert.Equal(first, second);
     }
+
+    [Fact]
+    public void StyleClass_ToMermaidString()
+    {
+        // Arrange (two complete style class definitions)
+        StyleClass styleClass = new(
+            new Fill(Color.FromRGB(0, 0, 0)),
+            new Stroke(Color.FromRGB(255, 255, 255)),
+            new DashArray([
+                DashSize.Length(5, Unit.Px),
+                DashSize.Number(2)
+            ]),
+            DashOffset.Number(3),
+            StrokeWidth.Length(3, Unit.Px),
+            new StrokeLineCap(StrokeLineCapType.Round),
+            new StrokeLineJoin(StrokeLineJoinType.Round),
+            new StyleColor(Color.FromRGB(170, 170, 170)),
+            new StyleOpacity(0.75),
+            new FontFamily([
+                new FontFamilyComponent("Gill Sans"),
+                new FontFamilyComponent("sans-serif")
+            ]),
+            FontSize.Length(1.25, Unit.Rem),
+            FontWeight.Relative(FontWeightType.Bold)
+        );
+        string expected = "fill:#000000,stroke:#ffffff,stroke-dasharray: 5px 2,stroke-dashoffset: 3,stroke-width:3px,stroke-linecap:round,stroke-linejoin:round,color:#aaaaaa,opacity:0.75,font-family:Gill Sans\\,sans-serif,font-size:1.25rem,font-weight:bold";
+
+        // Act
+        string mermaid = styleClass.ToMermaidString();
+
+        // Assert
+        Assert.Equal(expected, mermaid);
+    }
 }
