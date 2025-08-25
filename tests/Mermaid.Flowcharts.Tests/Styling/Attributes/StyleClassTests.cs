@@ -68,12 +68,7 @@ public class StyleClassTests
             FontWeight.Relative(FontWeightType.Bold)
         );
 
-        // Debug
-        string firstMermaid = first.ToMermaidString();
-        string secondMermaid = second.ToMermaidString();
-
         // Assert
-        Assert.Equal(firstMermaid, secondMermaid);
         Assert.Equal(first, second);
     }
 }
