@@ -15,11 +15,11 @@ public class FontFamilyTests
     public void ToMermaidString_ShouldReturnCorrectFormat(string[] componentValues, string expected)
     {
         // Arrange
-        var components = componentValues.Select(v => new FontFamilyComponent(v));
-        var fontFamily = new FontFamily(components);
-        
+        IEnumerable<FontFamilyComponent> components = componentValues.Select(v => new FontFamilyComponent(v));
+        FontFamily fontFamily = new(components);
+
         // Act
-        var result = fontFamily.ToMermaidString();
+        string result = fontFamily.ToMermaidString();
         
         // Assert
         Assert.Equal(expected, result);

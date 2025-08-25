@@ -10,7 +10,7 @@ public static class AttributeValueSeeder
         double[] testValues = [5.0, 5.1, 5.123, 5.1234, 5.1236];
         string[] expectedValues = ["5", "5.1", "5.123", "5.123", "5.124"];
         
-        foreach (var unit in Enum.GetValues<Unit>())
+        foreach (Unit unit in Enum.GetValues<Unit>())
         {
             for (int i = 0; i < testValues.Length; i++)
             {
