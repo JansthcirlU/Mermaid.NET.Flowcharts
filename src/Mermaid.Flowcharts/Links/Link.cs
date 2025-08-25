@@ -1,4 +1,5 @@
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Styling;
 
 namespace Mermaid.Flowcharts.Links;
 
@@ -6,8 +7,9 @@ public readonly record struct Link : IMermaidPrintable
 {
     public readonly INode Source { get; }
     public readonly INode Destination { get; }
-    public readonly LinkStyle Style { get; }
+    public readonly LinkType Type { get; }
     public readonly LinkText? Text { get; }
+    public readonly StyleClass? LinkStyle { get; }
 
     [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Link)}.")]
 #pragma warning disable CS8618 // This constructor is never used
@@ -16,23 +18,25 @@ public readonly record struct Link : IMermaidPrintable
     private Link(
         INode source,
         INode destination,
-        LinkStyle style,
-        LinkText? text = null)
+        LinkType type,
+        LinkText? text = null,
+        StyleClass? linkStyle = null)
     {
         Source = source;
         Destination = destination;
-        Style = style;
+        Type = type;
         Text = text;
+        LinkStyle = linkStyle;
     }
 
-    public static Link Create(INode source, INode destination, LinkStyle? style = null, string? linkText = null)
-        => new(source, destination, style ?? LinkStyle.Create(), linkText is not null ? LinkText.FromString(linkText) : null);
+    public static Link Create(INode source, INode destination, LinkType? type = null, string? linkText = null, StyleClass? linkStyle = null)
+        => new(source, destination, type ?? LinkType.Create(), linkText is not null ? LinkText.FromString(linkText) : null, linkStyle);
 
     public override string ToString()
         => ToMermaidString();
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
         => Text is null
-            ? $"{indentationText.Repeat(indentations)}{Source.Id} {Style} {Destination.Id}"
-            : $"{indentationText.Repeat(indentations)}{Source.Id} {Style}|{Text}| {Destination.Id}";
+            ? $"{indentationText.Repeat(indentations)}{Source.Id} {Type} {Destination.Id}"
+            : $"{indentationText.Repeat(indentations)}{Source.Id} {Type}|{Text}| {Destination.Id}";
 }

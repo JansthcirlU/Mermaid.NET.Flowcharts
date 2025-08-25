@@ -2,7 +2,7 @@ using Mermaid.Flowcharts.Links;
 
 namespace Mermaid.Flowcharts.Tests;
 
-public class LinkStyleTests
+public class LinkTypeTests
 {
     [Theory]
     [InlineData(LinkArrowType.Arrow, LinkDirection.FromTo, LinkThickness.Thick, "===>")]
@@ -10,13 +10,13 @@ public class LinkStyleTests
     [InlineData(LinkArrowType.Arrow, LinkDirection.ToFrom, LinkThickness.Dotted, "<-.-")]
     [InlineData(LinkArrowType.Circle, LinkDirection.Both, LinkThickness.Dotted, "o-.-o")]
     [InlineData(LinkArrowType.Arrow, LinkDirection.Both, LinkThickness.Invisible, "~~~")]
-    public void LinkStyle_ToMermaidString(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, string expected)
+    public void LinkType_ToMermaidString(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, string expected)
     {
         // Arrange
-        LinkStyle linkStyle = LinkStyle.Create(arrowType, direction, thickness);
+        LinkType linkType = LinkType.Create(arrowType, direction, thickness);
 
         // Act
-        string actual = linkStyle.ToMermaidString();
+        string actual = linkType.ToMermaidString();
 
         // Assert
         Assert.Equal(expected, actual);
@@ -24,13 +24,13 @@ public class LinkStyleTests
 
     [Theory]
     [InlineData(LinkArrowType.Arrow, LinkDirection.FromTo, LinkThickness.Thick, 2, "  ", "    ===>")]
-    public void LinkStyle_ToMermaidString_WhenIndentation(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, int indentations, string indentationText, string expected)
+    public void LinkType_ToMermaidString_WhenIndentation(LinkArrowType arrowType, LinkDirection direction, LinkThickness thickness, int indentations, string indentationText, string expected)
     {
         // Arrange
-        LinkStyle linkStyle = LinkStyle.Create(arrowType, direction, thickness);
+        LinkType linkType = LinkType.Create(arrowType, direction, thickness);
 
         // Act
-        string actual = linkStyle.ToMermaidString(indentations, indentationText);
+        string actual = linkType.ToMermaidString(indentations, indentationText);
 
         // Assert
         Assert.Equal(expected, actual);

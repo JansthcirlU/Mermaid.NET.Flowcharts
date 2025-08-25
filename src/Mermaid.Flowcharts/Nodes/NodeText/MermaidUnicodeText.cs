@@ -1,4 +1,5 @@
 using System.Text;
+using Mermaid.Flowcharts.NonEmptyStringTypes;
 
 namespace Mermaid.Flowcharts.Nodes.NodeText;
 
@@ -21,19 +22,16 @@ public readonly record struct MermaidUnicodeText : INodeText<MermaidUnicodeText>
 #pragma warning disable CS8618 // This constructor is never used
     public MermaidUnicodeText() { }
 #pragma warning restore CS8618
-    private MermaidUnicodeText(string text)
+    private MermaidUnicodeText(NonEmptySingleLineString text)
     {
         Value = text;
     }
 
     public static MermaidUnicodeText FromString(string text)
     {
-        if (text.Contains('\n') || text.Contains('\r')) throw new ArgumentException("Mermaid text should not contain new lines.");
-        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Mermaid text should not be empty.", nameof(text));
-        if (string.IsNullOrWhiteSpace(text)) return new(text);
-
+        NonEmptySingleLineString nonEmptySingleLine = text;
         StringBuilder builder = new();
-        foreach (char character in text)
+        foreach (char character in (string)nonEmptySingleLine)
         {
             if (EscapedCharacters.TryGetValue(character, out string? escapedValue))
             {

@@ -1,14 +1,14 @@
 namespace Mermaid.Flowcharts.Links;
 
-public readonly record struct LinkStyle : IMermaidPrintable
+public readonly record struct LinkType : IMermaidPrintable
 {
     public readonly LinkArrowType ArrowType { get; } = LinkArrowType.Arrow;
     public readonly LinkDirection Direction { get; } = LinkDirection.FromTo;
     public readonly LinkThickness Thickness { get; } = LinkThickness.Normal;
 
-    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(LinkStyle)}.")]
-    public LinkStyle() { }
-    private LinkStyle(
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(LinkType)}.")]
+    public LinkType() { }
+    private LinkType(
         LinkArrowType arrowType,
         LinkDirection direction,
         LinkThickness thickness)
@@ -18,7 +18,7 @@ public readonly record struct LinkStyle : IMermaidPrintable
         Thickness = thickness;
     }
 
-    public static LinkStyle Create(LinkArrowType arrowType = LinkArrowType.Arrow, LinkDirection direction = LinkDirection.FromTo, LinkThickness thickness = LinkThickness.Normal)
+    public static LinkType Create(LinkArrowType arrowType = LinkArrowType.Arrow, LinkDirection direction = LinkDirection.FromTo, LinkThickness thickness = LinkThickness.Normal)
         => new(arrowType, direction, thickness);
 
     public override string ToString()
