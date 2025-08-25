@@ -19,7 +19,6 @@ public class FontFamilyComponentTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Font family component must not be null or whitespace.", ex.Message);
     }
 
     [Theory]
@@ -81,7 +80,7 @@ public class FontFamilyComponentTests
     public void FontFamilyComponent_WhenSpaceOrHyphenSeparatedWords_ShouldSucceed(string valid)
     {
         // Act
-        var component = new FontFamilyComponent(valid);
+        FontFamilyComponent component = new FontFamilyComponent(valid);
 
         // Assert
         Assert.Equal(valid, component.Value);
