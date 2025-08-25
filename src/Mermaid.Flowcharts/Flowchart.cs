@@ -1,6 +1,7 @@
 using System.Text;
 using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Styling;
 using Mermaid.Flowcharts.Subgraphs;
 
 namespace Mermaid.Flowcharts;
@@ -14,6 +15,9 @@ public class Flowchart : IMermaidPrintable
     public FlowchartDirection? Direction { get; }
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
+    public IEnumerable<Link> Links => _links.AsReadOnly();
+    public IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
+    public IEnumerable<Link> AllLinks => Links.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllLinks));
 
     public Flowchart(FlowchartDirection? direction = null)
     {
@@ -26,8 +30,11 @@ public class Flowchart : IMermaidPrintable
 
     public Flowchart AddNode(INode node)
     {
-        if (node is Node nd && Nodes.Any(nd.Equals)) return this;
-        
+        if (node is Node nd && Nodes.Any(nd.Equals))
+        {
+            return this;
+        }
+
         _nodes.Add(node);
         return this;
     }
@@ -56,16 +63,86 @@ public class Flowchart : IMermaidPrintable
         {
             flowchartStringBuilder.AppendLine(node.ToMermaidString(indentations + 1, indentationText));
         }
-        if (Subgraphs.Any()) flowchartStringBuilder.AppendLine();
+        if (Subgraphs.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
         foreach (Subgraph subgraph in Subgraphs)
         {
             flowchartStringBuilder.AppendLine(subgraph.ToMermaidString(indentations + 1, indentationText));
         }
-        if (_links.Any()) flowchartStringBuilder.AppendLine();
+        if (_links.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
         foreach (Link link in _links)
         {
             flowchartStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));
         }
+
+        // Group all node styles across flowchart and all subgraphs recursively together
+        Dictionary<NodeStyle, HashSet<NodeIdentifier>> distinctNodeStyles = [];
+        foreach (Node node in AllNodes)
+        {
+            if (node.NodeStyle is null)
+            {
+                continue;
+            }
+
+            // Add node style declaration
+            if (!distinctNodeStyles.TryGetValue(node.NodeStyle, out HashSet<NodeIdentifier>? value))
+            {
+                value = [];
+                distinctNodeStyles[node.NodeStyle] = value;
+            }
+
+            value.Add(node.Id);
+        }
+
+        // Add node style declarations and assignments
+        if (distinctNodeStyles.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
+        foreach ((NodeStyle nodeStyle, HashSet<NodeIdentifier> nodeIds) in distinctNodeStyles)
+        {
+            flowchartStringBuilder.AppendLine(nodeStyle.ToMermaidString(indentations + 1, indentationText));
+            flowchartStringBuilder.AppendLine($"{indentationText.Repeat(indentations + 1)}class {string.Join(',', nodeIds.Select(id => id.ToMermaidString()))} {nodeStyle.Name}");
+        }
+
+        // Group all link styles across flowchart and all subgraphs recursively together
+        Dictionary<StyleClass, HashSet<int>> distinctLinkStyles = [];
+        foreach ((Link link, int index) in AllLinks.Select((l, i) => (l, i)))
+        {
+            if (link.LinkStyle is null)
+            {
+                continue;
+            }
+
+            // Add link style declaration
+            if (!distinctLinkStyles.TryGetValue(link.LinkStyle, out HashSet<int>? value))
+            {
+                value = [];
+                distinctLinkStyles[link.LinkStyle] = value;
+            }
+
+            value.Add(index);
+        }
+
+        // Add link style declarations and assignments
+        if (distinctLinkStyles.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
+        foreach ((StyleClass styleClass, HashSet<int> indices) in distinctLinkStyles)
+        {
+            flowchartStringBuilder.AppendLine($"{indentationText.Repeat(indentations + 1)}linkStyle {string.Join(',', indices)} {styleClass.ToMermaidString()}");
+        }
+
         return flowchartStringBuilder.ToString();
     }
 }

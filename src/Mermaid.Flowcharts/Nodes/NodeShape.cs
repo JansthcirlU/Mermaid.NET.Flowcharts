@@ -16,4 +16,4 @@ public enum NodeShape
     ParallelogramAlt,
     Trapezoid,
     TrapezoidAlt
-} 
+}

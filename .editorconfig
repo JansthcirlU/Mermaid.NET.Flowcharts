@@ -1,0 +1,33 @@
+root = true
+
+[*.cs]
+# Basic formatting
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# 1. EXPLICIT TYPES (no var anywhere)
+csharp_style_var_for_built_in_types = false:error
+csharp_style_var_when_type_is_apparent = false:error  
+csharp_style_var_elsewhere = false:error
+
+# 2. SIMPLIFIED CONSTRUCTORS (use new() when type is apparent)
+csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
+
+# 3. COLLECTION EXPRESSIONS (use [1, 2, 3] syntax when possible)
+dotnet_style_prefer_collection_expression = true:warning
+
+# Related collection/initializer preferences
+dotnet_style_collection_initializer = true:suggestion
+dotnet_style_object_initializer = true:suggestion
+
+# Modern C# preferences that work well together
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_prefer_braces = true:warning
+csharp_style_prefer_method_group_conversion = true:suggestion
+
+# Code quality
+dotnet_code_quality_unused_parameters = all:warning
+dotnet_remove_unnecessary_suppression_exclusions = none:warning

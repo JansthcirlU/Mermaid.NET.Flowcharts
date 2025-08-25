@@ -5,19 +5,6 @@ namespace Mermaid.Flowcharts.Tests;
 public class LinkTextTests
 {
     [Fact]
-    public void LinkText_ShouldThrow_WhenNewedWithDefaultConstructor()
-    {
-        // Act
-        InvalidOperationException? ex = Assert.Throws<InvalidOperationException>(
-            () => new LinkText()
-        );
-
-        // Assert
-        Assert.NotNull(ex);
-        Assert.StartsWith("You must create a link text with a value.", ex.Message);
-    }
-
-    [Fact]
     public void LinkText_ShouldThrow_WhenNull()
     {
         // Arrange

@@ -117,4 +117,18 @@ public class NodeIdentifierTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void Create_ShouldBeValidGuid()
+    {
+        // Arrange
+        NodeIdentifier id = NodeIdentifier.Create();
+
+        // Act
+        bool parsed = Guid.TryParseExact(id.Value, "D", out Guid guid);
+
+        // Assert
+        Assert.True(parsed);
+        Assert.True(guid != Guid.Empty);
+    }
 }
