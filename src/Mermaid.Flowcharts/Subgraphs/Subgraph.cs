@@ -33,7 +33,7 @@ public record Subgraph : INode<Subgraph>
     public static Subgraph Create<TNodeText>(string identifier, string title, SubgraphDirection? direction = null)
         where TNodeText : INodeText<TNodeText>
         => new(NodeIdentifier.FromString(identifier), TNodeText.FromString(title), direction);
-    
+
     public static Subgraph CreateNew<TNodeText>(TNodeText title, SubgraphDirection? direction = null)
         where TNodeText : INodeText
         => new(NodeIdentifier.Create(), title, direction);
@@ -44,7 +44,10 @@ public record Subgraph : INode<Subgraph>
 
     public Subgraph AddNode(INode node)
     {
-        if (node is Node nd && Nodes.Any(nd.Equals)) return this;
+        if (node is Node nd && Nodes.Any(nd.Equals))
+        {
+            return this;
+        }
 
         _nodes.Add(node);
         return this;
@@ -66,17 +69,29 @@ public record Subgraph : INode<Subgraph>
         StringBuilder subgraphStringBuilder = new();
         string indent = indentationText.Repeat(indentations);
         subgraphStringBuilder.AppendLine($"{indent}subgraph {Id} [\"{Title}\"]");
-        if (Direction is not null) subgraphStringBuilder.AppendLine($"{indent}{indentationText}direction {Direction.Value}");
+        if (Direction is not null)
+        {
+            subgraphStringBuilder.AppendLine($"{indent}{indentationText}direction {Direction.Value}");
+        }
+
         foreach (Node node in Nodes)
         {
             subgraphStringBuilder.AppendLine(node.ToMermaidString(indentations + 1, indentationText));
         }
-        if (Subgraphs.Any()) subgraphStringBuilder.AppendLine();
+        if (Subgraphs.Any())
+        {
+            subgraphStringBuilder.AppendLine();
+        }
+
         foreach (Subgraph subgraph in Subgraphs)
         {
             subgraphStringBuilder.AppendLine(subgraph.ToMermaidString(indentations + 1, indentationText));
         }
-        if (_links.Any()) subgraphStringBuilder.AppendLine();
+        if (_links.Any())
+        {
+            subgraphStringBuilder.AppendLine();
+        }
+
         foreach (Link link in _links)
         {
             subgraphStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));

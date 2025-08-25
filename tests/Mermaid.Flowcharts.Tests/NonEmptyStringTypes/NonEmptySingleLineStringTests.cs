@@ -9,10 +9,10 @@ public class NonEmptySingleLineStringTests
     {
         // Arrange
         NonEmptyString input = new("valid single line");
-        
+
         // Act
         NonEmptySingleLineString result = new(input);
-        
+
         // Assert
         Assert.Equal(input, result.Value);
     }
@@ -22,7 +22,7 @@ public class NonEmptySingleLineStringTests
     {
         // Arrange
         NonEmptyString input = new("line1\nline2");
-        
+
         // Act & Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() => new NonEmptySingleLineString(input));
         Assert.Contains("Non-empty single line string must not contain any newline characters or carriage returns", exception.Message);
@@ -34,7 +34,7 @@ public class NonEmptySingleLineStringTests
     {
         // Arrange
         NonEmptyString input = new("line1\rline2");
-        
+
         // Act & Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() => new NonEmptySingleLineString(input));
         Assert.Contains("Non-empty single line string must not contain any newline characters or carriage returns", exception.Message);
@@ -46,7 +46,7 @@ public class NonEmptySingleLineStringTests
     {
         // Arrange
         NonEmptyString input = new("line1\r\nline2");
-        
+
         // Act & Assert
         ArgumentException exception = Assert.Throws<ArgumentException>(() => new NonEmptySingleLineString(input));
         Assert.Contains("Non-empty single line string must not contain any newline characters or carriage returns", exception.Message);
@@ -69,10 +69,10 @@ public class NonEmptySingleLineStringTests
     {
         // Arrange
         NonEmptySingleLineString nesls = new(new NonEmptyString("test"));
-        
+
         // Act
         string result = nesls;
-        
+
         // Assert
         Assert.Equal("test", result);
     }
@@ -82,10 +82,10 @@ public class NonEmptySingleLineStringTests
     {
         // Arrange
         string input = "test";
-        
+
         // Act
         NonEmptySingleLineString result = input;
-        
+
         // Assert
         Assert.Equal(input, result.Value);
     }
@@ -95,7 +95,7 @@ public class NonEmptySingleLineStringTests
     {
         // This should fail at the NonEmptyString level first
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => 
+        Assert.Throws<ArgumentException>(() =>
         {
             NonEmptySingleLineString result = null!;
         });
@@ -106,7 +106,7 @@ public class NonEmptySingleLineStringTests
     {
         // This should fail at the NonEmptyString level first
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => 
+        Assert.Throws<ArgumentException>(() =>
         {
             NonEmptySingleLineString result = "";
         });
@@ -116,7 +116,7 @@ public class NonEmptySingleLineStringTests
     public void ImplicitConversionFromString_WithNewline_ShouldThrowArgumentException()
     {
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => 
+        Assert.Throws<ArgumentException>(() =>
         {
             NonEmptySingleLineString result = "line1\nline2";
         });
@@ -126,7 +126,7 @@ public class NonEmptySingleLineStringTests
     public void ImplicitConversionFromString_WithCarriageReturn_ShouldThrowArgumentException()
     {
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => 
+        Assert.Throws<ArgumentException>(() =>
         {
             NonEmptySingleLineString result = "line1\rline2";
         });
@@ -137,10 +137,10 @@ public class NonEmptySingleLineStringTests
     {
         // Arrange
         NonEmptySingleLineString nesls = new(new NonEmptyString("test value"));
-        
+
         // Act
         string result = nesls.ToString();
-        
+
         // Assert
         Assert.Equal("test value", result);
     }
@@ -151,7 +151,7 @@ public class NonEmptySingleLineStringTests
         // Arrange
         NonEmptySingleLineString nesls1 = new(new NonEmptyString("same"));
         NonEmptySingleLineString nesls2 = new(new NonEmptyString("same"));
-        
+
         // Act & Assert
         Assert.Equal(nesls1, nesls2);
         Assert.True(nesls1 == nesls2);
@@ -164,7 +164,7 @@ public class NonEmptySingleLineStringTests
         // Arrange
         NonEmptySingleLineString nesls1 = new(new NonEmptyString("different1"));
         NonEmptySingleLineString nesls2 = new(new NonEmptyString("different2"));
-        
+
         // Act & Assert
         Assert.NotEqual(nesls1, nesls2);
         Assert.False(nesls1 == nesls2);
@@ -177,7 +177,7 @@ public class NonEmptySingleLineStringTests
         // Arrange
         NonEmptySingleLineString nesls1 = new(new NonEmptyString("same"));
         NonEmptySingleLineString nesls2 = new(new NonEmptyString("same"));
-        
+
         // Act & Assert
         Assert.Equal(nesls1.GetHashCode(), nesls2.GetHashCode());
     }

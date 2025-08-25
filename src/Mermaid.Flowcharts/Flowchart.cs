@@ -30,7 +30,10 @@ public class Flowchart : IMermaidPrintable
 
     public Flowchart AddNode(INode node)
     {
-        if (node is Node nd && Nodes.Any(nd.Equals)) return this;
+        if (node is Node nd && Nodes.Any(nd.Equals))
+        {
+            return this;
+        }
 
         _nodes.Add(node);
         return this;
@@ -60,12 +63,20 @@ public class Flowchart : IMermaidPrintable
         {
             flowchartStringBuilder.AppendLine(node.ToMermaidString(indentations + 1, indentationText));
         }
-        if (Subgraphs.Any()) flowchartStringBuilder.AppendLine();
+        if (Subgraphs.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
         foreach (Subgraph subgraph in Subgraphs)
         {
             flowchartStringBuilder.AppendLine(subgraph.ToMermaidString(indentations + 1, indentationText));
         }
-        if (_links.Any()) flowchartStringBuilder.AppendLine();
+        if (_links.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
         foreach (Link link in _links)
         {
             flowchartStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));
@@ -75,15 +86,27 @@ public class Flowchart : IMermaidPrintable
         Dictionary<NodeStyle, HashSet<NodeIdentifier>> distinctNodeStyles = [];
         foreach (Node node in AllNodes)
         {
-            if (node.NodeStyle is null) continue;
+            if (node.NodeStyle is null)
+            {
+                continue;
+            }
 
             // Add node style declaration
-            if (!distinctNodeStyles.ContainsKey(node.NodeStyle)) distinctNodeStyles[node.NodeStyle] = [];
-            distinctNodeStyles[node.NodeStyle].Add(node.Id);
+            if (!distinctNodeStyles.TryGetValue(node.NodeStyle, out HashSet<NodeIdentifier>? value))
+            {
+                value = [];
+                distinctNodeStyles[node.NodeStyle] = value;
+            }
+
+            value.Add(node.Id);
         }
 
         // Add node style declarations and assignments
-        if (distinctNodeStyles.Any()) flowchartStringBuilder.AppendLine();
+        if (distinctNodeStyles.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
         foreach ((NodeStyle nodeStyle, HashSet<NodeIdentifier> nodeIds) in distinctNodeStyles)
         {
             flowchartStringBuilder.AppendLine(nodeStyle.ToMermaidString(indentations + 1, indentationText));
@@ -94,15 +117,27 @@ public class Flowchart : IMermaidPrintable
         Dictionary<StyleClass, HashSet<int>> distinctLinkStyles = [];
         foreach ((Link link, int index) in AllLinks.Select((l, i) => (l, i)))
         {
-            if (link.LinkStyle is null) continue;
+            if (link.LinkStyle is null)
+            {
+                continue;
+            }
 
             // Add link style declaration
-            if (!distinctLinkStyles.ContainsKey(link.LinkStyle)) distinctLinkStyles[link.LinkStyle] = [];
-            distinctLinkStyles[link.LinkStyle].Add(index);
+            if (!distinctLinkStyles.TryGetValue(link.LinkStyle, out HashSet<int>? value))
+            {
+                value = [];
+                distinctLinkStyles[link.LinkStyle] = value;
+            }
+
+            value.Add(index);
         }
 
         // Add link style declarations and assignments
-        if (distinctLinkStyles.Any()) flowchartStringBuilder.AppendLine();
+        if (distinctLinkStyles.Any())
+        {
+            flowchartStringBuilder.AppendLine();
+        }
+
         foreach ((StyleClass styleClass, HashSet<int> indices) in distinctLinkStyles)
         {
             flowchartStringBuilder.AppendLine($"{indentationText.Repeat(indentations + 1)}linkStyle {string.Join(',', indices)} {styleClass.ToMermaidString()}");

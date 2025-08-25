@@ -6,5 +6,5 @@ public interface IStyleClassComponent
 }
 public interface IStyleClassComponent<TStyleClassComponent> : IStyleClassComponent, IEquatable<TStyleClassComponent>
 {
-    
+
 }

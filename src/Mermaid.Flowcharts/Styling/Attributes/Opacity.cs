@@ -9,9 +9,20 @@ public readonly record struct Opacity : ICssAttribute
 
     public Opacity(double value)
     {
-        if (double.IsNaN(value)) throw new ArgumentOutOfRangeException(nameof(value), "Opacity must be a real number between 0 and 1.");
-        if (value < 0) throw new ArgumentOutOfRangeException(nameof(value), "Opacity must not be negative.");
-        if (value > 1) throw new ArgumentOutOfRangeException(nameof(value), "Opacity must not be greater than 1.");
+        if (double.IsNaN(value))
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), "Opacity must be a real number between 0 and 1.");
+        }
+
+        if (value < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), "Opacity must not be negative.");
+        }
+
+        if (value > 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), "Opacity must not be greater than 1.");
+        }
 
         Value = value;
     }

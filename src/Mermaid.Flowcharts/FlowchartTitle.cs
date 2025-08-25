@@ -15,10 +15,21 @@ public readonly struct FlowchartTitle : IMermaidPrintable
 
     public static FlowchartTitle FromString(string text)
     {
-        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Flowchart title must not be null or empty.", nameof(text));
-        if (text.Contains('\n') || text.Contains('\r')) throw new ArgumentException("Flowchart title must not contain new lines.", nameof(text));
-        if (string.IsNullOrEmpty(text.Trim())) throw new ArgumentException("Flowchart title must not be whitespace.", nameof(text));
-        
+        if (string.IsNullOrEmpty(text))
+        {
+            throw new ArgumentException("Flowchart title must not be null or empty.", nameof(text));
+        }
+
+        if (text.Contains('\n') || text.Contains('\r'))
+        {
+            throw new ArgumentException("Flowchart title must not contain new lines.", nameof(text));
+        }
+
+        if (string.IsNullOrEmpty(text.Trim()))
+        {
+            throw new ArgumentException("Flowchart title must not be whitespace.", nameof(text));
+        }
+
         return new(
         $"""
         ---

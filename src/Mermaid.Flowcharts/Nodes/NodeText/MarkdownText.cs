@@ -23,7 +23,10 @@ public readonly record struct MarkdownText : INodeText<MarkdownText>
 
     public static MarkdownText FromString(string text)
     {
-        if (string.IsNullOrWhiteSpace(text)) return new(text);
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return new(text);
+        }
 
         NonEmptyString nonEmpty = text;
         StringBuilder builder = new();

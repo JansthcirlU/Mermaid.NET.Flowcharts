@@ -14,9 +14,20 @@ public readonly record struct Color(byte Red, byte Green, byte Blue) : ICssAttri
         ArgumentNullException.ThrowIfNull(hex);
 
         string s = ((string)hex).Trim();
-        if (s.Length == 0) throw new ArgumentException("Hex color must not be empty or whitespace.", nameof(hex));
-        if (!s.StartsWith('#')) throw new ArgumentException("Hex color code must start with a #.", nameof(hex));
-        if (s.Length != 4 && s.Length != 7) throw new ArgumentException("Hex color code must be #RGB or #RRGGBB.", nameof(hex));
+        if (s.Length == 0)
+        {
+            throw new ArgumentException("Hex color must not be empty or whitespace.", nameof(hex));
+        }
+
+        if (!s.StartsWith('#'))
+        {
+            throw new ArgumentException("Hex color code must start with a #.", nameof(hex));
+        }
+
+        if (s.Length != 4 && s.Length != 7)
+        {
+            throw new ArgumentException("Hex color code must be #RGB or #RRGGBB.", nameof(hex));
+        }
 
         string r, g, b;
         if (s.Length == 4)

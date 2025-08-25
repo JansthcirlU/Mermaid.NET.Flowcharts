@@ -33,7 +33,10 @@ public readonly record struct LinkType : IMermaidPrintable
             LinkThickness.Invisible => "~~~",
             _ => "---"
         };
-        if (Thickness is LinkThickness.Invisible) return thickness;
+        if (Thickness is LinkThickness.Invisible)
+        {
+            return thickness;
+        }
 
         string arrowLeft = (ArrowType, Direction) switch
         {

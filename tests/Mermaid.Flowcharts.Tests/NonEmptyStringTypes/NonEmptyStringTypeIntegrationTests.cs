@@ -10,10 +10,10 @@ public class NonEmptyStringTypeIntegrationTests
     {
         // Arrange
         NonEmptySingleLineString nesls = new(new NonEmptyString("test"));
-        
+
         // Act
         NonEmptyString nes = nesls.Value;
-        
+
         // Assert
         Assert.Equal("test", nes.Value);
     }
@@ -23,11 +23,11 @@ public class NonEmptyStringTypeIntegrationTests
     {
         // Arrange
         string original = "test string";
-        
+
         // Act - chain conversions
         NonEmptySingleLineString nesls = original;
         string result = nesls;
-        
+
         // Assert
         Assert.Equal(original, result);
     }
@@ -36,12 +36,12 @@ public class NonEmptyStringTypeIntegrationTests
     public void MixedUsageInCollections_ShouldWork()
     {
         // Arrange
-        string[] strings = new[] { "first", "second", "third" };
-        
+        string[] strings = ["first", "second", "third"];
+
         // Act
-        NonEmptyString[] nonEmptyStrings = strings.Select(s => (NonEmptyString)s).ToArray();
-        NonEmptySingleLineString[] singleLineStrings = nonEmptyStrings.Select(nes => new NonEmptySingleLineString(nes)).ToArray();
-        
+        NonEmptyString[] nonEmptyStrings = [.. strings.Select(s => (NonEmptyString)s)];
+        NonEmptySingleLineString[] singleLineStrings = [.. nonEmptyStrings.Select(nes => new NonEmptySingleLineString(nes))];
+
         // Assert
         Assert.Equal(3, singleLineStrings.Length);
         Assert.Equal("first", singleLineStrings[0].Value);

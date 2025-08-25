@@ -13,7 +13,10 @@ public abstract record StrokeWidth : IStyleClassComponent<StrokeWidth>
 
         public LengthStrokeWidth(double width, Unit unit)
         {
-            if (width < 0) throw new ArgumentOutOfRangeException(nameof(width), "Stroke width must not be negative.");
+            if (width < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(width), "Stroke width must not be negative.");
+            }
 
             Width = new(width, unit);
         }
@@ -27,7 +30,10 @@ public abstract record StrokeWidth : IStyleClassComponent<StrokeWidth>
 
         public NumericalStrokeWidth(double width)
         {
-            if (width < 0) throw new ArgumentOutOfRangeException(nameof(width), "Stroke width must not be negative.");
+            if (width < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(width), "Stroke width must not be negative.");
+            }
 
             Width = width;
         }
