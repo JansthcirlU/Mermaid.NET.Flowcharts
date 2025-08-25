@@ -3,7 +3,7 @@ using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
 
-public abstract record StrokeWidth : IStyleClassComponent
+public abstract record StrokeWidth : IStyleClassComponent<StrokeWidth>
 {
     private protected StrokeWidth() { }
 
