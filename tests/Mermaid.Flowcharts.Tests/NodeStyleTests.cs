@@ -8,6 +8,7 @@ namespace Mermaid.Flowcharts.Tests;
 
 public class NodeStyleTests
 {
+    [Fact]
     public void NodeStyles_WhenNameAndValuesAreMemberwiseEqual_ShouldEqual()
     {
         // Arrange (two complete style class definitions)
