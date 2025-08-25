@@ -7,29 +7,31 @@ public record Node : INode<Node>
     public NodeIdentifier Id { get; }
     public INodeText Text { get; }
     public NodeShape Shape { get; }
+    public NodeStyle? NodeStyle { get; }
 
-    private Node(NodeIdentifier id, INodeText text, NodeShape shape)
+    private Node(NodeIdentifier id, INodeText text, NodeShape shape, NodeStyle? nodeStyle)
     {
         Id = id;
         Text = text;
         Shape = shape;
+        NodeStyle = nodeStyle;
     }
 
-    public static Node CreateNew<TNodeText>(string text, NodeShape shape = NodeShape.Rectangle)
+    public static Node CreateNew<TNodeText>(string text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText<TNodeText>
-        => new(NodeIdentifier.Create(), TNodeText.FromString(text), shape);
+        => new(NodeIdentifier.Create(), TNodeText.FromString(text), shape, nodeStyle);
 
-    public static Node Create<TNodeText>(string identifier, string text, NodeShape shape = NodeShape.Rectangle)
+    public static Node Create<TNodeText>(string identifier, string text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText<TNodeText>
-        => new(NodeIdentifier.FromString(identifier), TNodeText.FromString(text), shape);
+        => new(NodeIdentifier.FromString(identifier), TNodeText.FromString(text), shape, nodeStyle);
 
-    public static Node CreateNew<TNodeText>(TNodeText text, NodeShape shape = NodeShape.Rectangle)
+    public static Node CreateNew<TNodeText>(TNodeText text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText
-        => new(NodeIdentifier.Create(), text, shape);
+        => new(NodeIdentifier.Create(), text, shape, nodeStyle);
 
-    public static Node Create<TNodeText>(string identifier, TNodeText text, NodeShape shape = NodeShape.Rectangle)
+    public static Node Create<TNodeText>(string identifier, TNodeText text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText
-        => new(NodeIdentifier.FromString(identifier), text, shape);
+        => new(NodeIdentifier.FromString(identifier), text, shape, nodeStyle);
 
     public override string ToString()
         => ToMermaidString();

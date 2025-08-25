@@ -2,6 +2,7 @@ using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Nodes.NodeText;
 using Mermaid.Flowcharts.Styling;
+using Mermaid.Flowcharts.Styling.Attributes;
 using Mermaid.Flowcharts.Subgraphs;
 
 namespace Mermaid.Flowcharts.Tests;
@@ -202,9 +203,9 @@ public class FlowchartTests
         Flowchart flowchart = new();
         string nodeId = Guid.NewGuid().ToString();
         string nodeText = Guid.NewGuid().ToString();
-        StyleClass nodeStyleClass = new();
+        StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
         NodeStyle nodeStyle = new("customStyle", nodeStyleClass);
-        Node node = Node.Create(nodeId, nodeText, styleClass: nodeStyle);
+        Node node = Node.Create<MermaidUnicodeText>(nodeId, nodeText, nodeStyle: nodeStyle);
         flowchart.AddNode(node);
         string expected =
         $"""
