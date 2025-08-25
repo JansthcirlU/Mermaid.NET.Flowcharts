@@ -7,10 +7,21 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Mermaid.NET.Flowcharts</PackageId>
-    <Version>1.0.0</Version>
+    <PackageId>JansthcirlU.Actors</PackageId>
+    <Version>3.0.0</Version>
     <Authors>Jan Ulrichts</Authors>
-    <Company>Jan Ulrichts</Company>
+    <Company>Ulrichts</Company>
+    <Product>Mermaid Flowchart Library</Product>
+    <Description>A code-first Mermaid Flowchart design library.</Description>
+    <PackageProjectUrl>https://github.com/JansthcirlU/Mermaid.NET.Flowcharts</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JansthcirlU/Mermaid.NET.Flowcharts</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>mermaid;flowchart;designer;.NET;C#</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
