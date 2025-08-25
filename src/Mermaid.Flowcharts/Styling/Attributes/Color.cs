@@ -1,4 +1,5 @@
 using System.Globalization;
+using Mermaid.Flowcharts.NonEmptyStringTypes;
 using Mermaid.Flowcharts.Styling.Attributes.Base;
 
 namespace Mermaid.Flowcharts.Styling.Attributes;
@@ -8,11 +9,11 @@ public readonly record struct Color(byte Red, byte Green, byte Blue) : ICssAttri
     public static Color FromRGB(byte red, byte green, byte blue)
         => new(red, green, blue);
 
-    public static Color FromHex(string hex)
+    public static Color FromHex(NonEmptySingleLineString hex)
     {
         ArgumentNullException.ThrowIfNull(hex);
 
-        string s = hex.Trim();
+        string s = ((string)hex).Trim();
         if (s.Length == 0) throw new ArgumentException("Hex color must not be empty or whitespace.", nameof(hex));
         if (!s.StartsWith('#')) throw new ArgumentException("Hex color code must start with a #.", nameof(hex));
         if (s.Length != 4 && s.Length != 7) throw new ArgumentException("Hex color code must be #RGB or #RRGGBB.", nameof(hex));
