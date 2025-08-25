@@ -1,6 +1,7 @@
 using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Nodes.NodeText;
+using Mermaid.Flowcharts.Styling;
 using Mermaid.Flowcharts.Subgraphs;
 
 namespace Mermaid.Flowcharts.Tests;
@@ -104,7 +105,7 @@ public class FlowchartTests
 
         Link link = Link.Create(node1, node2);
         flowchart.AddLink(link);
-        
+
         string expected =
         $"""
         flowchart TD
@@ -186,7 +187,35 @@ public class FlowchartTests
             {node1Id} ---> {node2Id}
 
         """;
-        
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenOneNodeOneStyle_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        string nodeId = Guid.NewGuid().ToString();
+        string nodeText = Guid.NewGuid().ToString();
+        StyleClass nodeStyleClass = new();
+        NodeStyle nodeStyle = new("customStyle", nodeStyleClass);
+        Node node = Node.Create(nodeId, nodeText, styleClass: nodeStyle);
+        flowchart.AddNode(node);
+        string expected =
+        $"""
+        flowchart LR
+            {nodeId}[{nodeText}]
+
+            classDef customStyle fill:#ff9966
+            class {nodeId} customStyle
+
+        """;
+
         // Act
         string actual = flowchart.ToMermaidString(0, "    ");
 
