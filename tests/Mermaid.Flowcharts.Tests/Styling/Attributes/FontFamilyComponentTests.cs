@@ -80,7 +80,7 @@ public class FontFamilyComponentTests
     public void FontFamilyComponent_WhenSpaceOrHyphenSeparatedWords_ShouldSucceed(string valid)
     {
         // Act
-        FontFamilyComponent component = new FontFamilyComponent(valid);
+        FontFamilyComponent component = new(valid);
 
         // Assert
         Assert.Equal(valid, component.Value);

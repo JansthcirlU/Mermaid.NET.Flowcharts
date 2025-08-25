@@ -9,7 +9,7 @@ public class DashArrayTests
     public static TheoryData<double, Unit, string> LengthData => AttributeValueSeeder.SeedLengthData("stroke-dasharray: ");
     public static TheoryData<double, string> PercentageData => AttributeValueSeeder.SeedPercentageData("stroke-dasharray: ");
     public static TheoryData<double, string> NumericalData => AttributeValueSeeder.SeedNumericalData("stroke-dasharray: ");
-    
+
     [Fact]
     public void DashArray_WhenEmpty_ShouldBeNone()
     {

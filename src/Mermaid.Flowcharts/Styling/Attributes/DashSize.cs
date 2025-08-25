@@ -13,7 +13,10 @@ public abstract record DashSize : IStyleClassComponent<DashSize>
 
         public LengthDashSize(double size, Unit unit)
         {
-            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash length size must not be negative.");
+            if (size < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size), "Dash length size must not be negative.");
+            }
 
             LengthSize = new(size, unit);
         }
@@ -25,7 +28,10 @@ public abstract record DashSize : IStyleClassComponent<DashSize>
 
         public PercentageDashSize(Percentage percentageSize)
         {
-            if (percentageSize.Value < 0) throw new ArgumentOutOfRangeException(nameof(percentageSize), "Dash percentage size must not be negative.");
+            if (percentageSize.Value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(percentageSize), "Dash percentage size must not be negative.");
+            }
 
             PercentageSize = percentageSize;
         }
@@ -37,7 +43,10 @@ public abstract record DashSize : IStyleClassComponent<DashSize>
 
         public NumericalDashSize(double size)
         {
-            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash size must not be negative.");
+            if (size < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size), "Dash size must not be negative.");
+            }
 
             Size = size;
         }

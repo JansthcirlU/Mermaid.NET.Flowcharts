@@ -20,7 +20,7 @@ public class FontFamilyTests
 
         // Act
         string result = fontFamily.ToMermaidString();
-        
+
         // Assert
         Assert.Equal(expected, result);
     }

@@ -9,7 +9,10 @@ public readonly record struct NonEmptySingleLineString
 
     public NonEmptySingleLineString(NonEmptyString value)
     {
-        if (value.Value.AsSpan().IndexOfAny(NewLineSearchValues) > -1) throw new ArgumentException("Non-empty single line string must not contain any newline characters or carriage returns.", nameof(value));
+        if (value.Value.AsSpan().IndexOfAny(NewLineSearchValues) > -1)
+        {
+            throw new ArgumentException("Non-empty single line string must not contain any newline characters or carriage returns.", nameof(value));
+        }
 
         Value = value;
     }

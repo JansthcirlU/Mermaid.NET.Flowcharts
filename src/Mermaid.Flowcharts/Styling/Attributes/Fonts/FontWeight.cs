@@ -14,9 +14,20 @@ public abstract record FontWeight : IStyleClassComponent<FontWeight>
 
         public NumericalFontWeight(double weight)
         {
-            if (double.IsNaN(weight) || double.IsInfinity(weight)) throw new ArgumentOutOfRangeException(nameof(weight), "Font weight must be a real number between 1 and 1000.");
-            if (weight < 1) throw new ArgumentOutOfRangeException(nameof(weight), "Font weight must be at least 1.");
-            if (weight > 1000) throw new ArgumentOutOfRangeException(nameof(weight), "Font weight must be at most 1000.");
+            if (double.IsNaN(weight) || double.IsInfinity(weight))
+            {
+                throw new ArgumentOutOfRangeException(nameof(weight), "Font weight must be a real number between 1 and 1000.");
+            }
+
+            if (weight < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(weight), "Font weight must be at least 1.");
+            }
+
+            if (weight > 1000)
+            {
+                throw new ArgumentOutOfRangeException(nameof(weight), "Font weight must be at most 1000.");
+            }
 
             Weight = weight;
         }

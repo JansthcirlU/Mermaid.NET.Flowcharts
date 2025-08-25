@@ -33,24 +33,74 @@ public record StyleClass(
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
     {
-        if (!GetInstantiatedStyleComponents().Any()) throw new InvalidOperationException("At least one style class element should be set.");
+        if (!GetInstantiatedStyleComponents().Any())
+        {
+            throw new InvalidOperationException("At least one style class element should be set.");
+        }
 
         return $"{indentationText.Repeat(indentations)}{string.Join(',', GetInstantiatedStyleComponents().Select(x => x.ToMermaidString()))}";
     }
 
     private IEnumerable<IStyleClassComponent> GetInstantiatedStyleComponents()
     {
-        if (Fill is not null) yield return Fill;
-        if (Stroke is not null) yield return Stroke;
-        if (StrokeDashArray is not null) yield return StrokeDashArray;
-        if (StrokeDashOffset is not null) yield return StrokeDashOffset;
-        if (StrokeWidth is not null) yield return StrokeWidth;
-        if (StrokeLineCap is not null) yield return StrokeLineCap;
-        if (StrokeLineJoin is not null) yield return StrokeLineJoin;
-        if (Color is not null) yield return Color;
-        if (Opacity is not null) yield return Opacity;
-        if (FontFamily is not null) yield return FontFamily;
-        if (FontSize is not null) yield return FontSize;
-        if (FontWeight is not null) yield return FontWeight;
+        if (Fill is not null)
+        {
+            yield return Fill;
+        }
+
+        if (Stroke is not null)
+        {
+            yield return Stroke;
+        }
+
+        if (StrokeDashArray is not null)
+        {
+            yield return StrokeDashArray;
+        }
+
+        if (StrokeDashOffset is not null)
+        {
+            yield return StrokeDashOffset;
+        }
+
+        if (StrokeWidth is not null)
+        {
+            yield return StrokeWidth;
+        }
+
+        if (StrokeLineCap is not null)
+        {
+            yield return StrokeLineCap;
+        }
+
+        if (StrokeLineJoin is not null)
+        {
+            yield return StrokeLineJoin;
+        }
+
+        if (Color is not null)
+        {
+            yield return Color;
+        }
+
+        if (Opacity is not null)
+        {
+            yield return Opacity;
+        }
+
+        if (FontFamily is not null)
+        {
+            yield return FontFamily;
+        }
+
+        if (FontSize is not null)
+        {
+            yield return FontSize;
+        }
+
+        if (FontWeight is not null)
+        {
+            yield return FontWeight;
+        }
     }
 }

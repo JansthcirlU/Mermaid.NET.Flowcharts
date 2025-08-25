@@ -16,7 +16,10 @@ public abstract record FontSize : IStyleClassComponent<FontSize>
 
         public LengthFontSize(double size, Unit unit)
         {
-            if (double.IsNaN(size) || double.IsInfinity(size)) throw new ArgumentOutOfRangeException(nameof(size), "Font size must be a real and finite number.");
+            if (double.IsNaN(size) || double.IsInfinity(size))
+            {
+                throw new ArgumentOutOfRangeException(nameof(size), "Font size must be a real and finite number.");
+            }
 
             SizeLength = new(size, unit);
         }

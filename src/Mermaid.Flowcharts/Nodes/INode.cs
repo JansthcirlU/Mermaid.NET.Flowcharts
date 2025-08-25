@@ -8,5 +8,5 @@ public interface INode : IMermaidPrintable
 public interface INode<TNode> : INode, IEquatable<TNode>
     where TNode : INode<TNode>
 {
-    
+
 }

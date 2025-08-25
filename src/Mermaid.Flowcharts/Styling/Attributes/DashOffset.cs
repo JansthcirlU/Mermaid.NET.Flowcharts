@@ -13,7 +13,10 @@ public abstract record DashOffset : IStyleClassComponent<DashOffset>
 
         public LengthDashOffset(double size, Unit unit)
         {
-            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash length offset must not be negative.");
+            if (size < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size), "Dash length offset must not be negative.");
+            }
 
             LengthOffset = new(size, unit);
         }
@@ -37,7 +40,10 @@ public abstract record DashOffset : IStyleClassComponent<DashOffset>
 
         public NumericalDashOffset(double size)
         {
-            if (size < 0) throw new ArgumentOutOfRangeException(nameof(size), "Dash offset must not be negative.");
+            if (size < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size), "Dash offset must not be negative.");
+            }
 
             Size = size;
         }

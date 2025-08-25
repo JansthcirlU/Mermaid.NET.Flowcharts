@@ -6,7 +6,10 @@ public readonly record struct NonEmptyString
 
     public NonEmptyString(string value)
     {
-        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Non-empty string must not be null or empty or whitespace.", nameof(value));
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new ArgumentException("Non-empty string must not be null or empty or whitespace.", nameof(value));
+        }
 
         Value = value;
     }

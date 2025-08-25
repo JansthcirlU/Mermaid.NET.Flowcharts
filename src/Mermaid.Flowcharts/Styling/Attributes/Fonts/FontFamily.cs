@@ -8,7 +8,10 @@ public sealed record FontFamily : IStyleClassComponent<FontFamily>
 
     public FontFamily(IEnumerable<FontFamilyComponent> fontFamilyComponents)
     {
-        if (!fontFamilyComponents.Any()) throw new ArgumentException("Font family must contain at least one component.", nameof(fontFamilyComponents));
+        if (!fontFamilyComponents.Any())
+        {
+            throw new ArgumentException("Font family must contain at least one component.", nameof(fontFamilyComponents));
+        }
 
         FontFamilyComponents = [.. fontFamilyComponents];
     }
