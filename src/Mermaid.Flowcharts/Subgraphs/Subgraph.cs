@@ -15,6 +15,7 @@ public record Subgraph : INode<Subgraph>
     public SubgraphDirection? Direction { get; }
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
+    public IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
 
     private Subgraph(NodeIdentifier id, INodeText title, SubgraphDirection? direction = null)
     {

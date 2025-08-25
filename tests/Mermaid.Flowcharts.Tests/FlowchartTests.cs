@@ -209,8 +209,8 @@ public class FlowchartTests
         flowchart.AddNode(node);
         string expected =
         $"""
-        flowchart LR
-            {nodeId}[{nodeText}]
+        flowchart TD
+            {nodeId}["{nodeText}"]
 
             classDef customStyle fill:#ff9966
             class {nodeId} customStyle

@@ -14,6 +14,7 @@ public class Flowchart : IMermaidPrintable
     public FlowchartDirection? Direction { get; }
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
+    public IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
 
     public Flowchart(FlowchartDirection? direction = null)
     {
@@ -27,7 +28,7 @@ public class Flowchart : IMermaidPrintable
     public Flowchart AddNode(INode node)
     {
         if (node is Node nd && Nodes.Any(nd.Equals)) return this;
-        
+
         _nodes.Add(node);
         return this;
     }
@@ -66,6 +67,26 @@ public class Flowchart : IMermaidPrintable
         {
             flowchartStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));
         }
+
+        // Group all node styles across flowchart and all subgraphs recursively together
+        Dictionary<NodeStyle, HashSet<NodeIdentifier>> distinctNodeStyles = [];
+        foreach (Node node in AllNodes)
+        {
+            if (node.NodeStyle is null) continue;
+
+            // Add node style declaration
+            if (!distinctNodeStyles.ContainsKey(node.NodeStyle)) distinctNodeStyles[node.NodeStyle] = [];
+            distinctNodeStyles[node.NodeStyle].Add(node.Id);
+        }
+
+        // Add style declarations and assignments
+        if (distinctNodeStyles.Any()) flowchartStringBuilder.AppendLine();
+        foreach ((NodeStyle nodeStyle, HashSet<NodeIdentifier> nodeIds) in distinctNodeStyles)
+        {
+            flowchartStringBuilder.AppendLine(nodeStyle.ToMermaidString(indentations + 1, indentationText));
+            flowchartStringBuilder.AppendLine($"{indentationText.Repeat(indentations + 1)}class {string.Join(',', nodeIds.Select(id => id.ToMermaidString()))} {nodeStyle.Name}");
+        }
+
         return flowchartStringBuilder.ToString();
     }
 }
