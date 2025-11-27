@@ -35,7 +35,7 @@ public record Node : INode<Node>
 
     public static Node CreateNew(string text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
         => CreateNew<MermaidUnicodeText>(text, shape, nodeStyle);
-    
+
     public static Node Create(string identifier, string text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
         => Create<MermaidUnicodeText>(identifier, text, shape, nodeStyle);
 
