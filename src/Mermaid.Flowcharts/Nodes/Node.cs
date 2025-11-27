@@ -33,6 +33,12 @@ public record Node : INode<Node>
         where TNodeText : INodeText
         => new(NodeIdentifier.FromString(identifier), text, shape, nodeStyle);
 
+    public static Node CreateNew(string text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
+        => CreateNew<MermaidUnicodeText>(text, shape, nodeStyle);
+
+    public static Node Create(string identifier, string text, NodeShape shape = NodeShape.Rectangle, NodeStyle? nodeStyle = null)
+        => Create<MermaidUnicodeText>(identifier, text, shape, nodeStyle);
+
     public override string ToString()
         => ToMermaidString();
 

@@ -116,4 +116,31 @@ public class NodeTests
         Assert.True(parsed);
         Assert.True(guid != Guid.Empty);
     }
+
+    [Fact]
+    public void CreateNew_WhenNonGeneric_ShouldHaveGuidIdentifier()
+    {
+        // Arrange
+        Node node = Node.CreateNew("text");
+
+        // Act
+        bool parsed = Guid.TryParseExact(node.Id.Value, "D", out Guid guid);
+
+        // Assert
+        Assert.True(parsed);
+        Assert.True(guid != Guid.Empty);
+    }
+
+    [Fact]
+    public void Create_WhenNonGeneric_ShouldBeUnicode()
+    {
+        // Arrange
+        Node node = Node.Create("A", "a");
+
+        // Act
+        INodeText text = node.Text;
+
+        // Assert
+        Assert.True(text is MermaidUnicodeText);
+    }
 }
