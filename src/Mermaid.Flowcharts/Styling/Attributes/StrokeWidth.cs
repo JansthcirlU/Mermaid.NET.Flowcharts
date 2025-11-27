@@ -51,6 +51,7 @@ public abstract record StrokeWidth : IStyleClassComponent<StrokeWidth>
         {
             LengthStrokeWidth lsw => lsw.Width.ToCss(),
             PercentageStrokeWidth psw => psw.PercentageWidth.ToNumericalString(),
-            NumericalStrokeWidth nsw => nsw.Width.ToNumberString()
+            NumericalStrokeWidth nsw => nsw.Width.ToNumberString(),
+            _ => throw new NotImplementedException($"Cannot convert unsupported {nameof(StrokeWidth)} subtype to Mermaid string: {GetType().Name}.")
         };
 }

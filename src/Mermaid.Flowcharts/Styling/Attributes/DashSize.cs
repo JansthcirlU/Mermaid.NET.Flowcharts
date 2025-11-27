@@ -61,6 +61,7 @@ public abstract record DashSize : IStyleClassComponent<DashSize>
         {
             LengthDashSize lds => lds.LengthSize.ToCss(),
             PercentageDashSize pds => pds.PercentageSize.ToNumericalString(),
-            NumericalDashSize nds => nds.Size.ToNumberString()
+            NumericalDashSize nds => nds.Size.ToNumberString(),
+            _ => throw new NotImplementedException($"Cannot convert unsupported {nameof(DashSize)} subtype to Mermaid string: {GetType().Name}.")
         };
 }
