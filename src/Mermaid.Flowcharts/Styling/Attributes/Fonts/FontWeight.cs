@@ -43,6 +43,7 @@ public abstract record FontWeight : IStyleClassComponent<FontWeight>
         => this switch
         {
             RelativeFontWeight rfw => rfw.Weight.ToFontWeightTypeString(),
-            NumericalFontWeight nfw => nfw.Weight.ToNumberString()
+            NumericalFontWeight nfw => nfw.Weight.ToNumberString(),
+            _ => throw new NotImplementedException($"Cannot convert unsupported {nameof(FontWeight)} subtype to Mermaid string: {GetType().Name}.")
         };
 }

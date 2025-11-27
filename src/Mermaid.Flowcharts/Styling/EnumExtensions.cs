@@ -15,6 +15,10 @@ public static class EnumExtensions
             AbsoluteSize.XLarge => "x-large",
             AbsoluteSize.XxLarge => "xx-large",
             AbsoluteSize.XxxLarge => "xxx-large",
+            _ => throw new ArgumentOutOfRangeException(
+                    nameof(absoluteSize),
+                    absoluteSize,
+                    $"Unsupported {nameof(AbsoluteSize)} value: {absoluteSize}.")
         };
 
     public static string ToRelativeSizeString(this RelativeSize relativeSize)
@@ -22,6 +26,10 @@ public static class EnumExtensions
         {
             RelativeSize.Larger => "larger",
             RelativeSize.Smaller => "smaller",
+            _ => throw new ArgumentOutOfRangeException(
+                    nameof(relativeSize),
+                    relativeSize,
+                    $"Unsupported {nameof(RelativeSize)} value: {relativeSize}.")
         };
 
     public static string ToFontWeightTypeString(this FontWeightType fontWeight)
@@ -31,6 +39,10 @@ public static class EnumExtensions
             FontWeightType.Bold => "bold",
             FontWeightType.Bolder => "bolder",
             FontWeightType.Lighter => "lighter",
+            _ => throw new ArgumentOutOfRangeException(
+                    nameof(fontWeight),
+                    fontWeight,
+                    $"Unsupported {nameof(FontWeightType)} value: {fontWeight}.")
         };
 
     public static string ToStrokeLineCapTypeString(this StrokeLineCapType strokeLineCapType)
@@ -39,6 +51,10 @@ public static class EnumExtensions
             StrokeLineCapType.Butt => "butt",
             StrokeLineCapType.Round => "round",
             StrokeLineCapType.Square => "square",
+            _ => throw new ArgumentOutOfRangeException(
+                    nameof(strokeLineCapType),
+                    strokeLineCapType,
+                    $"Unsupported {nameof(StrokeLineCapType)} value: {strokeLineCapType}.")
         };
 
     public static string ToStrokeLineJoinTypeString(this StrokeLineJoinType strokeLineJoinType)
@@ -49,6 +65,10 @@ public static class EnumExtensions
             StrokeLineJoinType.Bevel => "bevel",
             StrokeLineJoinType.MiterClip => "miter-clip",
             StrokeLineJoinType.Round => "round",
+            _ => throw new ArgumentOutOfRangeException(
+                    nameof(strokeLineJoinType),
+                    strokeLineJoinType,
+                    $"Unsupported {nameof(StrokeLineJoinType)} value: {strokeLineJoinType}.")
         };
 
     public static string ToUnitString(this Unit unit)
@@ -68,5 +88,9 @@ public static class EnumExtensions
             Unit.Mm => "mm",
             Unit.Cm => "cm",
             Unit.In => "in",
+            _ => throw new ArgumentOutOfRangeException(
+                    nameof(unit),
+                    unit,
+                    $"Unsupported {nameof(Unit)} value: {unit}.")
         };
 }

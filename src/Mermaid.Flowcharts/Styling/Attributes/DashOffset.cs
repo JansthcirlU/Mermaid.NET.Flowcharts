@@ -61,6 +61,7 @@ public abstract record DashOffset : IStyleClassComponent<DashOffset>
         {
             LengthDashOffset ldo => ldo.LengthOffset.ToCss(),
             PercentageDashOffset pdo => pdo.PercentageOffset.ToNumericalString(),
-            NumericalDashOffset ndo => ndo.Size.ToNumberString()
+            NumericalDashOffset ndo => ndo.Size.ToNumberString(),
+            _ => throw new NotImplementedException($"Cannot convert unsupported {nameof(DashOffset)} subtype to Mermaid string: {GetType().Name}.")
         };
 }

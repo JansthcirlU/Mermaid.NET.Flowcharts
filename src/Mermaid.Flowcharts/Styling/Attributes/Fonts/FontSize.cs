@@ -39,6 +39,7 @@ public abstract record FontSize : IStyleClassComponent<FontSize>
             AbsoluteFontSize afs => afs.Size.ToAbsoluteSizeString(),
             RelativeFontSize rfs => rfs.Size.ToRelativeSizeString(),
             PercentageFontSize pfs => pfs.SizePercentage.ToNumericalString(),
-            LengthFontSize lfs => lfs.SizeLength.ToCss()
+            LengthFontSize lfs => lfs.SizeLength.ToCss(),
+            _ => throw new NotImplementedException($"Cannot convert unsupported {nameof(FontSize)} subtype to Mermaid string: {GetType().Name}.")
         };
 }
