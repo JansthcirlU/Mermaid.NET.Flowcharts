@@ -640,4 +640,110 @@ public class FlowchartTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void Flowchart_WhenNestedLinksParentToChild_ShouldNotAddDuplicateNodes()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        Node flowchartNode = Node.Create("n", "Inside flowchart");
+        Subgraph subgraph = Subgraph.Create("sg", "Subgraph");
+        Node subgraphNode = Node.Create("sgn", "Inside subgraph");
+        Link nToSgn = Link.Create(flowchartNode, subgraphNode);
+        Subgraph subsubgraph = Subgraph.Create("ssg", "Subsubgraph");
+        Node subsubgraphNode = Node.Create("ssgn", "Inside subsubgraph");
+        Link sgnToSsgn = Link.Create(subgraphNode, subsubgraphNode);
+        flowchart
+            .AddNode(flowchartNode)
+            .AddNode(
+                subgraph
+                    .AddNode(subgraphNode)
+                    .AddNode(
+                        subsubgraph
+                            .AddNode(subsubgraphNode)
+                        )
+                )
+            .AddLink(nToSgn)
+            .AddLink(sgnToSsgn);
+        
+        string expected =
+        $"""
+        flowchart TD
+            n["Inside flowchart"]
+
+            subgraph sg ["Subgraph"]
+                sgn["Inside subgraph"]
+
+                subgraph ssg ["Subsubgraph"]
+                    ssgn["Inside subsubgraph"]
+                end
+            end
+
+            n ---> sgn
+            sgn ---> ssgn
+
+        """;
+        
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(
+            expected.ReplaceLineEndings("\n"),
+            actual.ReplaceLineEndings("\n")
+        );
+    }
+
+    [Fact]
+    public void Flowchart_WhenNestedLinksChildToParent_ShouldNotAddDuplicateNodes()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        Node flowchartNode = Node.Create("n", "Inside flowchart");
+        Subgraph subgraph = Subgraph.Create("sg", "Subgraph");
+        Node subgraphNode = Node.Create("sgn", "Inside subgraph");
+        Link sgnToN = Link.Create(subgraphNode, flowchartNode);
+        Subgraph subsubgraph = Subgraph.Create("ssg", "Subsubgraph");
+        Node subsubgraphNode = Node.Create("ssgn", "Inside subsubgraph");
+        Link ssgnToSgn = Link.Create(subsubgraphNode, subgraphNode);
+        flowchart
+            .AddNode(flowchartNode)
+            .AddNode(
+                subgraph
+                    .AddNode(subgraphNode)
+                    .AddLink(sgnToN)
+                    .AddNode(
+                        subsubgraph
+                            .AddNode(subsubgraphNode)
+                            .AddLink(ssgnToSgn)
+                        )
+                );
+        
+        string expected =
+        $"""
+        flowchart TD
+            n["Inside flowchart"]
+
+            subgraph sg ["Subgraph"]
+                sgn["Inside subgraph"]
+
+                subgraph ssg ["Subsubgraph"]
+                    ssgn["Inside subsubgraph"]
+                end
+            end
+
+            sgn ---> n
+            ssgn ---> sgn
+
+        """;
+        
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(
+            expected.ReplaceLineEndings("\n"),
+            actual.ReplaceLineEndings("\n")
+        );
+    }
 }
