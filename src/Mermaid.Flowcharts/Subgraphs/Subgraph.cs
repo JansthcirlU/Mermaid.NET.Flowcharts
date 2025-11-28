@@ -44,7 +44,7 @@ public record Subgraph : INode<Subgraph>
 
     public static Subgraph CreateNew(string title, SubgraphDirection? direction = null)
         => CreateNew<MermaidUnicodeText>(title, direction);
-    
+
     public static Subgraph Create(string identifier, string title, SubgraphDirection? direction = null)
         => Create<MermaidUnicodeText>(identifier, title, direction);
 
