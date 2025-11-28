@@ -16,6 +16,7 @@ public class Flowchart : IMermaidPrintable
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
     public IEnumerable<Link> Links => _links.AsReadOnly();
+    public IEnumerable<INode> AllNodeChildren => _nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodeChildren));
     public IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
     public IEnumerable<Link> AllLinks => Links.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllLinks));
 
@@ -41,10 +42,12 @@ public class Flowchart : IMermaidPrintable
 
     public Flowchart AddLink(Link link)
     {
-        _links.Add(link);
-        AddNode(link.Source);
-        AddNode(link.Destination);
-        return this;
+        if (AllNodeChildren.Any(link.Source.Equals) && AllNodeChildren.Any(link.Destination.Equals))
+        {
+            _links.Add(link);
+            return this;
+        }
+        throw new InvalidOperationException("Cannot add link to flowchart: the source and the destination nodes should both be present within the flowchart.");
     }
 
     public override string ToString()

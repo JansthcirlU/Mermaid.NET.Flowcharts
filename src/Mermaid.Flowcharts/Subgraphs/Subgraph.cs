@@ -16,6 +16,7 @@ public record Subgraph : INode<Subgraph>
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
     public IEnumerable<Link> Links => _links.AsReadOnly();
+    public IEnumerable<INode> AllNodeChildren => _nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph._nodes));
     public IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
     public IEnumerable<Link> AllLinks => Links.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllLinks));
 
@@ -50,6 +51,11 @@ public record Subgraph : INode<Subgraph>
 
     public Subgraph AddNode(INode node)
     {
+        if (Equals(node))
+        {
+            throw new ArgumentException("Cannot add subgraph as a node to itself.", nameof(node));
+        }
+
         if (node is Node nd && Nodes.Any(nd.Equals))
         {
             return this;
@@ -61,10 +67,12 @@ public record Subgraph : INode<Subgraph>
 
     public Subgraph AddLink(Link link)
     {
-        _links.Add(link);
-        AddNode(link.Source);
-        AddNode(link.Destination);
-        return this;
+        if (AllNodeChildren.Any(link.Source.Equals) && AllNodeChildren.Any(link.Destination.Equals))
+        {
+            _links.Add(link);
+            return this;
+        }
+        throw new InvalidOperationException("Cannot add link to subgraph: the source and the destination nodes should both be present within the subgraph.");
     }
 
     public override string ToString()
