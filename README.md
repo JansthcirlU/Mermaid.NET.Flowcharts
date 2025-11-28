@@ -34,8 +34,8 @@ Node process = Node.Create("process", "Process Data");
 Node stop = Node.Create("stop", "Stop");
 
 // Create links
-Link startToProcess = new(start, process, default);
-Link processToEnd = new(process, stop, default);
+Link startToProcess = Link.Create(start, process, default);
+Link processToEnd = Link.Create(process, stop, default);
 
 // Add nodes and links to the flowchart
 flowchart
@@ -63,6 +63,71 @@ flowchart TD
   start ---> process
   process ---> stop
 
+```
+
+You can also use `Node.CreateNew(...)` to automatically generate a GUID node ID, but being explicit about identifiers may make your diagrams more readable.
+You can also use the generic `Node.Create<TNodeText>` overload to specify the type of node text to be used.
+By default, using the non-generic overload uses Unicode (`MermaidUnicodeText`) but another option is Markdown (`MarkdownText`).
+
+### Scope of adding links
+
+You may only add links on a flowchart or a subgraph (more about them later) when both link nodes exist within the scope of the flowchart or the subgraph.
+If one of the nodes cannot be found inside the flowchart or subgraph or its nested descendants, then adding the link will fail.
+
+#### Some examples
+
+Adding a link with a newly defined node is technically allowed in Mermaid itself, but using `Mermaid.Net.Flowcharts` you must first add both nodes explicitly.
+
+```cs
+Flowchart flowchart = new();
+Node a = Node.Create("a", "A");
+Node b = Node.Create("b", "B");
+Link ab = Link.Create(a, b);
+
+flowchart
+    .AddNode(a) // Add both a and b!
+    .AddNode(b)
+    .AddLink(ab);
+```
+
+The correct output looks like this:
+
+```diff
+flowchart TD
+  a["A"]
++ b["B"]
+  a ---> b
+```
+
+When defining links that connects a node to nested node, the link must be defined outside to ensure correctness.
+When a node from outside a subgraph is linked inside a subgraph, the node is incorrectly duplicated and treated as a node inside the subgraph.
+
+```cs
+Flowchart flowchart = new();
+Node a = Node.Create("a", "A");
+Subgraph sg = Subgraph.Create("sg", "Subgraph");
+Node b = Node.Create("b", "B");
+Link ab = Link.Create(a, b);
+
+flowchart
+    .AddNode(a)             // Add both a and sg!
+    .AddNode(sg.AddNode(b)) // Add b to the subgraph!
+    .AddLink(ab);
+```
+
+The correct output looks like this:
+
+```diff
+flowchart TD
+  a["A"]
+
+  subgraph sg ["Subgraph"]
+    b["B"]
+
+-   a ---> b
+  end
+
++ a ---> b
 ```
 
 ## Advanced features
@@ -353,8 +418,8 @@ StyleClass linkStyleClass = new(
     StrokeWidth: StrokeWidth.Length(2, Unit.Px));
 
 // Create some links
-Link ab = Link.Create(a, b, linkStyle: linkeStyleClass);
-Link bc = Link.Create(b, c, linkStyle: linkeStyleClass);
+Link ab = Link.Create(a, b, linkStyle: linkStyleClass);
+Link bc = Link.Create(b, c, linkStyle: linkStyleClass);
 
 // Add the nodes and links to the flowchart
 flowchart
