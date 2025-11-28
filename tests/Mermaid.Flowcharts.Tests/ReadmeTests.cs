@@ -325,7 +325,7 @@ public class ReadmeTests
               linkStyle 0,1 stroke:#ff6b6b,stroke-width:2px
 
             """;
-        
+
         // Assert
         Assert.Equal(expected, mermaid);
     }
