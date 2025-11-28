@@ -42,6 +42,12 @@ public record Subgraph : INode<Subgraph>
         where TNodeText : INodeText
         => new(NodeIdentifier.FromString(identifier), title, direction);
 
+    public static Subgraph CreateNew(string title, SubgraphDirection? direction = null)
+        => CreateNew<MermaidUnicodeText>(title, direction);
+    
+    public static Subgraph Create(string identifier, string title, SubgraphDirection? direction = null)
+        => Create<MermaidUnicodeText>(identifier, title, direction);
+
     public Subgraph AddNode(INode node)
     {
         if (node is Node nd && Nodes.Any(nd.Equals))

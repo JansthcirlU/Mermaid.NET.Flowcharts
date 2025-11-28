@@ -309,4 +309,32 @@ public class SubgraphTests
         // Assert
         Assert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void CreateNew_WhenNonGeneric_ShouldHaveGuidIdentifier()
+    {
+        // Arrange
+        Subgraph subgraph = Subgraph.CreateNew("text");
+
+        // Act
+        bool parsed = Guid.TryParseExact(subgraph.Id.Value, "D", out Guid guid);
+
+        // Assert
+        Assert.True(parsed);
+        Assert.True(guid != Guid.Empty);
+    }
+
+    [Fact]
+    public void Create_WhenNonGeneric_ShouldBeUnicode()
+    {
+        // Arrange
+        Subgraph subgraph = Subgraph.Create("sg", "SG");
+
+        // Act
+        INodeText title = subgraph.Title;
+
+        // Assert
+        Assert.True(title is MermaidUnicodeText);
+        Assert.Equal("SG", title.Value);
+    }
 }
