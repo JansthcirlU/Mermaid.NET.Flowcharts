@@ -34,8 +34,8 @@ Node process = Node.Create("process", "Process Data");
 Node stop = Node.Create("stop", "Stop");
 
 // Create links
-Link startToProcess = new(start, process, default);
-Link processToEnd = new(process, stop, default);
+Link startToProcess = Link.Create(start, process, default);
+Link processToEnd = Link.Create(process, stop, default);
 
 // Add nodes and links to the flowchart
 flowchart
@@ -353,8 +353,8 @@ StyleClass linkStyleClass = new(
     StrokeWidth: StrokeWidth.Length(2, Unit.Px));
 
 // Create some links
-Link ab = Link.Create(a, b, linkStyle: linkeStyleClass);
-Link bc = Link.Create(b, c, linkStyle: linkeStyleClass);
+Link ab = Link.Create(a, b, linkStyle: linkStyleClass);
+Link bc = Link.Create(b, c, linkStyle: linkStyleClass);
 
 // Add the nodes and links to the flowchart
 flowchart
