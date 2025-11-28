@@ -135,12 +135,13 @@ public class NodeTests
     public void Create_WhenNonGeneric_ShouldBeUnicode()
     {
         // Arrange
-        Node node = Node.Create("A", "a");
+        Node node = Node.Create("a", "A");
 
         // Act
         INodeText text = node.Text;
 
         // Assert
         Assert.True(text is MermaidUnicodeText);
+        Assert.Equal("A", text.Value);
     }
 }
