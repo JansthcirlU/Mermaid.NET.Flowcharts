@@ -45,38 +45,102 @@ public class FlowchartTests
     }
 
     [Fact]
-    public void Flowchart_ShouldAddLinkNode_WhenNodesAreNotPartOfSubgraphs()
+    public void Flowchart_WhenLinkNodesExist_ShouldAddLink()
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
-        Node destination = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
-        Link link = Link.Create(source, destination);
+        Node n1 = Node.CreateNew("Node 1");
+        Node n2 = Node.CreateNew("Node 2");
+        Link link = Link.Create(n1, n2);
 
         // Act
-        flowchart.AddLink(link);
-
+        flowchart
+            .AddNode(n1)
+            .AddNode(n2)
+            .AddLink(link);
+        
         // Assert
-        Assert.NotEmpty(flowchart.Nodes);
-        Assert.Equal(2, flowchart.Nodes.Count());
+        Assert.NotEmpty(flowchart.AllNodes);
+        Assert.Equal(2, flowchart.AllNodes.Count());
+        Assert.Single(flowchart.Links);
     }
 
     [Fact]
-    public void Flowchart_ShouldNotAddLinkNode_WhenLinkNodesAlreadyExist()
+    public void Flowchart_WhenLinkNodesAreNestedButExist_ShouldAddLink()
     {
         // Arrange
         Flowchart flowchart = new();
-        Node source = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
-        Node destination = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
-        Link link = Link.Create(source, destination);
+        Subgraph sg1 = Subgraph.CreateNew("Subgraph 1");
+        Node sg1Node = Node.CreateNew("Node 1");
+        Subgraph sg2 = Subgraph.CreateNew("Subgraph 2");
+        Node sg2Node = Node.CreateNew("Node 2");
+        Link link = Link.Create(sg1Node, sg2Node);
 
         // Act
-        flowchart.AddNode(source);
-        flowchart.AddLink(link);
-
+        flowchart
+            .AddNode(sg1.AddNode(sg1Node))
+            .AddNode(sg2.AddNode(sg2Node))
+            .AddLink(link);
+        
         // Assert
-        Assert.NotEmpty(flowchart.Nodes);
-        Assert.Equal(2, flowchart.Nodes.Count());
+        Assert.NotEmpty(flowchart.AllNodes);
+        Assert.Equal(2, flowchart.AllNodes.Count());
+        Assert.Single(flowchart.Links);
+    }
+
+    [Fact]
+    public void Flowchart_WhenLinkNodeIsSubgraphAndExists_ShouldAddLink()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        Node n = Node.CreateNew("n");
+        Subgraph subgraph = Subgraph.CreateNew("Subgraph");
+        Link link = Link.Create(n, subgraph);
+
+        // Act
+        flowchart
+            .AddNode(n)
+            .AddNode(subgraph)
+            .AddLink(link);
+        
+        // Assert
+        Assert.NotEmpty(flowchart.AllNodeChildren);
+        Assert.Equal(2, flowchart.AllNodeChildren.Count());
+        Assert.Single(flowchart.Links);
+    }
+
+    [Fact]
+    public void Flowchart_WhenLinkSourceNotPresent_AddLinkShouldThrow()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        Node source = Node.CreateNew(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
+        Link link = Link.Create(source, destination);
+
+        // Act & Assert
+        flowchart.AddNode(destination); // Forgot to add source
+        InvalidOperationException exception = Assert.Throws<InvalidOperationException>(
+            () => flowchart.AddLink(link)
+        );
+        Assert.Contains("Cannot add link to flowchart: the source and the destination nodes should both be present within the flowchart.", exception.Message);
+    }
+
+    [Fact]
+    public void Flowchart_WhenLinkDestinationNotPresent_AddLinkShouldThrow()
+    {
+        // Arrange
+        Flowchart flowchart = new();
+        Node source = Node.CreateNew(Guid.NewGuid().ToString());
+        Node destination = Node.CreateNew(Guid.NewGuid().ToString());
+        Link link = Link.Create(source, destination);
+
+        // Act & Assert
+        flowchart.AddNode(source); // Forgot to add destination
+        InvalidOperationException exception = Assert.Throws<InvalidOperationException>(
+            () => flowchart.AddLink(link)
+        );
+        Assert.Contains("Cannot add link to flowchart: the source and the destination nodes should both be present within the flowchart.", exception.Message);
     }
 
     [Fact]
@@ -688,10 +752,7 @@ public class FlowchartTests
         string actual = flowchart.ToMermaidString(0, "    ");
 
         // Assert
-        Assert.Equal(
-            expected.ReplaceLineEndings("\n"),
-            actual.ReplaceLineEndings("\n")
-        );
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -711,13 +772,13 @@ public class FlowchartTests
             .AddNode(
                 subgraph
                     .AddNode(subgraphNode)
-                    .AddLink(sgnToN)
                     .AddNode(
                         subsubgraph
                             .AddNode(subsubgraphNode)
-                            .AddLink(ssgnToSgn)
                         )
-                );
+                    .AddLink(ssgnToSgn)
+                )
+            .AddLink(sgnToN);
         
         string expected =
         $"""
@@ -730,10 +791,11 @@ public class FlowchartTests
                 subgraph ssg ["Subsubgraph"]
                     ssgn["Inside subsubgraph"]
                 end
+
+                ssgn ---> sgn
             end
 
             sgn ---> n
-            ssgn ---> sgn
 
         """;
         
@@ -741,9 +803,6 @@ public class FlowchartTests
         string actual = flowchart.ToMermaidString(0, "    ");
 
         // Assert
-        Assert.Equal(
-            expected.ReplaceLineEndings("\n"),
-            actual.ReplaceLineEndings("\n")
-        );
+        Assert.Equal(expected, actual);
     }
 }
