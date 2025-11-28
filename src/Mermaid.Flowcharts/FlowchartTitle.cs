@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Mermaid.Flowcharts;
 
 public readonly struct FlowchartTitle : IMermaidPrintable
@@ -30,17 +32,19 @@ public readonly struct FlowchartTitle : IMermaidPrintable
             throw new ArgumentException("Flowchart title must not be whitespace.", nameof(text));
         }
 
-        return new(
-        $"""
-        ---
-        title: {text}
-        ---
-        """);
+        return new(text);
     }
 
     public override string ToString()
         => ToMermaidString();
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
-        => $"{indentationText.Repeat(indentations)}{Text.Replace("\n", $"\n{indentationText.Repeat(indentations)}")}";
+    {
+        StringBuilder flowchartTitleBuilder = new();
+        flowchartTitleBuilder
+            .AppendLine($"{indentationText.Repeat(indentations)}---")
+            .AppendLine($"{indentationText.Repeat(indentations)}title: {Text}")
+            .Append($"{indentationText.Repeat(indentations)}---");
+        return flowchartTitleBuilder.ToString();
+    }
 }
