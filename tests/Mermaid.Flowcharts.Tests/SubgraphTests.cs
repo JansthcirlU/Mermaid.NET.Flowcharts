@@ -42,38 +42,115 @@ public class SubgraphTests
     }
 
     [Fact]
-    public void Subgraph_ShouldAddLinkNode_WhenNodesAreNotPartOfSubgraphs()
+    public void Subgraph_WhenAddingItselfAsNode_ShouldThrow()
     {
         // Arrange
-        Subgraph subgraph = Subgraph.CreateNew<MermaidUnicodeText>("title");
-        Node source = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
-        Node destination = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
-        Link link = Link.Create(source, destination);
+        Subgraph subgraph = Subgraph.CreateNew("title");
 
-        // Act
-        subgraph.AddLink(link);
-
-        // Assert
-        Assert.NotEmpty(subgraph.Nodes);
-        Assert.Equal(2, subgraph.Nodes.Count());
+        // Act & Assert
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => subgraph.AddNode(subgraph)
+        );
+        Assert.Contains("Cannot add subgraph as a node to itself.", exception.Message);
     }
 
     [Fact]
-    public void Subgraph_ShouldNotAddLinkNode_WhenLinkNodesAlreadyExist()
+    public void Subgraph_WhenLinkNodesExist_ShouldAddLink()
     {
         // Arrange
         Subgraph subgraph = Subgraph.CreateNew<MermaidUnicodeText>("title");
-        Node source = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
-        Node destination = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
+        Node source = Node.CreateNew("n1");
+        Node destination = Node.CreateNew("n2");
         Link link = Link.Create(source, destination);
 
         // Act
-        subgraph.AddNode(source);
-        subgraph.AddLink(link);
+        subgraph
+            .AddNode(source)
+            .AddNode(destination)
+            .AddLink(link);
 
         // Assert
         Assert.NotEmpty(subgraph.Nodes);
         Assert.Equal(2, subgraph.Nodes.Count());
+        Assert.Single(subgraph.Links);
+    }
+
+    [Fact]
+    public void Subgraph_WhenLinkNodesAreNestedButExist_ShouldAddLink()
+    {
+        // Arrange
+        Subgraph subgraph = Subgraph.CreateNew<MermaidUnicodeText>("title");
+        Subgraph ssg1 = Subgraph.CreateNew("Subsubgraph 1");
+        Node ssg1Node = Node.CreateNew("Node 1");
+        Subgraph ssg2 = Subgraph.CreateNew("Subsubgraph 2");
+        Node ssg2Node = Node.CreateNew("Node 2");
+        Link link = Link.Create(ssg1Node, ssg2Node);
+
+        // Act
+        subgraph
+            .AddNode(ssg1.AddNode(ssg1Node))
+            .AddNode(ssg2.AddNode(ssg2Node))
+            .AddLink(link);
+
+        // Assert
+        Assert.NotEmpty(subgraph.AllNodes);
+        Assert.Equal(2, subgraph.AllNodes.Count());
+        Assert.Single(subgraph.Links);
+    }
+
+    [Fact]
+    public void Subgraph_WhenLinkNodeIsSubgraphAndExists_ShouldAddLink()
+    {
+        // Arrange
+        Subgraph subgraph = Subgraph.CreateNew("title");
+        Node n = Node.CreateNew("n");
+        Subgraph subsubgraph = Subgraph.CreateNew("subsubgraph");
+        Link link = Link.Create(n, subsubgraph);
+
+        // Act
+        subgraph
+            .AddNode(n)
+            .AddNode(subsubgraph)
+            .AddLink(link);
+        
+        // Assert
+        Assert.NotEmpty(subgraph.AllNodeChildren);
+        Assert.Equal(2, subgraph.AllNodeChildren.Count());
+        Assert.Single(subgraph.Links);
+    }
+
+    [Fact]
+    public void Subgraph_WhenLinkSourceNotPresent_AddLinkShouldThrow()
+    {
+        // Arrange
+        Subgraph subgraph = Subgraph.CreateNew("title");
+        Node source = Node.CreateNew("source");
+        Node destination = Node.CreateNew("destination");
+        Link link = Link.Create(source, destination);
+
+        // Act & Assert
+        subgraph.AddNode(destination); // Forgot to add source
+        InvalidOperationException exception = Assert.Throws<InvalidOperationException>(
+            () => subgraph.AddLink(link)
+        );
+        Assert.Contains("Cannot add link to subgraph: the source and the destination nodes should both be present within the subgraph.", exception.Message);
+    }
+
+    [Fact]
+    public void Subgraph_WhenLinkDestinationNotPresent_AddLinkShouldThrow()
+    {
+        // Arrange
+        Subgraph subgraph = Subgraph.CreateNew("title");
+        Node source = Node.CreateNew("source");
+        Node destination = Node.CreateNew("destination");
+        Link link = Link.Create(source, destination);
+
+        // Act & Assert
+        subgraph.AddNode(source); // Forgot to add destination
+        InvalidOperationException exception = Assert.Throws<InvalidOperationException>(
+            () => subgraph.AddLink(link)
+        );
+        Assert.Contains("Cannot add link to subgraph: the source and the destination nodes should both be present within the subgraph.", exception.Message);
     }
 
     [Fact]
@@ -93,7 +170,10 @@ public class SubgraphTests
         Node node2 = Node.Create<MermaidUnicodeText>(node2Id, node2Text);
 
         Link link = Link.Create(node1, node2);
-        subgraph.AddLink(link);
+        subgraph
+            .AddNode(node1)
+            .AddNode(node2)
+            .AddLink(link);
 
         string subsubgraphId = Guid.NewGuid().ToString();
         string subsubgraphTitle = Guid.NewGuid().ToString();
@@ -151,10 +231,16 @@ public class SubgraphTests
         Node subnode2 = Node.Create<MermaidUnicodeText>(subnode2Id, subnode2Text);
 
         Link sublink = Link.Create(subnode1, subnode2);
-        subsubgraph.AddLink(sublink);
+        subsubgraph
+            .AddNode(subnode1)
+            .AddNode(subnode2)
+            .AddLink(sublink);
 
         Link link = Link.Create(node, subsubgraph);
-        subgraph.AddLink(link);
+        subgraph
+            .AddNode(node)
+            .AddNode(subsubgraph)
+            .AddLink(link);
 
         string expected =
         $"""
