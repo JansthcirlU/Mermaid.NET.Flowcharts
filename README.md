@@ -1,13 +1,19 @@
 # Mermaid.NET.Flowcharts
 
-A lightweight .NET library for generating Mermaid flowchart markup. This library focuses on the core features of Mermaid flowcharts without unnecessary complexity.
+A lightweight .NET library for generating Mermaid flowchart markup. `Mermaid.NET.Flowcharts` focuses on the core features of Mermaid flowcharts without unnecessary complexity.
 
 ## Features
 
 - Support for all standard Mermaid node shapes
-- Customizable link styles and directions
+- Customizable link types and directions
 - Subgraph support
 - Unicode text support
+- Node styling
+- Link styling
+
+### To be added
+
+- [Mermaid Configuration Schema](https://mermaid.js.org/config/schema-docs/config.html) (partial)
 
 ## Basic Usage
 
@@ -134,10 +140,10 @@ flowchart TD
 
 ```
 
-### Link styles
+### Link types
 
-When creating a link between nodes, you can specify a `LinkStyle`.
-The link style lets you define the *thickness*, the *direction* and the *arrow type* of a link.
+When creating a link between nodes, you can specify a `LinkType`.
+The link type lets you define the *thickness*, the *direction* and the *arrow type* of a link.
 
 ```cs
 using Mermaid.Flowcharts;
@@ -145,14 +151,14 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart
-FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Link styles");
+FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Link types");
 Flowchart flowchart = new(flowchartTitle);
 
 // Create two nodes
 Node a = Node.Create("a", "A");
 Node b = Node.Create("b", "B");
 
-// Create links with specific styles and text
+// Create links with specific types and text
 LinkType arrowLeftToRightNormal = LinkType.Create(LinkArrowType.Arrow, LinkDirection.FromTo, LinkThickness.Normal);
 Link arrowLeftToRightNormalLink = Link.Create(a, b, arrowLeftToRightNormal);
 LinkType circleRightToLeftDotted = LinkType.Create(LinkArrowType.Circle, LinkDirection.ToFrom, LinkThickness.Dotted);
@@ -179,7 +185,7 @@ Will generate the following Mermaid output:
 
 ```mermaid
 ---
-title: Link styles
+title: Link types
 ---
 flowchart TD
   a["A"]
@@ -266,7 +272,7 @@ flowchart TD
 ### Styling
 
 In Mermaid, both nodes and links can be styled using a style class.
-The corresponding type in this library is called `StyleClass`.
+The corresponding type in `Mermaid.NET.Flowcharts` is called `StyleClass`.
 This type wraps some common style attributes, such as:
 - fill color
 - stroke color
