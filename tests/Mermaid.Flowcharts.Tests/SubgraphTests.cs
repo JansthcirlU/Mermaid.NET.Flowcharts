@@ -112,7 +112,7 @@ public class SubgraphTests
             .AddNode(n)
             .AddNode(subsubgraph)
             .AddLink(link);
-        
+
         // Assert
         Assert.NotEmpty(subgraph.AllNodeChildren);
         Assert.Equal(2, subgraph.AllNodeChildren.Count());

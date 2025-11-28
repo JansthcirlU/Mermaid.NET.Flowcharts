@@ -58,7 +58,7 @@ public class FlowchartTests
             .AddNode(n1)
             .AddNode(n2)
             .AddLink(link);
-        
+
         // Assert
         Assert.NotEmpty(flowchart.AllNodes);
         Assert.Equal(2, flowchart.AllNodes.Count());
@@ -81,7 +81,7 @@ public class FlowchartTests
             .AddNode(sg1.AddNode(sg1Node))
             .AddNode(sg2.AddNode(sg2Node))
             .AddLink(link);
-        
+
         // Assert
         Assert.NotEmpty(flowchart.AllNodes);
         Assert.Equal(2, flowchart.AllNodes.Count());
@@ -102,7 +102,7 @@ public class FlowchartTests
             .AddNode(n)
             .AddNode(subgraph)
             .AddLink(link);
-        
+
         // Assert
         Assert.NotEmpty(flowchart.AllNodeChildren);
         Assert.Equal(2, flowchart.AllNodeChildren.Count());
@@ -729,7 +729,7 @@ public class FlowchartTests
                 )
             .AddLink(nToSgn)
             .AddLink(sgnToSsgn);
-        
+
         string expected =
         $"""
         flowchart TD
@@ -747,7 +747,7 @@ public class FlowchartTests
             sgn ---> ssgn
 
         """;
-        
+
         // Act
         string actual = flowchart.ToMermaidString(0, "    ");
 
@@ -779,7 +779,7 @@ public class FlowchartTests
                     .AddLink(ssgnToSgn)
                 )
             .AddLink(sgnToN);
-        
+
         string expected =
         $"""
         flowchart TD
@@ -798,7 +798,7 @@ public class FlowchartTests
             sgn ---> n
 
         """;
-        
+
         // Act
         string actual = flowchart.ToMermaidString(0, "    ");
 
