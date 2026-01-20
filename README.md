@@ -259,7 +259,7 @@ flowchart TD
   a ---> b
   a o-.- b
   a x===x b
-  a ---|link text| b
+  a ---|"link text"| b
 
 ```
 
