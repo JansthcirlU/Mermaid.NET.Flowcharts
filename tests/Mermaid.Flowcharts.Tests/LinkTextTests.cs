@@ -17,7 +17,7 @@ public class LinkTextTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Link text must not be null or empty.", ex.Message);
+        Assert.StartsWith("Non-empty string must not be null or empty or whitespace.", ex.Message);
     }
 
     [Fact]
@@ -33,49 +33,38 @@ public class LinkTextTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Link text must not be null or empty.", ex.Message);
+        Assert.StartsWith("Non-empty string must not be null or empty or whitespace.", ex.Message);
     }
 
     [Theory]
-    [InlineData("\n")]
-    [InlineData("\r")]
-    public void LinkText_ShouldThrow_WhenNewline(string newline)
-    {
-        // Arrange
-        string text = newline;
+    [InlineData("text", 2, "  ", "text")]
+    [InlineData("mermaid is fun", 1, " ", "mermaid is fun")]
+    [InlineData("text with () parentheses", 2, "  ", "text with () parentheses")]
+    [InlineData(
+        """
+        text with
+            new line
+        """, 2, "  ",
+        """
+        text with
+            new line
+        """)]
+    [InlineData("text with <br><br> two line breaks", 1, "  ", "text with <br><br> two line breaks")]
+    [InlineData(
+        """
+        text 
+        <br>
 
-        // Act
-        ArgumentException? ex = Assert.Throws<ArgumentException>(
-            () => LinkText.FromString(text)
-        );
+        <br/> with newlines
+        """, 3, "   ",
+        """
+        text 
+        <br>
 
-        // Assert
-        Assert.NotNull(ex);
-        Assert.StartsWith("Link text must not contain new lines.", ex.Message);
-    }
-
-    [Theory]
-    [InlineData("\"")]
-    [InlineData("|")]
-    public void LinkText_ShouldThrow_WhenContainsEscapeCharacter(string escapeCharacter)
-    {
-        // Arrange
-        string text = escapeCharacter;
-
-        // Act
-        ArgumentException? ex = Assert.Throws<ArgumentException>(
-            () => LinkText.FromString(text)
-        );
-
-        // Assert
-        Assert.NotNull(ex);
-        Assert.StartsWith($"Link text must not contain illegal character \"{escapeCharacter}\".", ex.Message);
-    }
-
-    [Theory]
-    [InlineData("text", 2, "  ", "    text")]
-    [InlineData("mermaid is fun", 1, " ", " mermaid is fun")]
-    public void ToMermaidString_WhenIndentations(string text, int indentations, string indentationText, string expected)
+        <br> with newlines
+        """
+    )]
+    public void ToMermaidString_ShouldIgnoreIndentationsAndAlwaysEscape(string text, int indentations, string indentationText, string expected)
     {
         // Arrange
         LinkText linkText = LinkText.FromString(text);
