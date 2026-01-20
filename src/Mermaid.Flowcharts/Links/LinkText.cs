@@ -38,7 +38,7 @@ public readonly partial record struct LinkText : IMermaidPrintable
         string[] segments = MermaidAcceptedHtmlLineBreaks.Split(value.ReplaceLineEndings());
 
         StringBuilder builder = new();
-        
+
         for (int i = 0; i < segments.Length; i++)
         {
             // Escape illegal characters
@@ -53,14 +53,14 @@ public readonly partial record struct LinkText : IMermaidPrintable
                     builder.Append(character);
                 }
             }
-            
+
             // Add <br> separator if not the last segment
             if (i < segments.Length - 1)
             {
                 builder.Append("<br>");
             }
         }
-        
+
         return new(builder.ToString());
     }
 
@@ -69,7 +69,7 @@ public readonly partial record struct LinkText : IMermaidPrintable
 
     public string ToMermaidString(int indentations = 0, string indentationText = "  ")
         => Value;
-    
+
     [GeneratedRegex(@"<\/?br\s*\/*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
     private static partial Regex MermaidAcceptedHtmlLineBreaksRegex();
 }
