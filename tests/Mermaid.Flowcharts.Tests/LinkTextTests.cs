@@ -17,7 +17,7 @@ public class LinkTextTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Link text must not be null or empty.", ex.Message);
+        Assert.StartsWith("Non-empty string must not be null or empty or whitespace.", ex.Message);
     }
 
     [Fact]
@@ -33,22 +33,37 @@ public class LinkTextTests
 
         // Assert
         Assert.NotNull(ex);
-        Assert.StartsWith("Link text must not be null or empty.", ex.Message);
+        Assert.StartsWith("Non-empty string must not be null or empty or whitespace.", ex.Message);
     }
 
     [Theory]
-    [InlineData("text", 2, "  ", "\"text\"")]
-    [InlineData("mermaid is fun", 1, " ", "\"mermaid is fun\"")]
-    [InlineData("text with () parentheses", 2, "  ", "\"text with () parentheses\"")]
+    [InlineData("text", 2, "  ", "text")]
+    [InlineData("mermaid is fun", 1, " ", "mermaid is fun")]
+    [InlineData("text with () parentheses", 2, "  ", "text with () parentheses")]
     [InlineData(
         """
         text with
             new line
         """, 2, "  ",
         """
-        "text with
-            new line"
+        text with
+            new line
         """)]
+    [InlineData("text with <br><br> two line breaks", 1, "  ", "text with <br><br> two line breaks")]
+    [InlineData(
+        """
+        text 
+        <br>
+
+        <br/> with newlines
+        """, 3, "   ",
+        """
+        text 
+        <br>
+
+        <br> with newlines
+        """
+    )]
     public void ToMermaidString_ShouldIgnoreIndentationsAndAlwaysEscape(string text, int indentations, string indentationText, string expected)
     {
         // Arrange
