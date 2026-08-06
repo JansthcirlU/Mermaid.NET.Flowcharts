@@ -27,7 +27,7 @@ public abstract record FontSize : IStyleClassComponent<FontSize>
 
     public static AbsoluteFontSize Absolute(AbsoluteSize size) => new(size);
     public static RelativeFontSize Relative(RelativeSize size) => new(size);
-    public static PercentageFontSize Percentage(Percentage sizePercentage) => new(sizePercentage);
+    public static PercentageFontSize Percentage(double sizePercentage) => new(Numerical.Percentage.FromDouble(sizePercentage));
     public static LengthFontSize Length(double size, Unit unit) => new(size, unit);
 
     public string ToMermaidString()

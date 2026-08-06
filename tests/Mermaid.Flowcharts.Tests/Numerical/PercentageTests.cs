@@ -13,7 +13,7 @@ public class PercentageTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new Percentage(invalid)
+            () => Percentage.FromDouble(invalid)
         );
 
         // Assert
@@ -28,7 +28,7 @@ public class PercentageTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new Percentage(negative)
+            () => Percentage.FromDouble(negative)
         );
 
         // Assert
@@ -44,7 +44,7 @@ public class PercentageTests
     public void Percentage_ShouldRoundToThreeDecimals(double value, string output)
     {
         // Arrange
-        Percentage percentage = new(value);
+        Percentage percentage = Percentage.FromDouble(value);
 
         // Act
         string percentageString = percentage.ToNumericalString();

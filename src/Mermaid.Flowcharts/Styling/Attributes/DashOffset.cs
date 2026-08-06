@@ -50,7 +50,7 @@ public abstract record DashOffset : IStyleClassComponent<DashOffset>
     }
 
     public static LengthDashOffset Length(double size, Unit unit) => new(size, unit);
-    public static PercentageDashOffset Percentage(Percentage percentageOffset) => new(percentageOffset);
+    public static PercentageDashOffset Percentage(double percentageOffset) => new(Numerical.Percentage.FromDouble(percentageOffset));
     public static NumericalDashOffset Number(double size) => new(size);
 
     public string ToMermaidString()
