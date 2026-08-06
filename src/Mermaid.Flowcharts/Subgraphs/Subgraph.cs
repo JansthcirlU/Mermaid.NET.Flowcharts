@@ -9,6 +9,8 @@ public record Subgraph : INode<Subgraph>
 {
     private readonly List<INode> _nodes = [];
     private readonly List<Link> _links = [];
+    internal IEnumerable<INode> AllNodeChildren => _nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodeChildren));
+    internal IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
 
     public NodeIdentifier Id { get; }
     public INodeText Title { get; }
@@ -16,9 +18,6 @@ public record Subgraph : INode<Subgraph>
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
     public IEnumerable<Link> Links => _links.AsReadOnly();
-    public IEnumerable<INode> AllNodeChildren => _nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodeChildren));
-    public IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
-    public IEnumerable<Link> AllLinks => Links.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllLinks));
 
     private Subgraph(NodeIdentifier id, INodeText title, SubgraphDirection? direction = null)
     {
@@ -78,7 +77,7 @@ public record Subgraph : INode<Subgraph>
     public override string ToString()
         => ToMermaidString();
 
-    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
+    internal string ToMermaidStringWithOrderedLinks(int indentations, string indentationText, List<Link> linksInOrderOfOccurrence)
     {
         StringBuilder subgraphStringBuilder = new();
         string indent = indentationText.Repeat(indentations);
@@ -88,10 +87,13 @@ public record Subgraph : INode<Subgraph>
             subgraphStringBuilder.AppendLine($"{indent}{indentationText}direction {Direction.Value}");
         }
 
+        // Add node declarations
         foreach (Node node in Nodes)
         {
             subgraphStringBuilder.AppendLine(node.ToMermaidString(indentations + 1, indentationText));
         }
+
+        // Add subgraph declarations
         if (Subgraphs.Any())
         {
             subgraphStringBuilder.AppendLine();
@@ -99,8 +101,10 @@ public record Subgraph : INode<Subgraph>
 
         foreach (Subgraph subgraph in Subgraphs)
         {
-            subgraphStringBuilder.AppendLine(subgraph.ToMermaidString(indentations + 1, indentationText));
+            subgraphStringBuilder.AppendLine(subgraph.ToMermaidStringWithOrderedLinks(indentations + 1, indentationText, linksInOrderOfOccurrence));
         }
+
+        // Add link declarations
         if (_links.Any())
         {
             subgraphStringBuilder.AppendLine();
@@ -108,9 +112,13 @@ public record Subgraph : INode<Subgraph>
 
         foreach (Link link in _links)
         {
+            linksInOrderOfOccurrence.Add(link);
             subgraphStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));
         }
         subgraphStringBuilder.Append($"{indent}end");
         return subgraphStringBuilder.ToString();
     }
+
+    public string ToMermaidString(int indentations = 0, string indentationText = "  ")
+        => ToMermaidStringWithOrderedLinks(indentations, indentationText, []);
 }
