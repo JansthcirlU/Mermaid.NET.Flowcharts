@@ -14,7 +14,24 @@ on:
       - ready_for_review
 
 jobs:
+  format:
+    name: Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Check formatter rules
+      run: dotnet format --verify-no-changes --verbosity diagnostic
+
   build-and-test:
+    needs: format
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,9 +45,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
-
-    - name: Check formatter rules
-      run: dotnet format --verify-no-changes --verbosity diagnostic
 
     - name: Restore dependencies
       run: dotnet restore
