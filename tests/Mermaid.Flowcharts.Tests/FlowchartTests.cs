@@ -123,7 +123,7 @@ public class FlowchartTests
         InvalidOperationException exception = Assert.Throws<InvalidOperationException>(
             () => flowchart.AddLink(link)
         );
-        Assert.Contains("Cannot add link to flowchart: the source and the destination nodes should both be present within the flowchart.", exception.Message);
+        Assert.Contains("Cannot add link to flowchart: the source node should be present within the flowchart.", exception.Message);
     }
 
     [Fact]
@@ -140,7 +140,7 @@ public class FlowchartTests
         InvalidOperationException exception = Assert.Throws<InvalidOperationException>(
             () => flowchart.AddLink(link)
         );
-        Assert.Contains("Cannot add link to flowchart: the source and the destination nodes should both be present within the flowchart.", exception.Message);
+        Assert.Contains("Cannot add link to flowchart: the destination node should be present within the flowchart.", exception.Message);
     }
 
     [Fact]
@@ -804,5 +804,81 @@ public class FlowchartTests
 
         // Assert
         Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_ShouldLinkToNodeThreeSubgraphLevelsDeep()
+    {
+        Flowchart flowchart = new();
+        Node top = Node.Create("top", "Top");
+        Subgraph outer = Subgraph.Create("outer", "Outer");
+        Subgraph middle = Subgraph.Create("middle", "Middle");
+        Subgraph inner = Subgraph.Create("inner", "Inner");
+        Node deep = Node.Create("deep", "Deep");
+
+        inner.AddNode(deep);
+        middle.AddNode(inner);
+        outer.AddNode(middle);
+        flowchart.AddNode(top).AddNode(outer);
+        flowchart.AddLink(Link.Create(top, deep));
+
+        string expected =
+            """
+            flowchart TD
+                top["Top"]
+
+                subgraph outer ["Outer"]
+
+                    subgraph middle ["Middle"]
+
+                        subgraph inner ["Inner"]
+                            deep["Deep"]
+                        end
+                    end
+                end
+
+                top ---> deep
+
+            """;
+
+        Assert.Equal(expected, flowchart.ToMermaidString(0, "    "));
+    }
+
+    [Fact]
+    public void Subgraph_ShouldLinkToNodeNestedInsideInnerSubgraph()
+    {
+        Flowchart flowchart = new();
+        Node a = Node.Create("a", "A");
+        Subgraph outer = Subgraph.Create("outer", "Outer");
+        Subgraph middle = Subgraph.Create("middle", "Middle");
+        Subgraph inner = Subgraph.Create("inner", "Inner");
+        Node deep = Node.Create("deep", "Deep");
+
+        inner.AddNode(deep);
+        middle.AddNode(inner);
+        outer.AddNode(a).AddNode(middle);
+        flowchart.AddNode(outer);
+        outer.AddLink(Link.Create(a, deep));
+
+        string expected =
+            """
+            flowchart TD
+
+                subgraph outer ["Outer"]
+                    a["A"]
+
+                    subgraph middle ["Middle"]
+
+                        subgraph inner ["Inner"]
+                            deep["Deep"]
+                        end
+                    end
+
+                    a ---> deep
+                end
+
+            """;
+
+        Assert.Equal(expected, flowchart.ToMermaidString(0, "    "));
     }
 }

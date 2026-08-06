@@ -16,7 +16,7 @@ public record Subgraph : INode<Subgraph>
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
     public IEnumerable<Link> Links => _links.AsReadOnly();
-    public IEnumerable<INode> AllNodeChildren => _nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph._nodes));
+    public IEnumerable<INode> AllNodeChildren => _nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodeChildren));
     public IEnumerable<Node> AllNodes => Nodes.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllNodes));
     public IEnumerable<Link> AllLinks => Links.Concat(Subgraphs.SelectMany(subgraph => subgraph.AllLinks));
 
