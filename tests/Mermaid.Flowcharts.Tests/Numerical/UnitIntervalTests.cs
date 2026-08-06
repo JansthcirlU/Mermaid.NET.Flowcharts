@@ -13,7 +13,7 @@ public class UnitIntervalTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new UnitInterval(invalid)
+            () => UnitInterval.FromDouble(invalid)
         );
 
         // Assert
@@ -28,7 +28,7 @@ public class UnitIntervalTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new UnitInterval(negative)
+            () => UnitInterval.FromDouble(negative)
         );
 
         // Assert
@@ -43,7 +43,7 @@ public class UnitIntervalTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new UnitInterval(greaterThanOne)
+            () => UnitInterval.FromDouble(greaterThanOne)
         );
 
         // Assert
@@ -59,7 +59,7 @@ public class UnitIntervalTests
     public void UnitInterval_ShouldRoundToThreeDecimals(double value, string output)
     {
         // Arrange
-        UnitInterval interval = new(value);
+        UnitInterval interval = UnitInterval.FromDouble(value);
 
         // Act
         string intervalString = interval.ToNumericalString();

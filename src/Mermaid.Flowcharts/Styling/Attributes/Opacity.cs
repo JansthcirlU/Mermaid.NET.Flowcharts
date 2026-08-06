@@ -5,9 +5,18 @@ namespace Mermaid.Flowcharts.Styling.Attributes;
 
 public readonly record struct Opacity : ICssAttribute
 {
-    public double Value { get; }
+    public UnitInterval Interval { get; }
 
-    public Opacity(double value)
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Opacity)}.")]
+#pragma warning disable CS8618 // This constructor is never used
+    public Opacity() { }
+#pragma warning restore CS8618
+    private Opacity(UnitInterval value)
+    {
+        Interval = value;
+    }
+
+    public static Opacity FromDouble(double value)
     {
         if (double.IsNaN(value))
         {
@@ -24,11 +33,9 @@ public readonly record struct Opacity : ICssAttribute
             throw new ArgumentOutOfRangeException(nameof(value), "Opacity must not be greater than 1.");
         }
 
-        Value = value;
+        return new(UnitInterval.FromDouble(value));
     }
 
-    public static implicit operator Opacity(double value) => new(value);
-
     public string ToCss()
-        => Value.ToNumberString();
+        => Interval.Value.ToNumberString();
 }
