@@ -4,7 +4,16 @@ public readonly record struct Percentage : INumerical
 {
     public double Value { get; }
 
-    public Percentage(double value)
+    [Obsolete(error: true, message: $"Please use the factory methods instead of the default constructor to create a new {nameof(Percentage)}.")]
+#pragma warning disable CS8618 // This constructor is never used
+    public Percentage() { }
+#pragma warning restore CS8618
+    private Percentage(double value)
+    {
+        Value = value;
+    }
+
+    public static Percentage FromDouble(double value)
     {
         if (double.IsNaN(value) || double.IsInfinity(value))
         {
@@ -12,12 +21,9 @@ public readonly record struct Percentage : INumerical
         }
 
         ArgumentOutOfRangeException.ThrowIfLessThan(value, 0.0, "Percentage must not be negative.");
-
-        Value = value;
+        
+        return new(value);
     }
-
-    public static implicit operator Percentage(double value)
-        => new(value);
 
     public string ToNumericalString()
         => $"{Value.ToNumberString()}%";
