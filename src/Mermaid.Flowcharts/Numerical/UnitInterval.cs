@@ -20,8 +20,15 @@ public readonly record struct UnitInterval : INumerical
             throw new ArgumentOutOfRangeException(nameof(value), "Unit interval must be a real number between 0 and 1.");
         }
 
-        ArgumentOutOfRangeException.ThrowIfLessThan(value, 0.0, "Unit interval should be at least 0.");
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(value, 1.0, "Unit interval should be at most 1.");
+        if (value < 0.0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), "Unit interval should be at least 0.");
+        }
+
+        if (value > 1.0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), "Unit interval should be at most 1.");
+        }
 
         return new(value);
     }

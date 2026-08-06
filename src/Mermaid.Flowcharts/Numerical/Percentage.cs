@@ -20,7 +20,10 @@ public readonly record struct Percentage : INumerical
             throw new ArgumentOutOfRangeException(nameof(value), "Percentage must be a real and finite number.");
         }
 
-        ArgumentOutOfRangeException.ThrowIfLessThan(value, 0.0, "Percentage must not be negative.");
+        if (value < 0.0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), "Percentage must not be negative.");
+        }
 
         return new(value);
     }
