@@ -42,12 +42,18 @@ public class Flowchart : IMermaidPrintable
 
     public Flowchart AddLink(Link link)
     {
-        if (AllNodeChildren.Any(link.Source.Equals) && AllNodeChildren.Any(link.Destination.Equals))
+        if (!AllNodeChildren.Any(link.Source.Equals))
         {
-            _links.Add(link);
-            return this;
+            throw new InvalidOperationException("Cannot add link to flowchart: the source node should be present within the flowchart.");
         }
-        throw new InvalidOperationException("Cannot add link to flowchart: the source and the destination nodes should both be present within the flowchart.");
+
+        if (!AllNodeChildren.Any(link.Destination.Equals))
+        {
+            throw new InvalidOperationException("Cannot add link to flowchart: the destination node should be present within the flowchart.");
+        }
+        
+        _links.Add(link);
+        return this;
     }
 
     public override string ToString()
