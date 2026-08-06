@@ -29,9 +29,10 @@ public readonly record struct MermaidUnicodeText : INodeText<MermaidUnicodeText>
 
     public static MermaidUnicodeText FromString(string text)
     {
-        NonEmptySingleLineString nonEmptySingleLine = text;
+        NonEmptySingleLineString nonEmptySingleLine = NonEmptySingleLineString.FromString(text);
+
         StringBuilder builder = new();
-        foreach (char character in (string)nonEmptySingleLine)
+        foreach (char character in nonEmptySingleLine.AsSpan())
         {
             if (EscapedCharacters.TryGetValue(character, out string? escapedValue))
             {
@@ -42,7 +43,7 @@ public readonly record struct MermaidUnicodeText : INodeText<MermaidUnicodeText>
                 builder.Append(character);
             }
         }
-        return new MermaidUnicodeText(builder.ToString());
+        return new(NonEmptySingleLineString.FromString(builder.ToString()));
     }
 
     public override string ToString()

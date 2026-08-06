@@ -23,15 +23,11 @@ public readonly record struct MarkdownText : INodeText<MarkdownText>
 
     public static MarkdownText FromString(string text)
     {
-        if (string.IsNullOrWhiteSpace(text))
-        {
-            return new(text);
-        }
+        NonEmptyString nonEmpty = NonEmptyString.FromString(text);
 
-        NonEmptyString nonEmpty = text;
         StringBuilder builder = new();
         builder.Append('`');
-        foreach (char character in (string)nonEmpty)
+        foreach (char character in nonEmpty.AsSpan())
         {
             if (EscapedCharacters.TryGetValue(character, out string? escapedValue))
             {
@@ -43,7 +39,7 @@ public readonly record struct MarkdownText : INodeText<MarkdownText>
             }
         }
         builder.Append('`');
-        return new MarkdownText(builder.ToString());
+        return new(NonEmptyString.FromString(builder.ToString()));
     }
 
     public override string ToString()
