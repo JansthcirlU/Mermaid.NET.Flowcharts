@@ -5,7 +5,7 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Styling;
 using Mermaid.Flowcharts.Subgraphs;
 
-[assembly:InternalsVisibleTo("Mermaid.Flowcharts.Tests")]
+[assembly: InternalsVisibleTo("Mermaid.Flowcharts.Tests")]
 namespace Mermaid.Flowcharts;
 
 public class Flowchart : IMermaidPrintable
