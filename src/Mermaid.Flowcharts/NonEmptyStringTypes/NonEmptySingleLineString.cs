@@ -1,5 +1,4 @@
 using System.Buffers;
-using System.Collections;
 
 namespace Mermaid.Flowcharts.NonEmptyStringTypes;
 

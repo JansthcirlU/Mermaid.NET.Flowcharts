@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace Mermaid.Flowcharts.NonEmptyStringTypes;
 
 internal readonly record struct NonEmptyString
