@@ -51,7 +51,7 @@ public class Flowchart : IMermaidPrintable
         {
             throw new InvalidOperationException("Cannot add link to flowchart: the destination node should be present within the flowchart.");
         }
-        
+
         _links.Add(link);
         return this;
     }
