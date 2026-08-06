@@ -11,7 +11,7 @@ public class NonEmptyStringTests
         string input = "valid string";
 
         // Act
-        NonEmptyString result = new(input);
+        NonEmptyString result = NonEmptyString.FromString(input);
 
         // Assert
         Assert.Equal(input, result.Value);
@@ -21,7 +21,7 @@ public class NonEmptyStringTests
     public void Constructor_WithNull_ShouldThrowArgumentException()
     {
         // Act & Assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() => new NonEmptyString(null!));
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => NonEmptyString.FromString(null!));
         Assert.Contains("Non-empty string must not be null or empty", exception.Message);
         Assert.Equal("value", exception.ParamName);
     }
@@ -30,7 +30,7 @@ public class NonEmptyStringTests
     public void Constructor_WithEmptyString_ShouldThrowArgumentException()
     {
         // Act & Assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() => new NonEmptyString(""));
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => NonEmptyString.FromString(""));
         Assert.Contains("Non-empty string must not be null or empty", exception.Message);
         Assert.Equal("value", exception.ParamName);
     }
@@ -45,7 +45,7 @@ public class NonEmptyStringTests
     {
         // Updated: whitespace-only strings should now be rejected
         // Act & Assert
-        ArgumentException exception = Assert.Throws<ArgumentException>(() => new NonEmptyString(whitespace));
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => NonEmptyString.FromString(whitespace));
         Assert.Contains("Non-empty string must not be null or empty", exception.Message);
         Assert.Equal("value", exception.ParamName);
     }
@@ -54,7 +54,7 @@ public class NonEmptyStringTests
     public void ImplicitConversionToString_ShouldReturnValue()
     {
         // Arrange
-        NonEmptyString nes = new("test");
+        NonEmptyString nes = NonEmptyString.FromString("test");
 
         // Act
         string result = nes;
@@ -70,7 +70,7 @@ public class NonEmptyStringTests
         string input = "test";
 
         // Act
-        NonEmptyString result = input;
+        NonEmptyString result = NonEmptyString.FromString(input);
 
         // Assert
         Assert.Equal(input, result.Value);
@@ -82,7 +82,7 @@ public class NonEmptyStringTests
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
         {
-            NonEmptyString result = null!;
+            NonEmptyString result = NonEmptyString.FromString(null!);
         });
     }
 
@@ -92,7 +92,7 @@ public class NonEmptyStringTests
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
         {
-            NonEmptyString result = "";
+            NonEmptyString result = NonEmptyString.FromString("");
         });
     }
 
@@ -100,7 +100,7 @@ public class NonEmptyStringTests
     public void ToString_ShouldReturnValue()
     {
         // Arrange
-        NonEmptyString nes = new("test value");
+        NonEmptyString nes = NonEmptyString.FromString("test value");
 
         // Act
         string result = nes.ToString();
@@ -113,8 +113,8 @@ public class NonEmptyStringTests
     public void Equality_WithSameValue_ShouldBeEqual()
     {
         // Arrange
-        NonEmptyString nes1 = new("same");
-        NonEmptyString nes2 = new("same");
+        NonEmptyString nes1 = NonEmptyString.FromString("same");
+        NonEmptyString nes2 = NonEmptyString.FromString("same");
 
         // Act & Assert
         Assert.Equal(nes1, nes2);
@@ -126,8 +126,8 @@ public class NonEmptyStringTests
     public void Equality_WithDifferentValues_ShouldNotBeEqual()
     {
         // Arrange
-        NonEmptyString nes1 = new("different1");
-        NonEmptyString nes2 = new("different2");
+        NonEmptyString nes1 = NonEmptyString.FromString("different1");
+        NonEmptyString nes2 = NonEmptyString.FromString("different2");
 
         // Act & Assert
         Assert.NotEqual(nes1, nes2);
@@ -139,8 +139,8 @@ public class NonEmptyStringTests
     public void GetHashCode_WithSameValue_ShouldHaveSameHashCode()
     {
         // Arrange
-        NonEmptyString nes1 = new("same");
-        NonEmptyString nes2 = new("same");
+        NonEmptyString nes1 = NonEmptyString.FromString("same");
+        NonEmptyString nes2 = NonEmptyString.FromString("same");
 
         // Act & Assert
         Assert.Equal(nes1.GetHashCode(), nes2.GetHashCode());
