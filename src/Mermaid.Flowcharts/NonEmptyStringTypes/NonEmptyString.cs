@@ -1,6 +1,8 @@
+using System.Collections;
+
 namespace Mermaid.Flowcharts.NonEmptyStringTypes;
 
-public readonly record struct NonEmptyString
+internal readonly record struct NonEmptyString
 {
     private readonly string _value;
     public string Value => _value ?? throw new InvalidOperationException($"{nameof(NonEmptyString)} value must never be null. Make sure you use the {nameof(FromString)} factory method to construct a new {nameof(NonEmptyString)}.");
@@ -14,18 +16,31 @@ public readonly record struct NonEmptyString
         _value = value;
     }
 
-    public static NonEmptyString FromString(string s)
+    public static NonEmptyString FromString(string value)
     {
-        if (string.IsNullOrWhiteSpace(s))
+        if (string.IsNullOrWhiteSpace(value))
         {
-            throw new ArgumentException("Non-empty string must not be null or empty or whitespace.", nameof(s));
+            throw new ArgumentException("Non-empty string must not be null or empty or whitespace.", nameof(value));
         }
 
-        return new(s);
+        return new(value);
     }
+
+    public ReadOnlySpan<char> AsSpan()
+        => Value.AsSpan();
+
+    public bool Contains(char value)
+        => Value.Contains(value);
+
+    public NonEmptyString ReplaceLineEndings(string replacementText = "\n")
+        => FromString(Value.ReplaceLineEndings(replacementText));
+
+    public NonEmptyString Trim()
+        => FromString(Value.Trim());
 
     public static implicit operator string(NonEmptyString nes) => nes.Value;
 
     public override string ToString()
         => Value;
 }
+

@@ -1,8 +1,9 @@
 using System.Buffers;
+using System.Collections;
 
 namespace Mermaid.Flowcharts.NonEmptyStringTypes;
 
-public readonly record struct NonEmptySingleLineString
+internal readonly record struct NonEmptySingleLineString
 {
     public static readonly SearchValues<char> NewLineSearchValues = SearchValues.Create("\n\r\u2028\u2029\u0085");
     public NonEmptyString Value { get; }
@@ -16,16 +17,26 @@ public readonly record struct NonEmptySingleLineString
         Value = value;
     }
 
-    public static NonEmptySingleLineString FromString(string s)
+    public static NonEmptySingleLineString FromString(string value)
     {
-        if (s.AsSpan().IndexOfAny(NewLineSearchValues) > -1)
+        NonEmptyString nonEmpty = NonEmptyString.FromString(value);
+
+        if (nonEmpty.AsSpan().IndexOfAny(NewLineSearchValues) > -1)
         {
-            throw new ArgumentException("Non-empty single line string must not contain any newline characters or carriage returns.", nameof(s));
+            throw new ArgumentException("Non-empty single line string must not contain any newline characters or carriage returns.", nameof(value));
         }
 
-        NonEmptyString nonEmpty = NonEmptyString.FromString(s);
         return new(nonEmpty);
     }
+
+    public ReadOnlySpan<char> AsSpan()
+        => Value.AsSpan();
+
+    public bool Contains(char value)
+        => Value.Contains(value);
+
+    public NonEmptySingleLineString Trim()
+        => FromString(Value.Trim());
 
     public static implicit operator string(NonEmptySingleLineString nesls) => nesls.Value;
 
