@@ -40,7 +40,7 @@ public abstract record StrokeWidth : IStyleClassComponent<StrokeWidth>
     }
 
     public static LengthStrokeWidth Length(double width, Unit unit) => new(width, unit);
-    public static PercentageStrokeWidth Percentage(Percentage percentageWidth) => new(percentageWidth);
+    public static PercentageStrokeWidth Percentage(double percentageWidth) => new(Numerical.Percentage.FromDouble(percentageWidth));
     public static NumericalStrokeWidth Number(double width) => new(width);
 
     public string ToMermaidString()

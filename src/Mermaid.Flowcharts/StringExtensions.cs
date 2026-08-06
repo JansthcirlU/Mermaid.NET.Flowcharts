@@ -1,6 +1,6 @@
 namespace Mermaid.Flowcharts;
 
-public static class StringExtensions
+internal static class StringExtensions
 {
     public static string Repeat(this string text, int count)
     {

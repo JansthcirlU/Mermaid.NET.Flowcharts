@@ -9,7 +9,7 @@ public class OpacityTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new Opacity(double.NaN)
+            () => Opacity.FromDouble(double.NaN)
         );
 
         // Assert
@@ -25,7 +25,7 @@ public class OpacityTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new Opacity(negative)
+            () => Opacity.FromDouble(negative)
         );
 
         // Assert
@@ -41,7 +41,7 @@ public class OpacityTests
     {
         // Act
         ArgumentOutOfRangeException? ex = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new Opacity(greaterThanOne)
+            () => Opacity.FromDouble(greaterThanOne)
         );
 
         // Assert

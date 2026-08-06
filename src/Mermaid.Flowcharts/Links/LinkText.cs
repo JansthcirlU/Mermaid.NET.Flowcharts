@@ -27,12 +27,9 @@ public readonly partial record struct LinkText : IMermaidPrintable
     private LinkText(NonEmptyString text)
         => Value = text;
 
-    public static LinkText FromString(string value)
+    public static LinkText FromString(string text)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return new(value);
-        }
+        NonEmptyString value = NonEmptyString.FromString(text);
 
         // Split on all variations of <br> tags
         string[] segments = MermaidAcceptedHtmlLineBreaks.Split(value.ReplaceLineEndings());
@@ -61,7 +58,7 @@ public readonly partial record struct LinkText : IMermaidPrintable
             }
         }
 
-        return new(builder.ToString());
+        return new(NonEmptyString.FromString(builder.ToString()));
     }
 
     public override string ToString()

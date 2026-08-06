@@ -1,11 +1,9 @@
 using System.Text;
-using System.Runtime.CompilerServices;
 using Mermaid.Flowcharts.Links;
 using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Styling;
 using Mermaid.Flowcharts.Subgraphs;
 
-[assembly: InternalsVisibleTo("Mermaid.Flowcharts.Tests")]
 namespace Mermaid.Flowcharts;
 
 public class Flowchart : IMermaidPrintable

@@ -2,7 +2,7 @@ using Mermaid.Flowcharts.Styling.Attributes.Enums;
 
 namespace Mermaid.Flowcharts.Styling;
 
-public static class EnumExtensions
+internal static class EnumExtensions
 {
     public static string ToAbsoluteSizeString(this AbsoluteSize absoluteSize)
         => absoluteSize switch

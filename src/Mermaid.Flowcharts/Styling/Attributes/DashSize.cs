@@ -53,7 +53,7 @@ public abstract record DashSize : IStyleClassComponent<DashSize>
     }
 
     public static LengthDashSize Length(double size, Unit unit) => new(size, unit);
-    public static PercentageDashSize Percentage(Percentage percentageSize) => new(percentageSize);
+    public static PercentageDashSize Percentage(double percentageSize) => new(Numerical.Percentage.FromDouble(percentageSize));
     public static NumericalDashSize Number(double size) => new(size);
 
     public string ToMermaidString()
