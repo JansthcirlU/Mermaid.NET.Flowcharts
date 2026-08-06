@@ -706,6 +706,153 @@ public class FlowchartTests
     }
 
     [Fact]
+    public void LinkStyleIndices_SubgraphLinkPrecedesFlowchartLink()
+    {
+        Flowchart flowchart = new();
+        Node a = Node.Create("a", "A");
+        Node b = Node.Create("b", "B");
+        Node c = Node.Create("c", "C");
+        Node d = Node.Create("d", "D");
+
+        Subgraph sg = Subgraph.Create("sg", "SG");
+        sg.AddNode(c).AddNode(d);
+        sg.AddLink(Link.Create(c, d, linkStyle: new StyleClass(Stroke: new Stroke(Color.FromHex("#00ff00")))));
+
+        flowchart
+            .AddNode(a)
+            .AddNode(b)
+            .AddNode(sg)
+            .AddLink(Link.Create(a, b, linkStyle: new StyleClass(Stroke: new Stroke(Color.FromHex("#ff0000")))));
+
+        string expected =
+            """
+            flowchart TD
+                a["A"]
+                b["B"]
+
+                subgraph sg ["SG"]
+                    c["C"]
+                    d["D"]
+
+                    c ---> d
+                end
+
+                a ---> b
+
+                linkStyle 0 stroke:#00ff00
+                linkStyle 1 stroke:#ff0000
+
+            """;
+
+        Assert.Equal(expected, flowchart.ToMermaidString(0, "    "));
+    }
+
+    [Fact]
+    public void LinkStyleIndices_SharedStyleAcrossSubgraphs_AndMultipleFlowchartLinks()
+    {
+        Flowchart flowchart = new();
+        Node a = Node.Create("a", "A");
+        Node b = Node.Create("b", "B");
+        Node c = Node.Create("c", "C");
+        Node d = Node.Create("d", "D");
+        Node e = Node.Create("e", "E");
+        Node g = Node.Create("g", "G");
+
+        StyleClass green = new(Stroke: new Stroke(Color.FromHex("#00ff00")));
+
+        Subgraph sg1 = Subgraph.Create("sg1", "SG1");
+        sg1.AddNode(c).AddNode(d);
+        sg1.AddLink(Link.Create(c, d, linkStyle: green));
+
+        Subgraph sg2 = Subgraph.Create("sg2", "SG2");
+        sg2.AddNode(e).AddNode(g);
+        sg2.AddLink(Link.Create(e, g, linkStyle: green));
+
+        flowchart
+            .AddNode(a)
+            .AddNode(b)
+            .AddNode(sg1)
+            .AddNode(sg2)
+            .AddLink(Link.Create(a, b, linkStyle: new StyleClass(Stroke: new Stroke(Color.FromHex("#ff0000")))))
+            .AddLink(Link.Create(b, a, linkStyle: new StyleClass(Stroke: new Stroke(Color.FromHex("#0000ff")))));
+
+        string expected =
+            """
+            flowchart TD
+                a["A"]
+                b["B"]
+
+                subgraph sg1 ["SG1"]
+                    c["C"]
+                    d["D"]
+
+                    c ---> d
+                end
+                subgraph sg2 ["SG2"]
+                    e["E"]
+                    g["G"]
+
+                    e ---> g
+                end
+
+                a ---> b
+                b ---> a
+
+                linkStyle 0,1 stroke:#00ff00
+                linkStyle 2 stroke:#ff0000
+                linkStyle 3 stroke:#0000ff
+
+            """;
+
+        Assert.Equal(expected, flowchart.ToMermaidString(0, "    "));
+    }
+
+    [Fact]
+    public void LinkStyleIndices_NestedSubgraph_InnerLinksRenderBeforeOuterOwnLinks()
+    {
+        Flowchart flowchart = new();
+        Node a = Node.Create("a", "A");
+        Node b = Node.Create("b", "B");
+        Node c = Node.Create("c", "C");
+        Node d = Node.Create("d", "D");
+
+        Subgraph inner = Subgraph.Create("inner", "Inner");
+        inner.AddNode(c).AddNode(d);
+        inner.AddLink(Link.Create(c, d, linkStyle: new StyleClass(Stroke: new Stroke(Color.FromHex("#00ff00")))));
+
+        Subgraph outer = Subgraph.Create("outer", "Outer");
+        outer.AddNode(a).AddNode(b).AddNode(inner);
+        outer.AddLink(Link.Create(a, b, linkStyle: new StyleClass(Stroke: new Stroke(Color.FromHex("#ff0000")))));
+
+        flowchart.AddNode(outer);
+
+        string expected =
+            """
+            flowchart TD
+
+                subgraph outer ["Outer"]
+                    a["A"]
+                    b["B"]
+
+                    subgraph inner ["Inner"]
+                        c["C"]
+                        d["D"]
+
+                        c ---> d
+                    end
+
+                    a ---> b
+                end
+
+                linkStyle 0 stroke:#00ff00
+                linkStyle 1 stroke:#ff0000
+
+            """;
+
+        Assert.Equal(expected, flowchart.ToMermaidString(0, "    "));
+    }
+
+    [Fact]
     public void Flowchart_WhenNestedLinksParentToChild_ShouldNotAddDuplicateNodes()
     {
         // Arrange
