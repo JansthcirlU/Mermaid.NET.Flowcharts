@@ -33,8 +33,6 @@ public readonly record struct UnitInterval : INumerical
         return new(value);
     }
 
-    public static implicit operator double(UnitInterval i) => i.Value;
-
     public string ToNumericalString()
         => Value.ToNumberString();
 }
