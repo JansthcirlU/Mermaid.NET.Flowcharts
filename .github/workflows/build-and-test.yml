@@ -40,3 +40,10 @@ jobs:
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+  complete:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow complete
+        run: echo "All matrix jobs completed successfully"
