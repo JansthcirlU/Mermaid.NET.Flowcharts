@@ -21,7 +21,7 @@ public readonly record struct Percentage : INumerical
         }
 
         ArgumentOutOfRangeException.ThrowIfLessThan(value, 0.0, "Percentage must not be negative.");
-        
+
         return new(value);
     }
 
