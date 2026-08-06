@@ -9,9 +9,10 @@ public readonly record struct Color(byte Red, byte Green, byte Blue) : ICssAttri
     public static Color FromRGB(byte red, byte green, byte blue)
         => new(red, green, blue);
 
-    public static Color FromHex(NonEmptySingleLineString hex)
+    public static Color FromHex(string hex)
     {
-        string s = ((string)hex).Trim();
+        NonEmptySingleLineString nes = NonEmptySingleLineString.FromString(hex);
+        string s = nes.Trim();
         if (s.Length == 0)
         {
             throw new ArgumentException("Hex color must not be empty or whitespace.", nameof(hex));
