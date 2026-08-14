@@ -25,8 +25,7 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart
-FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Basic usage");
-Flowchart flowchart = new(flowchartTitle);
+Flowchart flowchart = Flowchart.Create("Basic usage");
 
 // Create nodes
 Node start = Node.Create("start", "Start");
@@ -79,7 +78,7 @@ If one of the nodes cannot be found inside the flowchart or subgraph or its nest
 Adding a link with a newly defined node is technically allowed in Mermaid itself, but using `Mermaid.Net.Flowcharts` you must first add both nodes explicitly.
 
 ```cs
-Flowchart flowchart = new();
+Flowchart flowchart = Flowchart.Create();
 Node a = Node.Create("a", "A");
 Node b = Node.Create("b", "B");
 Link ab = Link.Create(a, b);
@@ -103,7 +102,7 @@ When defining links that connects a node to nested node, the link must be define
 When a node from outside a subgraph is linked inside a subgraph, the node is incorrectly duplicated and treated as a node inside the subgraph.
 
 ```cs
-Flowchart flowchart = new();
+Flowchart flowchart = Flowchart.Create();
 Node a = Node.Create("a", "A");
 Subgraph sg = Subgraph.Create("sg", "Subgraph");
 Node b = Node.Create("b", "B");
@@ -141,8 +140,7 @@ using Mermaid.Flowcharts;
 using Mermaid.Flowcharts.Nodes;
 
 // Create a new flowchart
-FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Various node shapes");
-Flowchart flowchart = new(flowchartTitle);
+Flowchart flowchart = Flowchart.Create("Various node shapes");
 
 // Create nodes with various shapes
 Node rectangle = Node.Create("rectangle", "Rectangle", NodeShape.Rectangle);
@@ -216,8 +214,7 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart
-FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Link types");
-Flowchart flowchart = new(flowchartTitle);
+Flowchart flowchart = Flowchart.Create("Link types");
 
 // Create two nodes
 Node a = Node.Create("a", "A");
@@ -275,8 +272,7 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart with a node
-FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Using subgraphs");
-Flowchart flowchart = new(flowchartTitle);
+Flowchart flowchart = Flowchart.Create("Using subgraphs");
 Node node = Node.Create("n", "Node");
 flowchart.AddNode(node);
 
@@ -316,7 +312,6 @@ title: Using subgraphs
 ---
 flowchart TD
   n["Node"]
-  sn["Subnode"]
 
   subgraph sg ["Subgraph"]
     sn["Subnode"]
@@ -324,9 +319,6 @@ flowchart TD
     subgraph ssg ["Subsubgraph"]
       ssn["Subsubnode"]
     end
-  end
-  subgraph ssg ["Subsubgraph"]
-    ssn["Subsubnode"]
   end
 
   n ---> ssg
@@ -356,8 +348,7 @@ using Mermaid.Flowcharts;
 using Mermaid.Flowcharts.Nodes;
 
 // Create a new flowchart
-FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Styling nodes");
-Flowchart flowchart = new(flowchartTitle);
+Flowchart flowchart = Flowchart.Create("Styling nodes");
 
 // Define a style class
 StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
@@ -404,8 +395,7 @@ using Mermaid.Flowcharts.Nodes;
 using Mermaid.Flowcharts.Links;
 
 // Create a new flowchart
-FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Styling links");
-Flowchart flowchart = new(flowchartTitle);
+Flowchart flowchart = Flowchart.Create("Styling links");
 
 // Define some nodes
 Node a = Node.Create("a", "A");

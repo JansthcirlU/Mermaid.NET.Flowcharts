@@ -14,8 +14,7 @@ public class ReadmeTests
     public void BasicUsage()
     {
         // Create a new flowchart
-        FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Basic usage");
-        Flowchart flowchart = new(flowchartTitle);
+        Flowchart flowchart = Flowchart.Create("Basic usage");
 
         // Create nodes
         Node start = Node.Create("start", "Start");
@@ -59,8 +58,7 @@ public class ReadmeTests
     public void VariousNodeShapes()
     {
         // Create a new flowchart
-        FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Various node shapes");
-        Flowchart flowchart = new(flowchartTitle);
+        Flowchart flowchart = Flowchart.Create("Various node shapes");
 
         // Create nodes with various shapes
         Node rectangle = Node.Create("rectangle", "Rectangle", NodeShape.Rectangle);
@@ -128,8 +126,7 @@ public class ReadmeTests
     public void LinkTypes()
     {
         // Create a new flowchart
-        FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Link types");
-        Flowchart flowchart = new(flowchartTitle);
+        Flowchart flowchart = Flowchart.Create("Link types");
 
         // Create two nodes
         Node a = Node.Create("a", "A");
@@ -180,8 +177,7 @@ public class ReadmeTests
     public void UsingSubgraphs()
     {
         // Create a new flowchart with a node
-        FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Using subgraphs");
-        Flowchart flowchart = new(flowchartTitle);
+        Flowchart flowchart = Flowchart.Create("Using subgraphs");
         Node node = Node.Create("n", "Node");
         flowchart.AddNode(node);
 
@@ -240,8 +236,7 @@ public class ReadmeTests
     public void StylingNodes()
     {
         // Create a new flowchart
-        FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Styling nodes");
-        Flowchart flowchart = new(flowchartTitle);
+        Flowchart flowchart = Flowchart.Create("Styling nodes");
 
         // Define a style class
         StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
@@ -282,8 +277,7 @@ public class ReadmeTests
     public void StylingLinks()
     {
         // Create a new flowchart
-        FlowchartTitle flowchartTitle = FlowchartTitle.FromString("Styling links");
-        Flowchart flowchart = new(flowchartTitle);
+        Flowchart flowchart = Flowchart.Create("Styling links");
 
         // Define some nodes
         Node a = Node.Create("a", "A");
