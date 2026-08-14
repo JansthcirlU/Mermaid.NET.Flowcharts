@@ -37,7 +37,7 @@ public readonly record struct NodeIdentifier : IMermaidPrintable
         {
             throw new ArgumentException("Identifier must not be whitespace.", nameof(text));
         }
-        
+
         if (text.StartsWith('_') || text.StartsWith('.') || text.StartsWith('-'))
         {
             throw new ArgumentException("Identifier must not start with a separator.", nameof(text));
