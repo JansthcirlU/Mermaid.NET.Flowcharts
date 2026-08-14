@@ -75,7 +75,7 @@ public class FlowchartTitleTests
         'a',
         """
         ---
-        title: a
+        title: "a"
         ---
         """)]
     public void Title_ShouldToMermaidString_SingleLetter(char letter, string expected)
@@ -98,7 +98,7 @@ public class FlowchartTitleTests
         "  ",
         """
             ---
-            title: a
+            title: "a"
             ---
         """
     )]

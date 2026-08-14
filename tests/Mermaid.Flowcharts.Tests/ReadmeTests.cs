@@ -38,7 +38,7 @@ public class ReadmeTests
         string expected =
             """
             ---
-            title: Basic usage
+            title: "Basic usage"
             ---
             flowchart TD
               start["Start"]
@@ -98,7 +98,7 @@ public class ReadmeTests
         string expected =
             """
             ---
-            title: Various node shapes
+            title: "Various node shapes"
             ---
             flowchart TD
               rectangle["Rectangle"]
@@ -156,7 +156,7 @@ public class ReadmeTests
         string expected =
             """
             ---
-            title: Link types
+            title: "Link types"
             ---
             flowchart TD
               a["A"]
@@ -210,7 +210,7 @@ public class ReadmeTests
         string expected =
             """
             ---
-            title: Using subgraphs
+            title: "Using subgraphs"
             ---
             flowchart TD
               n["Node"]
@@ -258,7 +258,7 @@ public class ReadmeTests
         string expected =
             """
             ---
-            title: Styling nodes
+            title: "Styling nodes"
             ---
             flowchart TD
               a["A"]
@@ -306,7 +306,7 @@ public class ReadmeTests
         string expected =
             """
             ---
-            title: Styling links
+            title: "Styling links"
             ---
             flowchart TD
               a["A"]
