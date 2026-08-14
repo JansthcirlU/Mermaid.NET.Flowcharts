@@ -32,7 +32,7 @@ public readonly struct FlowchartTitle : IMermaidPrintable
             throw new ArgumentException("Flowchart title must not be whitespace.", nameof(text));
         }
 
-        return new(text);
+        return new(text.Replace("\"", "\\\""));
     }
 
     public override string ToString()
@@ -43,7 +43,7 @@ public readonly struct FlowchartTitle : IMermaidPrintable
         StringBuilder flowchartTitleBuilder = new();
         flowchartTitleBuilder
             .AppendLine($"{indentationText.Repeat(indentations)}---")
-            .AppendLine($"{indentationText.Repeat(indentations)}title: {Text}")
+            .AppendLine($"{indentationText.Repeat(indentations)}title: \"{Text}\"")
             .Append($"{indentationText.Repeat(indentations)}---");
         return flowchartTitleBuilder.ToString();
     }
