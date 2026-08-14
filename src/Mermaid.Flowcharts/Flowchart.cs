@@ -28,6 +28,11 @@ public class Flowchart : IMermaidPrintable
         Title = title;
     }
 
+    public static Flowchart Create(string? titleText = null, FlowchartDirection? direction = null)
+        => titleText is not null
+            ? new(FlowchartTitle.FromString(titleText), direction)
+            : new(direction);
+
     public Flowchart AddNode(INode node)
     {
         if (node is Node nd && Nodes.Any(nd.Equals))
