@@ -14,7 +14,7 @@ public class FlowchartTests
     public void Flowchart_ShouldContainOneNode_WhenTryingToAddTheSameNodeMultipleTimes()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node node = Node.CreateNew<MermaidUnicodeText>(Guid.NewGuid().ToString());
 
         // Act
@@ -30,7 +30,7 @@ public class FlowchartTests
     public void Flowchart_ShouldContainTwoNodes_WhenTryingToAddTwoNodesWithDuplicateIdsButDifferentValues()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         string randomId = Guid.NewGuid().ToString();
         Node node1 = Node.Create<MermaidUnicodeText>(randomId, Guid.NewGuid().ToString());
         Node node2 = Node.Create<MermaidUnicodeText>(randomId, Guid.NewGuid().ToString());
@@ -48,7 +48,7 @@ public class FlowchartTests
     public void Flowchart_WhenLinkNodesExist_ShouldAddLink()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node n1 = Node.CreateNew("Node 1");
         Node n2 = Node.CreateNew("Node 2");
         Link link = Link.Create(n1, n2);
@@ -69,7 +69,7 @@ public class FlowchartTests
     public void Flowchart_WhenLinkNodesAreNestedButExist_ShouldAddLink()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Subgraph sg1 = Subgraph.CreateNew("Subgraph 1");
         Node sg1Node = Node.CreateNew("Node 1");
         Subgraph sg2 = Subgraph.CreateNew("Subgraph 2");
@@ -92,7 +92,7 @@ public class FlowchartTests
     public void Flowchart_WhenLinkNodeIsSubgraphAndExists_ShouldAddLink()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node n = Node.CreateNew("n");
         Subgraph subgraph = Subgraph.CreateNew("Subgraph");
         Link link = Link.Create(n, subgraph);
@@ -113,7 +113,7 @@ public class FlowchartTests
     public void Flowchart_WhenLinkSourceNotPresent_AddLinkShouldThrow()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node source = Node.CreateNew(Guid.NewGuid().ToString());
         Node destination = Node.CreateNew(Guid.NewGuid().ToString());
         Link link = Link.Create(source, destination);
@@ -130,7 +130,7 @@ public class FlowchartTests
     public void Flowchart_WhenLinkDestinationNotPresent_AddLinkShouldThrow()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node source = Node.CreateNew(Guid.NewGuid().ToString());
         Node destination = Node.CreateNew(Guid.NewGuid().ToString());
         Link link = Link.Create(source, destination);
@@ -147,7 +147,7 @@ public class FlowchartTests
     public void Flowchart_ToMermaidString_WhenSubgraphAndNodes()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
 
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
@@ -200,7 +200,7 @@ public class FlowchartTests
     public void Flowchart_ToMermaidString_WhenNestedSubgraphsAndLink()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
 
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
@@ -265,7 +265,7 @@ public class FlowchartTests
     public void Flowchart_WhenOneNodeOneStyle_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         string nodeId = Guid.NewGuid().ToString();
         string nodeText = Guid.NewGuid().ToString();
         StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
@@ -293,7 +293,7 @@ public class FlowchartTests
     public void Flowchart_WhenTwoNodesOneStyle_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
         NodeStyle nodeStyle = new("customStyle", nodeStyleClass);
         string node1Id = Guid.NewGuid().ToString();
@@ -327,7 +327,7 @@ public class FlowchartTests
     public void Flowchart_WhenTwoNodesTwoStyles_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         StyleClass node1StyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
         NodeStyle node1Style = new("customStyle1", node1StyleClass);
         string node1Id = Guid.NewGuid().ToString();
@@ -365,7 +365,7 @@ public class FlowchartTests
     public void Flowchart_WhenFourNodesTwoStyles_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         StyleClass styleClass1 = new(Fill: new Fill(Color.FromHex("#ff9966")));
         NodeStyle nodeStyle1 = new("customStyle1", styleClass1);
         string node1Id = Guid.NewGuid().ToString();
@@ -413,7 +413,7 @@ public class FlowchartTests
     public void Flowchart_WhenOneLinkOneStyle_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
         Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
@@ -451,7 +451,7 @@ public class FlowchartTests
     public void Flowchart_WhenTwoLinksOneStyle_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
         Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
@@ -497,7 +497,7 @@ public class FlowchartTests
     public void Flowchart_WhenTwoLinksTwoStyles_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
         Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
@@ -545,7 +545,7 @@ public class FlowchartTests
     public void Flowchart_WhenNodesAndLinksWithStyles_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
 
         // Node styling
         StyleClass nodeStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
@@ -591,7 +591,7 @@ public class FlowchartTests
     public void Flowchart_WhenFourLinksTwoStyles_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
 
         // Create nodes
         string node1Id = Guid.NewGuid().ToString();
@@ -654,7 +654,7 @@ public class FlowchartTests
     public void Flowchart_WhenMixedLinksWithAndWithoutStyles_ToMermaidString()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         string node1Id = Guid.NewGuid().ToString();
         string node1Text = Guid.NewGuid().ToString();
         Node node1 = Node.Create<MermaidUnicodeText>(node1Id, node1Text);
@@ -708,7 +708,7 @@ public class FlowchartTests
     [Fact]
     public void LinkStyleIndices_SubgraphLinkPrecedesFlowchartLink()
     {
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node a = Node.Create("a", "A");
         Node b = Node.Create("b", "B");
         Node c = Node.Create("c", "C");
@@ -750,7 +750,7 @@ public class FlowchartTests
     [Fact]
     public void LinkStyleIndices_SharedStyleAcrossSubgraphs_AndMultipleFlowchartLinks()
     {
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node a = Node.Create("a", "A");
         Node b = Node.Create("b", "B");
         Node c = Node.Create("c", "C");
@@ -810,7 +810,7 @@ public class FlowchartTests
     [Fact]
     public void LinkStyleIndices_NestedSubgraph_InnerLinksRenderBeforeOuterOwnLinks()
     {
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node a = Node.Create("a", "A");
         Node b = Node.Create("b", "B");
         Node c = Node.Create("c", "C");
@@ -856,7 +856,7 @@ public class FlowchartTests
     public void Flowchart_WhenNestedLinksParentToChild_ShouldNotAddDuplicateNodes()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node flowchartNode = Node.Create("n", "Inside flowchart");
         Subgraph subgraph = Subgraph.Create("sg", "Subgraph");
         Node subgraphNode = Node.Create("sgn", "Inside subgraph");
@@ -906,7 +906,7 @@ public class FlowchartTests
     public void Flowchart_WhenNestedLinksChildToParent_ShouldNotAddDuplicateNodes()
     {
         // Arrange
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node flowchartNode = Node.Create("n", "Inside flowchart");
         Subgraph subgraph = Subgraph.Create("sg", "Subgraph");
         Node subgraphNode = Node.Create("sgn", "Inside subgraph");
@@ -956,7 +956,7 @@ public class FlowchartTests
     [Fact]
     public void Flowchart_ShouldLinkToNodeThreeSubgraphLevelsDeep()
     {
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node top = Node.Create("top", "Top");
         Subgraph outer = Subgraph.Create("outer", "Outer");
         Subgraph middle = Subgraph.Create("middle", "Middle");
@@ -994,7 +994,7 @@ public class FlowchartTests
     [Fact]
     public void Subgraph_ShouldLinkToNodeNestedInsideInnerSubgraph()
     {
-        Flowchart flowchart = new();
+        Flowchart flowchart = Flowchart.Create();
         Node a = Node.Create("a", "A");
         Subgraph outer = Subgraph.Create("outer", "Outer");
         Subgraph middle = Subgraph.Create("middle", "Middle");
