@@ -28,16 +28,6 @@ public readonly record struct NodeIdentifier : IMermaidPrintable
 
     public static NodeIdentifier FromString(string text)
     {
-        if (text.StartsWith('_') || text.StartsWith('.') || text.StartsWith('-'))
-        {
-            throw new ArgumentException("Identifier must not start with a separator.", nameof(text));
-        }
-
-        if (text.EndsWith('_') || text.EndsWith('.') || text.EndsWith('-'))
-        {
-            throw new ArgumentException("Identifier must not end with a separator.", nameof(text));
-        }
-
         if (string.IsNullOrEmpty(text))
         {
             throw new ArgumentException("Identifier must not be empty.", nameof(text));
@@ -46,6 +36,16 @@ public readonly record struct NodeIdentifier : IMermaidPrintable
         if (string.IsNullOrWhiteSpace(text))
         {
             throw new ArgumentException("Identifier must not be whitespace.", nameof(text));
+        }
+
+        if (text.StartsWith('_') || text.StartsWith('.') || text.StartsWith('-'))
+        {
+            throw new ArgumentException("Identifier must not start with a separator.", nameof(text));
+        }
+
+        if (text.EndsWith('_') || text.EndsWith('.') || text.EndsWith('-'))
+        {
+            throw new ArgumentException("Identifier must not end with a separator.", nameof(text));
         }
 
         bool containsDisallowedValue = text.AsSpan().IndexOfAnyExcept(AllowedCharacters) > -1;

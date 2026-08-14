@@ -52,7 +52,7 @@ Will generate the following Mermaid output:
 
 ```mermaid
 ---
-title: Basic usage
+title: "Basic usage"
 ---
 flowchart TD
   start["Start"]
@@ -183,7 +183,7 @@ Will generate the following Mermaid output:
 
 ```mermaid
 ---
-title: Various node shapes
+title: "Various node shapes"
 ---
 flowchart TD
   rectangle["Rectangle"]
@@ -247,7 +247,7 @@ Will generate the following Mermaid output:
 
 ```mermaid
 ---
-title: Link types
+title: "Link types"
 ---
 flowchart TD
   a["A"]
@@ -308,7 +308,7 @@ Will generate the following Mermaid output:
 
 ```mermaid
 ---
-title: Using subgraphs
+title: "Using subgraphs"
 ---
 flowchart TD
   n["Node"]
@@ -373,7 +373,7 @@ Will generate the following Mermaid output:
 
 ```mermaid
 ---
-title: Styling nodes
+title: "Styling nodes"
 ---
 flowchart TD
   a["A"]
@@ -427,7 +427,7 @@ Will generate the following Mermaid output:
 
 ```mermaid
 ---
-title: Styling links
+title: "Styling links"
 ---
 flowchart TD
   a["A"]
