@@ -78,6 +78,13 @@ public class FlowchartTitleTests
         title: "a"
         ---
         """)]
+    [InlineData(
+        '"',
+        """
+        ---
+        title: "\""
+        ---
+        """)]
     public void Title_ShouldToMermaidString_SingleLetter(char letter, string expected)
     {
         // Arrange
@@ -99,6 +106,16 @@ public class FlowchartTitleTests
         """
             ---
             title: "a"
+            ---
+        """
+    )]
+    [InlineData(
+        '"',
+        2,
+        "  ",
+        """
+            ---
+            title: "\""
             ---
         """
     )]
