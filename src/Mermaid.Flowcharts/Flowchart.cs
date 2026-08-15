@@ -101,9 +101,9 @@ public class Flowchart : IMermaidPrintable
             flowchartStringBuilder.AppendLine(link.ToMermaidString(indentations + 1, indentationText));
         }
 
-        // Group all node styles across flowchart and all subgraphs recursively together
+        // Group all node and subgraph styles across flowchart and all subgraphs recursively together
         Dictionary<NodeStyle, HashSet<NodeIdentifier>> distinctNodeStyles = [];
-        foreach (Node node in AllNodes)
+        foreach (INode node in AllNodeChildren)
         {
             if (node.NodeStyle is null)
             {
