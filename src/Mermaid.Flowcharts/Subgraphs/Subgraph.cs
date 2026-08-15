@@ -15,38 +15,40 @@ public record Subgraph : INode<Subgraph>
     public NodeIdentifier Id { get; }
     public INodeText Title { get; }
     public SubgraphDirection? Direction { get; }
+    public NodeStyle? NodeStyle { get; }
     public IEnumerable<Node> Nodes => _nodes.OfType<Node>();
     public IEnumerable<Subgraph> Subgraphs => _nodes.OfType<Subgraph>();
     public IEnumerable<Link> Links => _links.AsReadOnly();
 
-    private Subgraph(NodeIdentifier id, INodeText title, SubgraphDirection? direction = null)
+    private Subgraph(NodeIdentifier id, INodeText title, SubgraphDirection? direction = null, NodeStyle? nodeStyle = null)
     {
         Id = id;
         Title = title;
         Direction = direction;
+        NodeStyle = nodeStyle;
     }
 
-    public static Subgraph CreateNew<TNodeText>(string title, SubgraphDirection? direction = null)
+    public static Subgraph CreateNew<TNodeText>(string title, SubgraphDirection? direction = null, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText<TNodeText>
-        => new(NodeIdentifier.Create(), TNodeText.FromString(title), direction);
+        => new(NodeIdentifier.Create(), TNodeText.FromString(title), direction, nodeStyle);
 
-    public static Subgraph Create<TNodeText>(string identifier, string title, SubgraphDirection? direction = null)
+    public static Subgraph Create<TNodeText>(string identifier, string title, SubgraphDirection? direction = null, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText<TNodeText>
-        => new(NodeIdentifier.FromString(identifier), TNodeText.FromString(title), direction);
+        => new(NodeIdentifier.FromString(identifier), TNodeText.FromString(title), direction, nodeStyle);
 
-    public static Subgraph CreateNew<TNodeText>(TNodeText title, SubgraphDirection? direction = null)
+    public static Subgraph CreateNew<TNodeText>(TNodeText title, SubgraphDirection? direction = null, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText
-        => new(NodeIdentifier.Create(), title, direction);
+        => new(NodeIdentifier.Create(), title, direction, nodeStyle);
 
-    public static Subgraph Create<TNodeText>(string identifier, TNodeText title, SubgraphDirection? direction = null)
+    public static Subgraph Create<TNodeText>(string identifier, TNodeText title, SubgraphDirection? direction = null, NodeStyle? nodeStyle = null)
         where TNodeText : INodeText
-        => new(NodeIdentifier.FromString(identifier), title, direction);
+        => new(NodeIdentifier.FromString(identifier), title, direction, nodeStyle);
 
-    public static Subgraph CreateNew(string title, SubgraphDirection? direction = null)
-        => CreateNew<MermaidUnicodeText>(title, direction);
+    public static Subgraph CreateNew(string title, SubgraphDirection? direction = null, NodeStyle? nodeStyle = null)
+        => CreateNew<MermaidUnicodeText>(title, direction, nodeStyle);
 
-    public static Subgraph Create(string identifier, string title, SubgraphDirection? direction = null)
-        => Create<MermaidUnicodeText>(identifier, title, direction);
+    public static Subgraph Create(string identifier, string title, SubgraphDirection? direction = null, NodeStyle? nodeStyle = null)
+        => Create<MermaidUnicodeText>(identifier, title, direction, nodeStyle);
 
     public Subgraph AddNode(INode node)
     {
