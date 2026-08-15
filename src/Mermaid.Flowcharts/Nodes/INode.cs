@@ -3,6 +3,7 @@ namespace Mermaid.Flowcharts.Nodes;
 public interface INode : IMermaidPrintable
 {
     public NodeIdentifier Id { get; }
+    public NodeStyle? NodeStyle { get; }
 }
 
 public interface INode<TNode> : INode, IEquatable<TNode>
