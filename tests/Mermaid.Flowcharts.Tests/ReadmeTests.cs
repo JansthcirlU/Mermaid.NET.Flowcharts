@@ -274,6 +274,45 @@ public class ReadmeTests
     }
 
     [Fact]
+    public void StylingSubgraphs()
+    {
+        // Create a new flowchart
+        Flowchart flowchart = Flowchart.Create("Styling subgraphs");
+
+        // Define a style class
+        StyleClass subgraphStyleClass = new(Fill: new Fill(Color.FromHex("#9966ff")));
+
+        // Create a named node style
+        NodeStyle subgraphStyle = new("customStyle", subgraphStyleClass);
+
+        // Create a subgraph with the node style
+        Subgraph subgraph = Subgraph.Create<MermaidUnicodeText>("sg", "Subgraph", nodeStyle: subgraphStyle);
+
+        // Add the subgraph to the flowchart
+        flowchart.AddNode(subgraph);
+
+        // Generate the Mermaid output
+        string mermaid = flowchart.ToMermaidString();
+        string expected =
+            """
+            ---
+            title: "Styling subgraphs"
+            ---
+            flowchart TD
+
+              subgraph sg ["Subgraph"]
+              end
+
+              classDef customStyle fill:#9966ff
+              class sg customStyle
+
+            """;
+
+        // Assert
+        Assert.Equal(expected, mermaid);
+    }
+
+    [Fact]
     public void StylingLinks()
     {
         // Create a new flowchart
