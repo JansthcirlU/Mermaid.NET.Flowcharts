@@ -339,7 +339,7 @@ This type wraps some common style attributes, such as:
 
 #### Styling nodes
 
-In Mermaid, nodes can be through a style class definitions, which show up as `classDef` inside the flowchart.
+In Mermaid, nodes can be styled using a style class definition, which show up as `classDef` inside the flowchart.
 To do this, you must create a `NodeStyle` with a given name and a `StyleClass` and use that node style when creating a node.
 If you create multiple nodes using the same node style, they will be grouped together automatically when applying the style class.
 
@@ -381,6 +381,51 @@ flowchart TD
 
   classDef customStyle fill:#ff9966
   class a,b customStyle
+
+```
+
+#### Styling subgraphs
+
+Subgraphs are nodes too, so they can be styled the same way with a `NodeStyle`.
+Subgraphs and nodes can share the same node style, in which case they are grouped together automatically, just like nodes sharing a style.
+
+```cs
+using Mermaid.Flowcharts;
+using Mermaid.Flowcharts.Nodes;
+using Mermaid.Flowcharts.Subgraphs;
+
+// Create a new flowchart
+Flowchart flowchart = Flowchart.Create("Styling subgraphs");
+
+// Define a style class
+StyleClass subgraphStyleClass = new(Fill: new Fill(Color.FromHex("#9966ff")));
+
+// Create a named node style
+NodeStyle subgraphStyle = new("customStyle", subgraphStyleClass);
+
+// Create a subgraph with the node style
+Subgraph subgraph = Subgraph.Create<MermaidUnicodeText>("sg", "Subgraph", nodeStyle: subgraphStyle);
+
+// Add the subgraph to the flowchart
+flowchart.AddNode(subgraph);
+
+// Generate the Mermaid output
+string mermaid = flowchart.ToMermaidString();
+```
+
+Will generate the following Mermaid output:
+
+```mermaid
+---
+title: "Styling subgraphs"
+---
+flowchart TD
+
+  subgraph sg ["Subgraph"]
+  end
+
+  classDef customStyle fill:#9966ff
+  class sg customStyle
 
 ```
 

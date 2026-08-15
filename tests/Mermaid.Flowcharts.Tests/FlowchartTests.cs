@@ -410,6 +410,114 @@ public class FlowchartTests
     }
 
     [Fact]
+    public void Flowchart_WhenOneSubgraphOneStyle_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = Flowchart.Create();
+        string subgraphId = Guid.NewGuid().ToString();
+        string subgraphTitle = Guid.NewGuid().ToString();
+        StyleClass subgraphStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
+        NodeStyle subgraphStyle = new("customStyle", subgraphStyleClass);
+        Subgraph subgraph = Subgraph.Create<MermaidUnicodeText>(subgraphId, subgraphTitle, nodeStyle: subgraphStyle);
+        flowchart.AddNode(subgraph);
+        string expected =
+        $"""
+        flowchart TD
+
+            subgraph {subgraphId} ["{subgraphTitle}"]
+            end
+
+            classDef customStyle fill:#ff9966
+            class {subgraphId} customStyle
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenNestedSubgraphStyled_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = Flowchart.Create();
+        string outerId = Guid.NewGuid().ToString();
+        string outerTitle = Guid.NewGuid().ToString();
+        Subgraph outer = Subgraph.Create<MermaidUnicodeText>(outerId, outerTitle);
+
+        string innerId = Guid.NewGuid().ToString();
+        string innerTitle = Guid.NewGuid().ToString();
+        StyleClass innerStyleClass = new(Fill: new Fill(Color.FromHex("#9966ff")));
+        NodeStyle innerStyle = new("customStyle", innerStyleClass);
+        Subgraph inner = Subgraph.Create<MermaidUnicodeText>(innerId, innerTitle, nodeStyle: innerStyle);
+
+        outer.AddNode(inner);
+        flowchart.AddNode(outer);
+        string expected =
+        $"""
+        flowchart TD
+
+            subgraph {outerId} ["{outerTitle}"]
+
+                subgraph {innerId} ["{innerTitle}"]
+                end
+            end
+
+            classDef customStyle fill:#9966ff
+            class {innerId} customStyle
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void Flowchart_WhenNodeAndSubgraphShareStyle_ToMermaidString()
+    {
+        // Arrange
+        Flowchart flowchart = Flowchart.Create();
+        StyleClass sharedStyleClass = new(Fill: new Fill(Color.FromHex("#ff9966")));
+        NodeStyle sharedStyle = new("customStyle", sharedStyleClass);
+
+        string nodeId = Guid.NewGuid().ToString();
+        string nodeText = Guid.NewGuid().ToString();
+        Node node = Node.Create<MermaidUnicodeText>(nodeId, nodeText, nodeStyle: sharedStyle);
+
+        string subgraphId = Guid.NewGuid().ToString();
+        string subgraphTitle = Guid.NewGuid().ToString();
+        Subgraph subgraph = Subgraph.Create<MermaidUnicodeText>(subgraphId, subgraphTitle, nodeStyle: sharedStyle);
+
+        flowchart
+            .AddNode(node)
+            .AddNode(subgraph);
+        string expected =
+        $"""
+        flowchart TD
+            {nodeId}["{nodeText}"]
+
+            subgraph {subgraphId} ["{subgraphTitle}"]
+            end
+
+            classDef customStyle fill:#ff9966
+            class {nodeId},{subgraphId} customStyle
+
+        """;
+
+        // Act
+        string actual = flowchart.ToMermaidString(0, "    ");
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
     public void Flowchart_WhenOneLinkOneStyle_ToMermaidString()
     {
         // Arrange
